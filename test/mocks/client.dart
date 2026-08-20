@@ -1,10 +1,10 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:nyxx/nyxx.dart';
-import 'package:nyxx/src/manager_mixin.dart';
+import 'package:uhxx/uhxx.dart';
+import 'package:uhxx/src/manager_mixin.dart';
 
 import 'gateway.dart';
 
-class MockNyxx with Mock, ManagerMixin implements NyxxRest {
+class MockUhxx with Mock, ManagerMixin implements UhxxRest {
   @override
   PartialApplication get application => applications[Snowflake.zero];
 
@@ -15,7 +15,7 @@ class MockNyxx with Mock, ManagerMixin implements NyxxRest {
   late final CacheManager cache = CacheManager(this);
 }
 
-class MockNyxxGateway with Mock, ManagerMixin implements NyxxGateway {
+class MockUhxxGateway with Mock, ManagerMixin implements UhxxGateway {
   @override
   Gateway get gateway => MockGateway();
 

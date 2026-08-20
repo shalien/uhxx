@@ -1,9 +1,9 @@
-import 'package:nyxx/src/builders/sticker.dart';
-import 'package:nyxx/src/http/managers/sticker_manager.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/sticker/sticker.dart';
-import 'package:nyxx/src/models/user/user.dart';
+import 'package:uhxx/src/builders/sticker.dart';
+import 'package:uhxx/src/http/managers/sticker_manager.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/sticker/sticker.dart';
+import 'package:uhxx/src/models/user/user.dart';
 
 /// {@category entities}
 class PartialGuildSticker extends WritableSnowflakeEntity<GuildSticker> {
@@ -19,7 +19,9 @@ class PartialGuildSticker extends WritableSnowflakeEntity<GuildSticker> {
   /// * [GuildStickerManager.update]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/sticker#modify-guild-sticker
   @override
-  Future<GuildSticker> update(StickerUpdateBuilder builder, {String? auditLogReason}) => manager.update(id, builder, auditLogReason: auditLogReason);
+  Future<GuildSticker> update(StickerUpdateBuilder builder,
+          {String? auditLogReason}) =>
+      manager.update(id, builder, auditLogReason: auditLogReason);
 
   /// Delete this sticker.
   ///
@@ -27,7 +29,8 @@ class PartialGuildSticker extends WritableSnowflakeEntity<GuildSticker> {
   /// * [GuildStickerManager.delete]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/sticker#delete-guild-sticker
   @override
-  Future<void> delete({String? auditLogReason}) => manager.delete(id, auditLogReason: auditLogReason);
+  Future<void> delete({String? auditLogReason}) =>
+      manager.delete(id, auditLogReason: auditLogReason);
 }
 
 /// {@template guild_sticker}

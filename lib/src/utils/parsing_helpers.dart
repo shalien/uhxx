@@ -11,7 +11,8 @@ T? maybeParse<T, U>(dynamic object, T Function(U) parse) {
   }
 
   if (object is! U) {
-    throw FormatException('Unexpected type (expected $U, got ${object.runtimeType})', object);
+    throw FormatException(
+        'Unexpected type (expected $U, got ${object.runtimeType})', object);
   }
 
   return parse(object);
@@ -38,7 +39,8 @@ List<T> parseMany<T, U>(List<dynamic> objects, [T Function(U)? parse]) {
       final raw = objects[index];
 
       if (raw is! U) {
-        throw FormatException('Unexpected type (expected $U, got ${raw.runtimeType})', raw);
+        throw FormatException(
+            'Unexpected type (expected $U, got ${raw.runtimeType})', raw);
       }
 
       return parse!(raw);
@@ -47,7 +49,9 @@ List<T> parseMany<T, U>(List<dynamic> objects, [T Function(U)? parse]) {
 }
 
 /// An internal helper which parses each element of [object] using [parse] if it is not null.
-List<T>? maybeParseMany<T, U>(dynamic object, [T Function(U)? parse]) => maybeParse<List<T>, List<dynamic>>(object, (object) => parseMany(object, parse));
+List<T>? maybeParseMany<T, U>(dynamic object, [T Function(U)? parse]) =>
+    maybeParse<List<T>, List<dynamic>>(
+        object, (object) => parseMany(object, parse));
 
 /// An internal helper which parses [object] using [parse] if it is non-null, and returns `null` if [parse] throws.
 T? tryParse<T, U>(dynamic object, [T Function(U)? parse]) {

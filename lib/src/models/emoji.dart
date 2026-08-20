@@ -1,10 +1,10 @@
-import 'package:nyxx/src/http/cdn/cdn_asset.dart';
-import 'package:nyxx/src/http/managers/emoji_manager.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
+import 'package:uhxx/src/http/cdn/cdn_asset.dart';
+import 'package:uhxx/src/http/managers/emoji_manager.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
 
 /// A partial [Emoji] object.
 ///
@@ -145,7 +145,10 @@ class GuildEmoji extends Emoji {
   });
 
   /// The roles allowed to use this emoji.
-  List<PartialRole>? get roles => roleIds?.map((e) => manager.client.guilds[(manager as GuildEmojiManager).guildId].roles[e]).toList();
+  List<PartialRole>? get roles => roleIds
+      ?.map((e) => manager
+          .client.guilds[(manager as GuildEmojiManager).guildId].roles[e])
+      .toList();
 
   /// This emoji's image.
   CdnAsset get image => CdnAsset(

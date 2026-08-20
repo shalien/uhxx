@@ -1,8 +1,8 @@
-import 'package:nyxx/src/builders/channel/thread.dart';
-import 'package:nyxx/src/models/channel/guild_channel.dart';
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/channel/thread_list.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/channel/thread.dart';
+import 'package:uhxx/src/models/channel/guild_channel.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/channel/thread_list.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// A channel which can have threads.
 ///
@@ -29,7 +29,9 @@ abstract class HasThreadsChannel implements GuildChannel {
   /// External references:
   /// * [ChannelManager.createThreadFromMessage]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#start-thread-from-message
-  Future<Thread> createThreadFromMessage(Snowflake messageId, ThreadFromMessageBuilder builder, {String? auditLogReason});
+  Future<Thread> createThreadFromMessage(
+      Snowflake messageId, ThreadFromMessageBuilder builder,
+      {String? auditLogReason});
 
   /// Create a [Thread] in this channel.
   ///
@@ -59,5 +61,6 @@ abstract class HasThreadsChannel implements GuildChannel {
   /// External references:
   /// * [ChannelManager.listJoinedPrivateArchivedThreads]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#list-joined-private-archived-threads
-  Future<ThreadList> listJoinedPrivateArchivedThreads({DateTime? before, int? limit});
+  Future<ThreadList> listJoinedPrivateArchivedThreads(
+      {DateTime? before, int? limit});
 }

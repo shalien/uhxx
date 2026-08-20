@@ -1,13 +1,13 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/commands/application_command.dart';
-import 'package:nyxx/src/models/commands/application_command_option.dart';
-import 'package:nyxx/src/models/interaction.dart';
-import 'package:nyxx/src/models/locale.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/commands/application_command.dart';
+import 'package:uhxx/src/models/commands/application_command_option.dart';
+import 'package:uhxx/src/models/interaction.dart';
+import 'package:uhxx/src/models/locale.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// {@category builders}
 class ApplicationCommandBuilder extends CreateBuilder<ApplicationCommand> {
@@ -92,23 +92,37 @@ class ApplicationCommandBuilder extends CreateBuilder<ApplicationCommand> {
   @override
   Map<String, Object?> build() => {
         'name': name,
-        if (nameLocalizations != null) 'name_localizations': {for (final MapEntry(:key, :value) in nameLocalizations!.entries) key.identifier: value},
+        if (nameLocalizations != null)
+          'name_localizations': {
+            for (final MapEntry(:key, :value) in nameLocalizations!.entries)
+              key.identifier: value
+          },
         if (description != null) 'description': description,
         if (descriptionLocalizations != null)
-          'description_localizations': {for (final MapEntry(:key, :value) in descriptionLocalizations!.entries) key.identifier: value},
+          'description_localizations': {
+            for (final MapEntry(:key, :value)
+                in descriptionLocalizations!.entries)
+              key.identifier: value
+          },
         if (options != null) 'options': options!.map((e) => e.build()).toList(),
-        if (defaultMemberPermissions != null) 'default_member_permissions': defaultMemberPermissions!.value.toString(),
+        if (defaultMemberPermissions != null)
+          'default_member_permissions':
+              defaultMemberPermissions!.value.toString(),
         // ignore: deprecated_member_use_from_same_package
         if (hasDmPermission != null) 'dm_permission': hasDmPermission,
         'type': type.value,
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (integrationTypes != null) 'integration_types': integrationTypes!.map((type) => type.value).toList(),
-        if (contexts != null) 'contexts': contexts!.map((type) => type.value).toList(),
+        if (integrationTypes != null)
+          'integration_types':
+              integrationTypes!.map((type) => type.value).toList(),
+        if (contexts != null)
+          'contexts': contexts!.map((type) => type.value).toList(),
       };
 }
 
 /// {@category builders}
-class ApplicationCommandUpdateBuilder extends UpdateBuilder<ApplicationCommand> {
+class ApplicationCommandUpdateBuilder
+    extends UpdateBuilder<ApplicationCommand> {
   String? name;
 
   Map<Locale, String>? nameLocalizations;
@@ -185,17 +199,25 @@ class ApplicationCommandUpdateBuilder extends UpdateBuilder<ApplicationCommand> 
   @override
   Map<String, Object?> build() => {
         if (name != null) 'name': name,
-        if (!identical(nameLocalizations, sentinelMap)) 'name_localizations': nameLocalizations?.map((key, value) => MapEntry(key.toString(), value)),
+        if (!identical(nameLocalizations, sentinelMap))
+          'name_localizations': nameLocalizations
+              ?.map((key, value) => MapEntry(key.toString(), value)),
         if (description != null) 'description': description,
         if (!identical(descriptionLocalizations, sentinelMap))
-          'description_localizations': descriptionLocalizations?.map((key, value) => MapEntry(key.toString(), value)),
+          'description_localizations': descriptionLocalizations
+              ?.map((key, value) => MapEntry(key.toString(), value)),
         if (options != null) 'options': options!.map((e) => e.build()).toList(),
-        if (!identical(defaultMemberPermissions, sentinelFlags)) 'default_member_permissions': defaultMemberPermissions?.value.toString(),
+        if (!identical(defaultMemberPermissions, sentinelFlags))
+          'default_member_permissions':
+              defaultMemberPermissions?.value.toString(),
         // ignore: deprecated_member_use_from_same_package
         if (hasDmPermission != null) 'dm_permission': hasDmPermission,
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (integrationTypes != null) 'integration_types': integrationTypes!.map((type) => type.value).toList(),
-        if (contexts != null) 'contexts': contexts!.map((type) => type.value).toList(),
+        if (integrationTypes != null)
+          'integration_types':
+              integrationTypes!.map((type) => type.value).toList(),
+        if (contexts != null)
+          'contexts': contexts!.map((type) => type.value).toList(),
       };
 }
 
@@ -426,14 +448,23 @@ class CommandOptionBuilder extends CreateBuilder<CommandOption> {
   Map<String, Object?> build() => {
         'type': type.value,
         'name': name,
-        if (nameLocalizations != null) 'name_localizations': {for (final MapEntry(:key, :value) in nameLocalizations!.entries) key.identifier: value},
+        if (nameLocalizations != null)
+          'name_localizations': {
+            for (final MapEntry(:key, :value) in nameLocalizations!.entries)
+              key.identifier: value
+          },
         'description': description,
         if (descriptionLocalizations != null)
-          'description_localizations': {for (final MapEntry(:key, :value) in descriptionLocalizations!.entries) key.identifier: value},
+          'description_localizations': {
+            for (final MapEntry(:key, :value)
+                in descriptionLocalizations!.entries)
+              key.identifier: value
+          },
         if (isRequired != null) 'required': isRequired,
         if (choices != null) 'choices': choices!.map((e) => e.build()).toList(),
         if (options != null) 'options': options!.map((e) => e.build()).toList(),
-        if (channelTypes != null) 'channel_types': channelTypes!.map((e) => e.value).toList(),
+        if (channelTypes != null)
+          'channel_types': channelTypes!.map((e) => e.value).toList(),
         if (minValue != null) 'min_value': minValue,
         if (maxValue != null) 'max_value': maxValue,
         if (minLength != null) 'min_length': minLength,
@@ -450,12 +481,17 @@ class CommandOptionChoiceBuilder<T> extends CreateBuilder<CommandOptionChoice> {
 
   T value;
 
-  CommandOptionChoiceBuilder({required this.name, this.nameLocalizations, required this.value});
+  CommandOptionChoiceBuilder(
+      {required this.name, this.nameLocalizations, required this.value});
 
   @override
   Map<String, Object?> build() => {
         'name': name,
-        if (nameLocalizations != null) 'name_localizations': {for (final MapEntry(:key, :value) in nameLocalizations!.entries) key.identifier: value},
+        if (nameLocalizations != null)
+          'name_localizations': {
+            for (final MapEntry(:key, :value) in nameLocalizations!.entries)
+              key.identifier: value
+          },
         'value': value,
       };
 }

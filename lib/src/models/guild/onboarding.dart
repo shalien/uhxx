@@ -1,10 +1,10 @@
-import 'package:nyxx/src/http/managers/guild_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/guild_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template onboarding}
 /// The configuration for a [Guild]'s onboarding process.
@@ -45,7 +45,8 @@ class Onboarding with ToStringHelper {
   PartialGuild get guild => manager.client.guilds[guildId];
 
   /// A list of channels that get opted into automatically.
-  List<PartialChannel> get channels => defaultChannelIds.map((e) => manager.client.channels[e]).toList();
+  List<PartialChannel> get channels =>
+      defaultChannelIds.map((e) => manager.client.channels[e]).toList();
 }
 
 /// {@template onboarding_prompt}
@@ -98,7 +99,8 @@ final class OnboardingPromptType extends EnumLike<int, OnboardingPromptType> {
   /// @nodoc
   const OnboardingPromptType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   OnboardingPromptType.parse(int value) : this(value);
 }
 
@@ -145,7 +147,8 @@ class OnboardingPromptOption with ToStringHelper {
   });
 
   /// The channels the user is granted access to.
-  List<PartialChannel> get channels => channelIds.map((e) => manager.client.channels[e]).toList();
+  List<PartialChannel> get channels =>
+      channelIds.map((e) => manager.client.channels[e]).toList();
 }
 
 /// The mode under which onboarding constraints operate when creating an

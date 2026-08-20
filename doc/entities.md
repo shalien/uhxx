@@ -21,7 +21,7 @@ Most entities will have a corresponding "partial" entity. A partial entity is a
 reference to an entity, and can therefore be used to access that entity's
 methods (which often only require knowing its ID) without having to fetch the
 entity's model from the API. Partial entities can be accessed using
-[Manager.operator[]](../nyxx/ReadOnlyManager/operator_get.html) and providing
+[Manager.operator[]](../uhxx/ReadOnlyManager/operator_get.html) and providing
 the entity's ID.
 
 For example, you can write the following code to list a [Guild]'s channels
@@ -33,11 +33,11 @@ client.guilds[GUILD_ID].fetchChannels();
 
 You can obtain the full model for a partial entity by using the [get] method.
 
-[SnowflakeEntity]: ../nyxx/SnowflakeEntity-class.html
-[Snowflake]: ../nyxx/Snowflake-class.html
-[Manager]: ../nyxx/Manager-class.html
+[SnowflakeEntity]: ../uhxx/SnowflakeEntity-class.html
+[Snowflake]: ../uhxx/Snowflake-class.html
+[Manager]: ../uhxx/Manager-class.html
 [Models]: ./models-topic.html
 [Managers]: ./managers-topic.html
-[WritableSnowflakeEntity.update]: ../nyxx/WritableSnowflakeEntity/update.html
-[Guild]: ../nyxx/Guild-class.html
-[get]: ../nyxx/SnowflakeEntity/get.html
+[WritableSnowflakeEntity.update]: ../uhxx/WritableSnowflakeEntity/update.html
+[Guild]: ../uhxx/Guild-class.html
+[get]: ../uhxx/SnowflakeEntity/get.html

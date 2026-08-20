@@ -1,10 +1,10 @@
-import 'package:nyxx/src/builders/guild/template.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/http/managers/guild_manager.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/builders/guild/template.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/http/managers/guild_manager.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template guild_template}
 /// A snapshot of a [Guild] that can be used to create a new guild.
@@ -69,17 +69,21 @@ class GuildTemplate with ToStringHelper {
   PartialGuild get sourceGuild => manager.client.guilds[sourceGuildId];
 
   /// Create a guild from this template.
-  Future<Guild> use({required String name, ImageBuilder? icon}) => manager.createGuildFromTemplate(code, name: name, icon: icon);
+  Future<Guild> use({required String name, ImageBuilder? icon}) =>
+      manager.createGuildFromTemplate(code, name: name, icon: icon);
 
   /// Fetch this template.
   Future<GuildTemplate> fetch() => manager.fetchGuildTemplate(code);
 
   /// Sync this template to the source guild.
-  Future<GuildTemplate> sync() => manager.syncGuildTemplate(sourceGuildId, code);
+  Future<GuildTemplate> sync() =>
+      manager.syncGuildTemplate(sourceGuildId, code);
 
   /// Update this template.
-  Future<GuildTemplate> update(GuildTemplateUpdateBuilder builder) => manager.updateGuildTemplate(sourceGuildId, code, builder);
+  Future<GuildTemplate> update(GuildTemplateUpdateBuilder builder) =>
+      manager.updateGuildTemplate(sourceGuildId, code, builder);
 
   /// Delete this template.
-  Future<GuildTemplate> delete() => manager.deleteGuildTemplate(sourceGuildId, code);
+  Future<GuildTemplate> delete() =>
+      manager.deleteGuildTemplate(sourceGuildId, code);
 }

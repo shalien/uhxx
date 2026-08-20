@@ -1,6 +1,6 @@
-import 'package:nyxx/src/models/guild/integration.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/models/guild/integration.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A link to an account on a service other than Discord.
 ///
@@ -114,6 +114,7 @@ final class ConnectionVisibility extends EnumLike<int, ConnectionVisibility> {
   /// @nodoc
   const ConnectionVisibility(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ConnectionVisibility.parse(int value) : this(value);
 }

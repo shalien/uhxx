@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:nyxx/src/builders/guild/scheduled_event.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/guild/scheduled_event.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/builders/guild/scheduled_event.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/guild/scheduled_event.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A [Manager] for [ScheduledEvent]s.
 ///
@@ -17,10 +17,12 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
   final Snowflake guildId;
 
   /// Create a new [ScheduledEventManager].
-  ScheduledEventManager(super.config, super.client, {required this.guildId}) : super(identifier: '$guildId.scheduledEvents');
+  ScheduledEventManager(super.config, super.client, {required this.guildId})
+      : super(identifier: '$guildId.scheduledEvents');
 
   @override
-  PartialScheduledEvent operator [](Snowflake id) => PartialScheduledEvent(id: id, manager: this);
+  PartialScheduledEvent operator [](Snowflake id) =>
+      PartialScheduledEvent(id: id, manager: this);
 
   @override
   ScheduledEvent parse(Map<String, Object?> raw) {
@@ -59,7 +61,10 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
       manager: this,
       scheduledEventId: Snowflake.parse(raw['guild_scheduled_event_id']!),
       user: user,
-      member: maybeParse(raw['member'], (Map<String, Object?> raw) => client.guilds[guildId].members.parse(raw, userId: user.id)),
+      member: maybeParse(
+          raw['member'],
+          (Map<String, Object?> raw) =>
+              client.guilds[guildId].members.parse(raw, userId: user.id)),
     );
   }
 
@@ -70,7 +75,8 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
       frequency: RecurrenceRuleFrequency(raw['frequency'] as int),
       interval: raw['interval'] as int,
       byWeekday: maybeParseMany(raw['by_weekday'], RecurrenceRuleWeekday.new),
-      byNWeekday: maybeParseMany(raw['by_n_weekday'], parseRecurrenceRuleNWeekday),
+      byNWeekday:
+          maybeParseMany(raw['by_n_weekday'], parseRecurrenceRuleNWeekday),
       byMonth: maybeParseMany(raw['by_month'], RecurrenceRuleMonth.new),
       byMonthDay: maybeParseMany(raw['by_month_day']),
       byYearDay: maybeParseMany(raw['by_year_day']),
@@ -90,7 +96,9 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..scheduledEvents(id: id.toString());
-    final request = BasicRequest(route, queryParameters: {if (withUserCount != null) 'with_user_count': withUserCount.toString()});
+    final request = BasicRequest(route, queryParameters: {
+      if (withUserCount != null) 'with_user_count': withUserCount.toString()
+    });
 
     final response = await client.httpHandler.executeSafe(request);
     final event = parse(response.jsonBody as Map<String, Object?>);
@@ -104,7 +112,9 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..scheduledEvents();
-    final request = BasicRequest(route, queryParameters: {if (withUserCounts != null) 'with_user_count': withUserCounts.toString()});
+    final request = BasicRequest(route, queryParameters: {
+      if (withUserCounts != null) 'with_user_count': withUserCounts.toString()
+    });
 
     final response = await client.httpHandler.executeSafe(request);
     final events = parseMany(response.jsonBody as List<Object?>, parse);
@@ -114,11 +124,15 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
   }
 
   @override
-  Future<ScheduledEvent> create(ScheduledEventBuilder builder, {String? auditLogReason}) async {
+  Future<ScheduledEvent> create(ScheduledEventBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..scheduledEvents();
-    final request = BasicRequest(route, method: 'POST', auditLogReason: auditLogReason, body: jsonEncode(builder.build()));
+    final request = BasicRequest(route,
+        method: 'POST',
+        auditLogReason: auditLogReason,
+        body: jsonEncode(builder.build()));
 
     final response = await client.httpHandler.executeSafe(request);
     final event = parse(response.jsonBody as Map<String, Object?>);
@@ -128,11 +142,16 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
   }
 
   @override
-  Future<ScheduledEvent> update(Snowflake id, ScheduledEventUpdateBuilder builder, {String? auditLogReason}) async {
+  Future<ScheduledEvent> update(
+      Snowflake id, ScheduledEventUpdateBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..scheduledEvents(id: id.toString());
-    final request = BasicRequest(route, method: 'PATCH', auditLogReason: auditLogReason, body: jsonEncode(builder.build()));
+    final request = BasicRequest(route,
+        method: 'PATCH',
+        auditLogReason: auditLogReason,
+        body: jsonEncode(builder.build()));
 
     final response = await client.httpHandler.executeSafe(request);
     final event = parse(response.jsonBody as Map<String, Object?>);
@@ -154,7 +173,11 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
   }
 
   /// List the users that have followed an event.
-  Future<List<ScheduledEventUser>> listEventUsers(Snowflake id, {int? limit, bool? withMembers, Snowflake? before, Snowflake? after}) async {
+  Future<List<ScheduledEventUser>> listEventUsers(Snowflake id,
+      {int? limit,
+      bool? withMembers,
+      Snowflake? before,
+      Snowflake? after}) async {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..scheduledEvents(id: id.toString())
@@ -167,7 +190,8 @@ class ScheduledEventManager extends Manager<ScheduledEvent> {
     });
 
     final response = await client.httpHandler.executeSafe(request);
-    final users = parseMany(response.jsonBody as List<Object?>, parseScheduledEventUser);
+    final users =
+        parseMany(response.jsonBody as List<Object?>, parseScheduledEventUser);
 
     users.forEach(client.updateCacheWith);
     return users;

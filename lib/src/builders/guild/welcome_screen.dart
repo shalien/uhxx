@@ -1,7 +1,7 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/guild/welcome_screen.dart';
-import 'package:nyxx/src/utils/building_helpers.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/guild/welcome_screen.dart';
+import 'package:uhxx/src/utils/building_helpers.dart';
 
 /// {@category builders}
 class WelcomeScreenUpdateBuilder extends UpdateBuilder<WelcomeScreen> {
@@ -11,7 +11,8 @@ class WelcomeScreenUpdateBuilder extends UpdateBuilder<WelcomeScreen> {
 
   String? description;
 
-  WelcomeScreenUpdateBuilder({this.isEnabled, this.channels, this.description = sentinelString});
+  WelcomeScreenUpdateBuilder(
+      {this.isEnabled, this.channels, this.description = sentinelString});
 
   @override
   Map<String, Object?> build() => {
@@ -22,7 +23,8 @@ class WelcomeScreenUpdateBuilder extends UpdateBuilder<WelcomeScreen> {
               {
                 'channel_id': channel.channelId.toString(),
                 'description': channel.description,
-                ...makeEmojiMap(emojiId: channel.emojiId, emojiName: channel.emojiName),
+                ...makeEmojiMap(
+                    emojiId: channel.emojiId, emojiName: channel.emojiName),
               },
           ],
         if (!identical(description, sentinelString)) 'description': description,

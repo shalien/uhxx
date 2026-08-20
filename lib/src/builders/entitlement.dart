@@ -1,6 +1,6 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/entitlement.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/entitlement.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@category builders}
 class TestEntitlementBuilder extends CreateBuilder<Entitlement> {
@@ -10,7 +10,8 @@ class TestEntitlementBuilder extends CreateBuilder<Entitlement> {
 
   TestEntitlementType ownerType;
 
-  TestEntitlementBuilder({required this.skuId, required this.ownerId, required this.ownerType});
+  TestEntitlementBuilder(
+      {required this.skuId, required this.ownerId, required this.ownerType});
 
   @override
   Map<String, Object?> build() => {

@@ -1,10 +1,10 @@
-import 'package:nyxx/src/http/managers/integration_manager.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/integration_manager.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A partial [Integration].
 ///
@@ -18,7 +18,8 @@ class PartialIntegration extends ManagedSnowflakeEntity<Integration> {
   PartialIntegration({required super.id, required this.manager});
 
   /// Delete this integration.
-  Future<void> delete({String? auditLogReason}) => manager.delete(id, auditLogReason: auditLogReason);
+  Future<void> delete({String? auditLogReason}) =>
+      manager.delete(id, auditLogReason: auditLogReason);
 }
 
 /// {@template integration}
@@ -96,18 +97,22 @@ class Integration extends PartialIntegration {
   });
 
   /// The role this integration uses for subscribers.
-  PartialRole? get role => roleId == null ? null : manager.client.guilds[manager.guildId].roles[roleId!];
+  PartialRole? get role => roleId == null
+      ? null
+      : manager.client.guilds[manager.guildId].roles[roleId!];
 }
 
 /// The behavior of an integration when a member's subscription expires.
-final class IntegrationExpireBehavior extends EnumLike<int, IntegrationExpireBehavior> {
+final class IntegrationExpireBehavior
+    extends EnumLike<int, IntegrationExpireBehavior> {
   static const removeRole = IntegrationExpireBehavior(0);
   static const kick = IntegrationExpireBehavior(1);
 
   /// @nodoc
   const IntegrationExpireBehavior(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   IntegrationExpireBehavior.parse(int value) : this(value);
 }
 

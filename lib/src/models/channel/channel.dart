@@ -1,9 +1,9 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/http/managers/channel_manager.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/http/managers/channel_manager.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// A partial [Channel] object.
 ///
@@ -21,21 +21,24 @@ class PartialChannel extends ManagedSnowflakeEntity<Channel> {
   /// External references:
   /// * [ChannelManager.update]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#modify-channel
-  Future<Channel> update(UpdateBuilder<Channel> builder) => manager.update(id, builder);
+  Future<Channel> update(UpdateBuilder<Channel> builder) =>
+      manager.update(id, builder);
 
   /// Delete this channel.
   ///
   /// External references:
   /// * [ChannelManager.delete]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#deleteclose-channel
-  Future<void> delete({String? auditLogReason}) => manager.delete(id, auditLogReason: auditLogReason);
+  Future<void> delete({String? auditLogReason}) =>
+      manager.delete(id, auditLogReason: auditLogReason);
 
   /// Follow another channel's announcement messages in this channel.
   ///
   /// External references:
   /// * [ChannelManager.followChannel]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#follow-announcement-channel
-  Future<void> follow(Snowflake id, {String? auditLogReason}) => manager.followChannel(this.id, id, auditLogReason: auditLogReason);
+  Future<void> follow(Snowflake id, {String? auditLogReason}) =>
+      manager.followChannel(this.id, id, auditLogReason: auditLogReason);
 }
 
 /// {@template channel}
@@ -97,7 +100,8 @@ final class ChannelType extends EnumLike<int, ChannelType> {
   /// @nodoc
   const ChannelType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ChannelType.parse(int value) : this(value);
 }
 

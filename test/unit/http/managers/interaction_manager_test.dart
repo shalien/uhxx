@@ -1,7 +1,5 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:nyxx/nyxx.dart';
-import 'package:nyxx/src/models/interaction.dart';
-import 'package:nyxx/src/models/component.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 import '../../../mocks/client.dart';
@@ -12,7 +10,13 @@ final sampleCommandInteraction = {
   "type": 2,
   "token": "A_UNIQUE_TOKEN",
   "member": {
-    "user": {"id": "53908232506183680", "username": "Mason", "avatar": "a_d5efa99b3eeaa7dd43acca82f5692432", "discriminator": "1337", "public_flags": 131141},
+    "user": {
+      "id": "53908232506183680",
+      "username": "Mason",
+      "avatar": "a_d5efa99b3eeaa7dd43acca82f5692432",
+      "discriminator": "1337",
+      "public_flags": 131141
+    },
     "roles": ["539082325061836999"],
     "premium_since": null,
     "permissions": "2147483647",
@@ -116,7 +120,13 @@ final sampleCommandInteraction2 = {
   "guild": {
     "locale": "en-US",
     "id": "1033681997136146462",
-    "features": ["GUILD_ONBOARDING_EVER_ENABLED", "GUILD_ONBOARDING_HAS_PROMPTS", "NEWS", "GUILD_ONBOARDING", "COMMUNITY"]
+    "features": [
+      "GUILD_ONBOARDING_EVER_ENABLED",
+      "GUILD_ONBOARDING_HAS_PROMPTS",
+      "NEWS",
+      "GUILD_ONBOARDING",
+      "COMMUNITY"
+    ]
   },
   "entitlements": [],
   "entitlement_sku_ids": [],
@@ -202,7 +212,8 @@ void checkCommandInteraction2(Interaction<dynamic> interaction) {
   expect(interaction, isA<ApplicationCommandInteraction>());
 }
 
-void checkInteractionCallbackResponse(InteractionCallbackResponse interactionCallbackResponse) {
+void checkInteractionCallbackResponse(
+    InteractionCallbackResponse interactionCallbackResponse) {
   checkInteractionCallback(interactionCallbackResponse.interaction);
 }
 
@@ -215,8 +226,10 @@ void checkInteractionCallback(InteractionCallback interactionCallback) {
 
 void checkInteractionResource(InteractionResource resource) {
   checkMessage(resource.message!);
-  expect(resource.type, equals(InteractionCallbackType.channelMessageWithSource));
-  expect(resource.activityInstance, isA<InteractionCallbackActivityInstanceResource>());
+  expect(
+      resource.type, equals(InteractionCallbackType.channelMessageWithSource));
+  expect(resource.activityInstance,
+      isA<InteractionCallbackActivityInstanceResource>());
   expect(resource.activityInstance!.id, equals('AnotherRandomId'));
 }
 
@@ -240,7 +253,11 @@ final sampleModalSubmitInteraction = {
       "avatar": "b591ea8a9d057669ea2a6cd3ab450301"
     },
     "unusual_dm_activity_until": null,
-    "roles": ["1336784655155986432", "1403111146944467114", "1403115171127234704"],
+    "roles": [
+      "1336784655155986432",
+      "1403111146944467114",
+      "1403115171127234704"
+    ],
     "premium_since": null,
     "permissions": "2222085186637376",
     "pending": false,
@@ -331,7 +348,10 @@ final sampleModalSubmitInteraction = {
     "guild_id": "1317206872763404478",
     "flags": 0
   },
-  "authorizing_integration_owners": {"1": "506759329068613643", "0": "1317206872763404478"},
+  "authorizing_integration_owners": {
+    "1": "506759329068613643",
+    "0": "1317206872763404478"
+  },
   "attachment_size_limit": 104857600,
   "application_id": "1033681843708510238",
   "app_permissions": "2222085186637376"
@@ -358,7 +378,8 @@ void checkModalSubmitInteraction(Interaction<dynamic> interaction) {
     });
 
     expect(data.components[1], (SubmittedActionRowComponent component) {
-      expect(component.components.single, (SubmittedTextInputComponent component) {
+      expect(component.components.single,
+          (SubmittedTextInputComponent component) {
         expect(component.customId, equals('fppp'));
         expect(component.value, equals('Fooooo'));
 
@@ -415,7 +436,11 @@ final sampleModalSubmitInteraction2 = {
       "avatar": "b591ea8a9d057669ea2a6cd3ab450301"
     },
     "unusual_dm_activity_until": null,
-    "roles": ["1336784655155986432", "1403111146944467114", "1403115171127234704"],
+    "roles": [
+      "1336784655155986432",
+      "1403111146944467114",
+      "1403115171127234704"
+    ],
     "premium_since": null,
     "permissions": "2222085186637376",
     "pending": false,
@@ -475,7 +500,12 @@ final sampleModalSubmitInteraction2 = {
         "856780995629154305": {
           "username": "lulalaby",
           "public_flags": 4194560,
-          "primary_guild": {"tag": "RAWR", "identity_guild_id": "804032421678153819", "identity_enabled": true, "badge": "6245505dfa39c9fd91f02cda71c56d07"},
+          "primary_guild": {
+            "tag": "RAWR",
+            "identity_guild_id": "804032421678153819",
+            "identity_enabled": true,
+            "badge": "6245505dfa39c9fd91f02cda71c56d07"
+          },
           "id": "856780995629154305",
           "global_name": "Lala",
           "display_name_styles": null,
@@ -489,8 +519,17 @@ final sampleModalSubmitInteraction2 = {
               "asset": "nameplates/nameplates/vengeance/"
             }
           },
-          "clan": {"tag": "RAWR", "identity_guild_id": "804032421678153819", "identity_enabled": true, "badge": "6245505dfa39c9fd91f02cda71c56d07"},
-          "avatar_decoration_data": {"sku_id": "1402472280642289775", "expires_at": null, "asset": "a_b9f89cd88eabf437777bf35f55e6126f"},
+          "clan": {
+            "tag": "RAWR",
+            "identity_guild_id": "804032421678153819",
+            "identity_enabled": true,
+            "badge": "6245505dfa39c9fd91f02cda71c56d07"
+          },
+          "avatar_decoration_data": {
+            "sku_id": "1402472280642289775",
+            "expires_at": null,
+            "asset": "a_b9f89cd88eabf437777bf35f55e6126f"
+          },
           "avatar": "a_befab3a05e5f9b3695fe1f2971a3dc2e"
         },
         "506759329068613643": {
@@ -520,7 +559,11 @@ final sampleModalSubmitInteraction2 = {
           "hoist": true,
           "flags": 1,
           "description": null,
-          "colors": {"tertiary_color": null, "secondary_color": null, "primary_color": 12420897},
+          "colors": {
+            "tertiary_color": null,
+            "secondary_color": null,
+            "primary_color": 12420897
+          },
           "color": 12420897
         }
       },
@@ -545,12 +588,20 @@ final sampleModalSubmitInteraction2 = {
           "communication_disabled_until": null,
           "collectibles": null,
           "banner": "a_aeb3580903b87f916dc2e674a5bb9bf7",
-          "avatar_decoration_data": {"sku_id": "1399543537032237066", "expires_at": null, "asset": "a_fbefe2b8f016d8dffa230e01f89aa8f2"},
+          "avatar_decoration_data": {
+            "sku_id": "1399543537032237066",
+            "expires_at": null,
+            "asset": "a_fbefe2b8f016d8dffa230e01f89aa8f2"
+          },
           "avatar": "a_35e7ece1531f3ffbdbfff4f3fb0051ac"
         },
         "506759329068613643": {
           "unusual_dm_activity_until": null,
-          "roles": ["1336784655155986432", "1403111146944467114", "1403115171127234704"],
+          "roles": [
+            "1336784655155986432",
+            "1403111146944467114",
+            "1403115171127234704"
+          ],
           "premium_since": null,
           "permissions": "2222085186637376",
           "pending": false,
@@ -671,7 +722,10 @@ final sampleModalSubmitInteraction2 = {
     "guild_id": "1317206872763404478",
     "flags": 0
   },
-  "authorizing_integration_owners": {"1": "506759329068613643", "0": "1317206872763404478"},
+  "authorizing_integration_owners": {
+    "1": "506759329068613643",
+    "0": "1317206872763404478"
+  },
   "attachment_size_limit": 104857600,
   "application_id": "1033681843708510238",
   "app_permissions": "2222085186637376"
@@ -757,18 +811,36 @@ final sampleModalSubmitInteraction3 = {
     'user': {
       'username': 'abitofevrything',
       'public_flags': 128,
-      'primary_guild': {'tag': 'CAP', 'identity_guild_id': '1317206872763404478', 'identity_enabled': true, 'badge': 'd7234d6824ca9ead59ffdcd76be30277'},
+      'primary_guild': {
+        'tag': 'CAP',
+        'identity_guild_id': '1317206872763404478',
+        'identity_enabled': true,
+        'badge': 'd7234d6824ca9ead59ffdcd76be30277'
+      },
       'id': '506759329068613643',
       'global_name': 'Mylo',
       'display_name_styles': null,
       'discriminator': '0',
       'collectibles': null,
-      'clan': {'tag': 'CAP', 'identity_guild_id': '1317206872763404478', 'identity_enabled': true, 'badge': 'd7234d6824ca9ead59ffdcd76be30277'},
-      'avatar_decoration_data': {'sku_id': '1440174638930853957', 'expires_at': null, 'asset': 'a_3c8525a96d0272550c2f95bc8b594da5'},
+      'clan': {
+        'tag': 'CAP',
+        'identity_guild_id': '1317206872763404478',
+        'identity_enabled': true,
+        'badge': 'd7234d6824ca9ead59ffdcd76be30277'
+      },
+      'avatar_decoration_data': {
+        'sku_id': '1440174638930853957',
+        'expires_at': null,
+        'asset': 'a_3c8525a96d0272550c2f95bc8b594da5'
+      },
       'avatar': '9a84d45ff600e087dd973273aba6ec14'
     },
     'unusual_dm_activity_until': null,
-    'roles': ['1336784655155986432', '1403111146944467114', '1403115171127234704'],
+    'roles': [
+      '1336784655155986432',
+      '1403111146944467114',
+      '1403115171127234704'
+    ],
     'premium_since': null,
     'permissions': '2222085186637376',
     'pending': false,
@@ -847,7 +919,12 @@ final sampleModalSubmitInteraction3 = {
       {
         'type': 18,
         'id': 5,
-        'component': {'value': true, 'type': 23, 'id': 6, 'custom_id': 'rster32ewrae'}
+        'component': {
+          'value': true,
+          'type': 23,
+          'id': 6,
+          'custom_id': 'rster32ewrae'
+        }
       }
     ]
   },
@@ -914,51 +991,64 @@ void checkModalSubmitInteraction3(Interaction<dynamic> interaction) {
 void main() {
   group('InteractionManager', () {
     test('parse', () {
-      final client = MockNyxx();
-      when(() => client.apiOptions).thenReturn(RestApiOptions(token: 'TEST_TOKEN'));
+      final client = MockUhxx();
+      when(() => client.apiOptions)
+          .thenReturn(RestApiOptions(token: 'TEST_TOKEN'));
       when(() => client.options).thenReturn(RestClientOptions());
 
-      ParsingTest<InteractionManager, Interaction<dynamic>, Map<String, Object?>>(
+      ParsingTest<InteractionManager, Interaction<dynamic>,
+          Map<String, Object?>>(
         name: 'parse (1)',
         source: sampleCommandInteraction,
         parse: (manager) => manager.parse,
         check: checkCommandInteraction,
-      ).runWithManager(InteractionManager(client, applicationId: Snowflake.zero));
+      ).runWithManager(
+          InteractionManager(client, applicationId: Snowflake.zero));
 
-      ParsingTest<InteractionManager, Interaction<dynamic>, Map<String, Object?>>(
+      ParsingTest<InteractionManager, Interaction<dynamic>,
+          Map<String, Object?>>(
         name: 'parse (2)',
         source: sampleCommandInteraction2,
         parse: (manager) => manager.parse,
         check: checkCommandInteraction2,
-      ).runWithManager(InteractionManager(client, applicationId: Snowflake.zero));
+      ).runWithManager(
+          InteractionManager(client, applicationId: Snowflake.zero));
 
-      ParsingTest<InteractionManager, InteractionCallbackResponse, Map<String, Object?>>(
+      ParsingTest<InteractionManager, InteractionCallbackResponse,
+          Map<String, Object?>>(
         name: 'parse interaction callback response',
         source: interactionCallbackResponseObject,
         check: checkInteractionCallbackResponse,
         parse: (manager) => manager.parseInteractionCallbackResponse,
-      ).runWithManager(InteractionManager(client, applicationId: Snowflake.zero));
+      ).runWithManager(
+          InteractionManager(client, applicationId: Snowflake.zero));
 
-      ParsingTest<InteractionManager, Interaction<dynamic>, Map<String, Object?>>(
+      ParsingTest<InteractionManager, Interaction<dynamic>,
+          Map<String, Object?>>(
         name: 'parse (3)',
         source: sampleModalSubmitInteraction,
         parse: (manager) => manager.parse,
         check: checkModalSubmitInteraction,
-      ).runWithManager(InteractionManager(client, applicationId: Snowflake.zero));
+      ).runWithManager(
+          InteractionManager(client, applicationId: Snowflake.zero));
 
-      ParsingTest<InteractionManager, Interaction<dynamic>, Map<String, Object?>>(
+      ParsingTest<InteractionManager, Interaction<dynamic>,
+          Map<String, Object?>>(
         name: 'parse (4)',
         source: sampleModalSubmitInteraction2,
         parse: (manager) => manager.parse,
         check: checkModalSubmitInteraction2,
-      ).runWithManager(InteractionManager(client, applicationId: Snowflake.zero));
+      ).runWithManager(
+          InteractionManager(client, applicationId: Snowflake.zero));
 
-      ParsingTest<InteractionManager, Interaction<dynamic>, Map<String, Object?>>(
+      ParsingTest<InteractionManager, Interaction<dynamic>,
+          Map<String, Object?>>(
         name: 'parse (5)',
         source: sampleModalSubmitInteraction3,
         parse: (manager) => manager.parse,
         check: checkModalSubmitInteraction3,
-      ).runWithManager(InteractionManager(client, applicationId: Snowflake.zero));
+      ).runWithManager(
+          InteractionManager(client, applicationId: Snowflake.zero));
     });
 
     // Endpoints are tested in webhook_manager_test.dart as the implementation is the same.

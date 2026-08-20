@@ -1,19 +1,20 @@
-import 'package:nyxx/src/http/managers/application_command_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/commands/application_command_option.dart';
-import 'package:nyxx/src/models/commands/application_command_permissions.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/interaction.dart';
-import 'package:nyxx/src/models/locale.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/http/managers/application_command_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/commands/application_command_option.dart';
+import 'package:uhxx/src/models/commands/application_command_permissions.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/interaction.dart';
+import 'package:uhxx/src/models/locale.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
 
 /// A partial [ApplicationCommand].
 ///
 /// {@category entities}
-class PartialApplicationCommand extends WritableSnowflakeEntity<ApplicationCommand> {
+class PartialApplicationCommand
+    extends WritableSnowflakeEntity<ApplicationCommand> {
   @override
   final ApplicationCommandManager manager;
 
@@ -22,7 +23,8 @@ class PartialApplicationCommand extends WritableSnowflakeEntity<ApplicationComma
   PartialApplicationCommand({required super.id, required this.manager});
 
   /// Fetch the permissions for this command in a given guild.
-  Future<CommandPermissions> fetchPermissions(Snowflake guildId) => manager.client.guilds[guildId].commands.fetchPermissions(id);
+  Future<CommandPermissions> fetchPermissions(Snowflake guildId) =>
+      manager.client.guilds[guildId].commands.fetchPermissions(id);
 }
 
 /// {@template application_command}
@@ -99,14 +101,17 @@ class ApplicationCommand extends PartialApplicationCommand {
   });
 
   /// The application this command belongs to.
-  PartialApplication get application => manager.client.applications[applicationId];
+  PartialApplication get application =>
+      manager.client.applications[applicationId];
 
   /// The guild this command belongs to.
-  PartialGuild? get guild => guildId == null ? null : manager.client.guilds[guildId!];
+  PartialGuild? get guild =>
+      guildId == null ? null : manager.client.guilds[guildId!];
 }
 
 /// The type of an [ApplicationCommand].
-final class ApplicationCommandType extends EnumLike<int, ApplicationCommandType> {
+final class ApplicationCommandType
+    extends EnumLike<int, ApplicationCommandType> {
   /// A chat input command.
   static const chatInput = ApplicationCommandType(1);
 
@@ -119,6 +124,7 @@ final class ApplicationCommandType extends EnumLike<int, ApplicationCommandType>
   /// @nodoc
   const ApplicationCommandType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ApplicationCommandType.parse(int value) : this(value);
 }

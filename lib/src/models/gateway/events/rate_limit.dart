@@ -1,5 +1,5 @@
-import 'package:nyxx/nyxx.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/uhxx.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// An event emitted when a Gateway request encounters a rate limit.
 ///
@@ -15,7 +15,11 @@ class RateLimitedEvent<T extends RateLimitedMetadata> extends DispatchEvent {
   final T meta;
 
   /// @nodoc
-  RateLimitedEvent({required this.rateLimitedOpcode, required this.retryAfter, required this.meta, required super.gateway});
+  RateLimitedEvent(
+      {required this.rateLimitedOpcode,
+      required this.retryAfter,
+      required this.meta,
+      required super.gateway});
 }
 
 /// Additional information about a rate limited Gateway request.
@@ -45,7 +49,8 @@ class RequestGuildMemberRateLimitedMetadata extends RateLimitedMetadata {
   final String? nonce;
 
   /// @nodoc
-  RequestGuildMemberRateLimitedMetadata({required this.guildId, required this.nonce, required this.gateway});
+  RequestGuildMemberRateLimitedMetadata(
+      {required this.guildId, required this.nonce, required this.gateway});
 
   /// The guild that the request was for.
   PartialGuild get guild => gateway.client.guilds[guildId];

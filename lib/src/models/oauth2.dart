@@ -1,5 +1,5 @@
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/user/user.dart';
 
 /// {@category models}
 class OAuth2Information {
@@ -16,5 +16,9 @@ class OAuth2Information {
   final User? user;
 
   /// @nodoc
-  OAuth2Information({required this.application, required this.scopes, required this.expiresOn, this.user});
+  OAuth2Information(
+      {required this.application,
+      required this.scopes,
+      required this.expiresOn,
+      this.user});
 }

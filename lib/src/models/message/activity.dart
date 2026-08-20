@@ -1,5 +1,5 @@
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template message_activity}
 /// Activity data for rich presence related messages.
@@ -37,6 +37,7 @@ final class MessageActivityType extends EnumLike<int, MessageActivityType> {
   /// @nodoc
   const MessageActivityType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   MessageActivityType.parse(int value) : this(value);
 }

@@ -1,15 +1,17 @@
-import 'package:nyxx/src/builders/message/message.dart';
-import 'package:nyxx/src/http/managers/message_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/message/message.dart';
+import 'package:uhxx/src/http/managers/message_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// A partial [TextChannel].
 ///
 /// {@category entities}
 class PartialTextChannel extends PartialChannel {
   /// A [Manager] for the [Message]s of this channel.
-  MessageManager get messages => MessageManager(manager.client.options.messageCacheConfig, manager.client, channelId: id);
+  MessageManager get messages =>
+      MessageManager(manager.client.options.messageCacheConfig, manager.client,
+          channelId: id);
 
   /// Create a new [PartialTextChannel].
   /// @nodoc
@@ -22,7 +24,8 @@ class PartialTextChannel extends PartialChannel {
   /// External references:
   /// * [MessageManager.create]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#create-message
-  Future<Message> sendMessage(MessageBuilder builder) => messages.create(builder);
+  Future<Message> sendMessage(MessageBuilder builder) =>
+      messages.create(builder);
 
   /// Trigger a typing indicator in this channel from the current user.
   ///

@@ -1,29 +1,29 @@
 import 'package:logging/logging.dart';
-import 'package:nyxx/src/cache/cache.dart';
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/commands/application_command.dart';
-import 'package:nyxx/src/models/commands/application_command_permissions.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/entitlement.dart';
-import 'package:nyxx/src/models/guild/audit_log.dart';
-import 'package:nyxx/src/models/guild/auto_moderation.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/integration.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/guild/scheduled_event.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/sku.dart';
-import 'package:nyxx/src/models/soundboard/soundboard.dart';
-import 'package:nyxx/src/models/sticker/global_sticker.dart';
-import 'package:nyxx/src/models/sticker/guild_sticker.dart';
-import 'package:nyxx/src/models/subscription.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/models/voice/voice_state.dart';
-import 'package:nyxx/src/models/webhook.dart';
-import 'package:nyxx/src/plugin/plugin.dart';
+import 'package:uhxx/src/cache/cache.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/commands/application_command.dart';
+import 'package:uhxx/src/models/commands/application_command_permissions.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/entitlement.dart';
+import 'package:uhxx/src/models/guild/audit_log.dart';
+import 'package:uhxx/src/models/guild/auto_moderation.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/integration.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/guild/scheduled_event.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/sku.dart';
+import 'package:uhxx/src/models/soundboard/soundboard.dart';
+import 'package:uhxx/src/models/sticker/global_sticker.dart';
+import 'package:uhxx/src/models/sticker/guild_sticker.dart';
+import 'package:uhxx/src/models/subscription.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/voice/voice_state.dart';
+import 'package:uhxx/src/models/webhook.dart';
+import 'package:uhxx/src/plugin/plugin.dart';
 
 /// The default [CacheConfig].
 ///
@@ -55,12 +55,12 @@ const _defaultCacheConfig = CacheConfig<Never>(maxSize: 2500);
 ///   involved in.
 const _smallCacheConfig = CacheConfig<Never>(maxSize: 100);
 
-/// Options for controlling the behavior of a [Nyxx] client.
+/// Options for controlling the behavior of a [Uhxx] client.
 ///
 /// {@category core}
 abstract class ClientOptions {
   /// The plugins to use for this client.
-  final List<NyxxPlugin> plugins;
+  final List<UhxxPlugin> plugins;
 
   /// The name of the logger to use for this client.
   final String loggerName;
@@ -79,28 +79,28 @@ abstract class ClientOptions {
   /// Create a new [ClientOptions].
   const ClientOptions({
     this.plugins = const [],
-    this.loggerName = 'Nyxx',
+    this.loggerName = 'Uhxx',
     this.rateLimitWarningThreshold = const Duration(seconds: 10),
   });
 }
 
-/// Options for controlling the behavior of a [NyxxRest] client.
+/// Options for controlling the behavior of a [UhxxRest] client.
 ///
 /// {@category core}
 class RestClientOptions extends ClientOptions {
-  /// The [CacheConfig] to use for the cache of the [NyxxRest.users] manager.
+  /// The [CacheConfig] to use for the cache of the [UhxxRest.users] manager.
   final CacheConfig<User> userCacheConfig;
 
-  /// The [CacheConfig] to use for the cache of the [NyxxRest.channels] manager.
+  /// The [CacheConfig] to use for the cache of the [UhxxRest.channels] manager.
   final CacheConfig<Channel> channelCacheConfig;
 
   /// The [CacheConfig] to use for the cache of [TextChannel.messages] managers.
   final CacheConfig<Message> messageCacheConfig;
 
-  /// The [CacheConfig] to use for the cache of the [NyxxRest.webhooks] manager.
+  /// The [CacheConfig] to use for the cache of the [UhxxRest.webhooks] manager.
   final CacheConfig<Webhook> webhookCacheConfig;
 
-  /// The [CacheConfig] to use for the cache of the [NyxxRest.guilds] manager.
+  /// The [CacheConfig] to use for the cache of the [UhxxRest.guilds] manager.
   final CacheConfig<Guild> guildCacheConfig;
 
   /// The [CacheConfig] to use for the [Guild.members] manager.
@@ -115,10 +115,10 @@ class RestClientOptions extends ClientOptions {
   /// The [CacheConfig] to use for the [GuildSticker]s in the [Guild.stickers] manager.
   final CacheConfig<GuildSticker> stickerCacheConfig;
 
-  /// The [CacheConfig] to use for the [GlobalSticker]s in the [NyxxRest.stickers] manager.
+  /// The [CacheConfig] to use for the [GlobalSticker]s in the [UhxxRest.stickers] manager.
   final CacheConfig<GlobalSticker> globalStickerCacheConfig;
 
-  /// The [CacheConfig] to use for [StageInstance]s in the [NyxxRest.channels] manager.
+  /// The [CacheConfig] to use for [StageInstance]s in the [UhxxRest.channels] manager.
   final CacheConfig<StageInstance> stageInstanceCacheConfig;
 
   /// The [CacheConfig] to use for the [Guild.scheduledEvents] manager.
@@ -136,7 +136,7 @@ class RestClientOptions extends ClientOptions {
   /// The [CacheConfig] to use for the [PartialGuild.voiceStates] cache.
   final CacheConfig<VoiceState> voiceStateConfig;
 
-  /// The [CacheConfig] to use for the [NyxxRest.commands] manager.
+  /// The [CacheConfig] to use for the [UhxxRest.commands] manager.
   final CacheConfig<ApplicationCommand> applicationCommandConfig;
 
   /// The [CacheConfig] to use for the [GuildApplicationCommandManager.permissionsCache] cache.
@@ -151,7 +151,7 @@ class RestClientOptions extends ClientOptions {
   /// The [CacheConfig] to use for the [Sku.subscriptions] manager.
   final CacheConfig<Subscription> subscriptionConfig;
 
-  /// The [CacheConfig] to use for the [NyxxRest.soundboard] manager.
+  /// The [CacheConfig] to use for the [UhxxRest.soundboard] manager.
   final CacheConfig<SoundboardSound> globalSoundboardCacheConfig;
 
   /// The [CacheConfig] to use for the [Guild.soundboard] manager.
@@ -203,7 +203,7 @@ class RestClientOptions extends ClientOptions {
   });
 }
 
-/// Options for controlling the behavior of a [NyxxGateway] client.
+/// Options for controlling the behavior of a [UhxxGateway] client.
 ///
 /// {@category core}
 class GatewayClientOptions extends RestClientOptions {

@@ -1,23 +1,23 @@
-/// @docImport 'package:nyxx/nyxx.dart';
+/// @docImport 'package:uhxx/uhxx.dart';
 library;
 
 import 'dart:typed_data';
 
 import 'package:http/http.dart';
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/http/cdn/cdn_asset.dart';
-import 'package:nyxx/src/http/managers/message_manager.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/discord_color.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/flags.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/http/cdn/cdn_asset.dart';
+import 'package:uhxx/src/http/managers/message_manager.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/discord_color.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/flags.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// The type of a [Component].
 final class ComponentType extends EnumLike<int, ComponentType> {
@@ -45,7 +45,8 @@ final class ComponentType extends EnumLike<int, ComponentType> {
   /// @nodoc
   const ComponentType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ComponentType.parse(int value) : this(value);
 }
 
@@ -59,7 +60,7 @@ class UnfurledMediaItem with ToStringHelper implements CdnAsset {
   final MessageManager manager;
 
   @override
-  Nyxx get client => manager.client;
+  Uhxx get client => manager.client;
 
   /// The URL of this media item.
   @override
@@ -105,13 +106,16 @@ class UnfurledMediaItem with ToStringHelper implements CdnAsset {
   });
 
   @override
-  HttpRoute get base => throw UnsupportedError('Cannot get the base URL for a media item');
+  HttpRoute get base =>
+      throw UnsupportedError('Cannot get the base URL for a media item');
 
   @override
-  CdnFormat get defaultFormat => throw UnsupportedError('Cannot get the default format for a media item');
+  CdnFormat get defaultFormat =>
+      throw UnsupportedError('Cannot get the default format for a media item');
 
   @override
-  String get hash => throw UnsupportedError('Cannot get the hash for a media item');
+  String get hash =>
+      throw UnsupportedError('Cannot get the hash for a media item');
 
   @override
   bool get isAnimated => false;
@@ -132,7 +136,8 @@ class UnfurledMediaItem with ToStringHelper implements CdnAsset {
       throw UnsupportedError('Cannot specify attachment format or size');
     }
 
-    final response = await client.httpHandler.httpClient.send(Request('GET', url));
+    final response =
+        await client.httpHandler.httpClient.send(Request('GET', url));
     yield* response.stream;
   }
 }
@@ -239,7 +244,8 @@ final class ButtonStyle extends EnumLike<int, ButtonStyle> {
   /// @nodoc
   const ButtonStyle(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ButtonStyle.parse(int value) : this(value);
 }
 
@@ -301,7 +307,8 @@ class SelectMenuComponent extends Component {
 }
 
 /// The type of a [SelectMenuDefaultValue].
-final class SelectMenuDefaultValueType extends EnumLike<String, SelectMenuDefaultValueType> {
+final class SelectMenuDefaultValueType
+    extends EnumLike<String, SelectMenuDefaultValueType> {
   static const user = SelectMenuDefaultValueType('user');
   static const role = SelectMenuDefaultValueType('role');
   static const channel = SelectMenuDefaultValueType('channel');
@@ -309,7 +316,8 @@ final class SelectMenuDefaultValueType extends EnumLike<String, SelectMenuDefaul
   /// @nodoc
   const SelectMenuDefaultValueType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   SelectMenuDefaultValueType.parse(String value) : this(value);
 }
 
@@ -361,8 +369,10 @@ class SelectMenuOption with ToStringHelper {
 /// A text field in a modal.
 ///
 /// {@category models}
-@Deprecated('Use SubmittedTextInputComponent instead. The fields on this class are never populated.')
-class TextInputComponent extends Component implements SubmittedTextInputComponent {
+@Deprecated(
+    'Use SubmittedTextInputComponent instead. The fields on this class are never populated.')
+class TextInputComponent extends Component
+    implements SubmittedTextInputComponent {
   @override
   ComponentType get type => ComponentType.textInput;
 
@@ -422,7 +432,8 @@ final class TextInputStyle extends EnumLike<int, TextInputStyle> {
   /// @nodoc
   const TextInputStyle(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   TextInputStyle.parse(int value) : this(value);
 }
 
@@ -451,7 +462,8 @@ class SectionComponent extends Component {
   final Component accessory;
 
   /// @nodoc
-  SectionComponent({required super.id, required this.components, required this.accessory});
+  SectionComponent(
+      {required super.id, required this.components, required this.accessory});
 }
 
 /// A component that displays text.
@@ -485,7 +497,11 @@ class ThumbnailComponent extends Component {
   final bool? isSpoiler;
 
   /// @nodoc
-  ThumbnailComponent({required super.id, required this.media, required this.description, required this.isSpoiler});
+  ThumbnailComponent(
+      {required super.id,
+      required this.media,
+      required this.description,
+      required this.isSpoiler});
 }
 
 /// An item in a [MediaGalleryComponent].
@@ -502,7 +518,10 @@ class MediaGalleryItem with ToStringHelper {
   final bool? isSpoiler;
 
   /// @nodoc
-  MediaGalleryItem({required this.media, required this.description, required this.isSpoiler});
+  MediaGalleryItem(
+      {required this.media,
+      required this.description,
+      required this.isSpoiler});
 }
 
 /// A component that displays several child media items.
@@ -542,7 +561,8 @@ class SeparatorComponent extends Component {
   final SeparatorSpacingSize? spacing;
 
   /// @nodoc
-  SeparatorComponent({required super.id, required this.isDivider, required this.spacing});
+  SeparatorComponent(
+      {required super.id, required this.isDivider, required this.spacing});
 }
 
 /// A component that displays a downloadable file.
@@ -559,7 +579,8 @@ class FileComponent extends Component {
   final bool? isSpoiler;
 
   /// @nodoc
-  FileComponent({required super.id, required this.file, required this.isSpoiler});
+  FileComponent(
+      {required super.id, required this.file, required this.isSpoiler});
 }
 
 /// A component that contains several other components.
@@ -579,7 +600,11 @@ class ContainerComponent extends Component {
   final List<Component> components;
 
   /// @nodoc
-  ContainerComponent({required super.id, required this.accentColor, required this.isSpoiler, required this.components});
+  ContainerComponent(
+      {required super.id,
+      required this.accentColor,
+      required this.isSpoiler,
+      required this.components});
 }
 
 /// {@category models}
@@ -600,7 +625,12 @@ class FileUploadComponent extends Component {
   final bool? isRequired;
 
   /// @nodoc
-  FileUploadComponent({required super.id, required this.customId, required this.minValues, required this.maxValues, required this.isRequired});
+  FileUploadComponent(
+      {required super.id,
+      required this.customId,
+      required this.minValues,
+      required this.maxValues,
+      required this.isRequired});
 }
 
 /// A component received as part of an [Interaction].
@@ -639,7 +669,8 @@ class SubmittedTextInputComponent extends SubmittedComponent {
   final String? value;
 
   /// @nodoc
-  SubmittedTextInputComponent({required super.id, required this.customId, required this.value});
+  SubmittedTextInputComponent(
+      {required super.id, required this.customId, required this.value});
 }
 
 /// A label received in an [Interaction].
@@ -698,7 +729,9 @@ class SubmittedSelectMenuComponent extends SubmittedComponent {
   List<PartialMember>? get members => type != ComponentType.userSelect
       ? null
       : [
-          for (final id in values) manager.client.guilds[_guildId ?? Snowflake.zero].members[Snowflake.parse(id)],
+          for (final id in values)
+            manager.client.guilds[_guildId ?? Snowflake.zero]
+                .members[Snowflake.parse(id)],
         ];
 
   /// The selected roles.
@@ -707,7 +740,9 @@ class SubmittedSelectMenuComponent extends SubmittedComponent {
   List<PartialRole>? get roles => type != ComponentType.roleSelect
       ? null
       : [
-          for (final id in values) manager.client.guilds[_guildId ?? Snowflake.zero].roles[Snowflake.parse(id)],
+          for (final id in values)
+            manager.client.guilds[_guildId ?? Snowflake.zero]
+                .roles[Snowflake.parse(id)],
         ];
 
   /// The selected channels.
@@ -743,7 +778,8 @@ class SubmittedFileUploadComponent extends SubmittedComponent {
   final List<Snowflake> values;
 
   /// @nodoc
-  SubmittedFileUploadComponent({required super.id, required this.customId, required this.values});
+  SubmittedFileUploadComponent(
+      {required super.id, required this.customId, required this.values});
 }
 
 /// {@category models}
@@ -758,7 +794,8 @@ class SubmittedRadioGroupComponent extends SubmittedComponent {
   final String value;
 
   /// @nodoc
-  SubmittedRadioGroupComponent({required super.id, required this.customId, required this.value});
+  SubmittedRadioGroupComponent(
+      {required super.id, required this.customId, required this.value});
 }
 
 /// {@category models}
@@ -773,7 +810,8 @@ class SubmittedCheckboxGroupComponent extends SubmittedComponent {
   final List<String> values;
 
   /// @nodoc
-  SubmittedCheckboxGroupComponent({required super.id, required this.customId, required this.values});
+  SubmittedCheckboxGroupComponent(
+      {required super.id, required this.customId, required this.values});
 }
 
 /// {@category models}
@@ -788,5 +826,6 @@ class SubmittedCheckboxComponent extends SubmittedComponent {
   final bool value;
 
   /// @nodoc
-  SubmittedCheckboxComponent({required super.id, required this.customId, required this.value});
+  SubmittedCheckboxComponent(
+      {required super.id, required this.customId, required this.value});
 }

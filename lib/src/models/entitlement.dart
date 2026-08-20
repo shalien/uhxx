@@ -1,10 +1,10 @@
-import 'package:nyxx/src/http/managers/entitlement_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/http/managers/entitlement_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
 
 /// A partial [Entitlement].
 ///
@@ -72,13 +72,18 @@ class Entitlement extends PartialEntitlement {
   });
 
   /// The user this entitlement is for.
-  PartialUser? get user => userId == null ? null : PartialUser(id: userId!, manager: manager.client.users);
+  PartialUser? get user => userId == null
+      ? null
+      : PartialUser(id: userId!, manager: manager.client.users);
 
   /// The guild this entitlement is for.
-  PartialGuild? get guild => guildId == null ? null : PartialGuild(id: guildId!, manager: manager.client.guilds);
+  PartialGuild? get guild => guildId == null
+      ? null
+      : PartialGuild(id: guildId!, manager: manager.client.guilds);
 
   /// The application this entitlement is for.
-  PartialApplication get application => PartialApplication(id: applicationId, manager: manager.client.applications);
+  PartialApplication get application => PartialApplication(
+      id: applicationId, manager: manager.client.applications);
 }
 
 /// The type of an [Entitlement].
@@ -109,6 +114,7 @@ final class EntitlementType extends EnumLike<int, EntitlementType> {
 
   const EntitlementType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   EntitlementType.parse(int value) : this(value);
 }

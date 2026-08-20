@@ -1,6 +1,6 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// A Stage Instance holds information about a live stage.
 ///
@@ -33,8 +33,10 @@ class StageInstanceBuilder extends CreateBuilder<StageInstance> {
   Map<String, Object?> build() => {
         'topic': topic,
         if (privacyLevel != null) 'privacy_level': privacyLevel!.value,
-        if (sendStartNotification != null) 'send_start_notification': sendStartNotification,
-        if (guildScheduledEventId != null) 'guild_scheduled_event_id': guildScheduledEventId!.toString(),
+        if (sendStartNotification != null)
+          'send_start_notification': sendStartNotification,
+        if (guildScheduledEventId != null)
+          'guild_scheduled_event_id': guildScheduledEventId!.toString(),
       };
 }
 

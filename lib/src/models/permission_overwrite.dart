@@ -1,7 +1,7 @@
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template permission_overwrite}
 /// A set of overwrites to apply to permissions within a specific channel.
@@ -45,7 +45,8 @@ class PermissionOverwrite with ToStringHelper {
 }
 
 /// The type of a permission overwrite.
-final class PermissionOverwriteType extends EnumLike<int, PermissionOverwriteType> {
+final class PermissionOverwriteType
+    extends EnumLike<int, PermissionOverwriteType> {
   /// The overwrite applies to a [Role]'s permissions.
   static const role = PermissionOverwriteType(0);
 
@@ -55,6 +56,7 @@ final class PermissionOverwriteType extends EnumLike<int, PermissionOverwriteTyp
   /// @nodoc
   const PermissionOverwriteType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   PermissionOverwriteType.parse(int value) : this(value);
 }

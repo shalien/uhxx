@@ -1,14 +1,14 @@
-import 'package:nyxx/src/http/managers/audit_log_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/permission_overwrite.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/audit_log_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/permission_overwrite.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A partial [AuditLogEntry].
 ///
@@ -61,7 +61,8 @@ class AuditLogEntry extends PartialAuditLogEntry {
   });
 
   /// The user that triggered the action.
-  PartialUser? get user => userId == null ? null : manager.client.users[userId!];
+  PartialUser? get user =>
+      userId == null ? null : manager.client.users[userId!];
 }
 
 /// {@template audit_log_change}
@@ -163,7 +164,8 @@ final class AuditLogEvent extends EnumLike<int, AuditLogEvent> {
   /// @nodoc
   const AuditLogEvent(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   AuditLogEvent.parse(int value) : this(value);
 }
 
@@ -231,11 +233,16 @@ class AuditLogEntryInfo with ToStringHelper {
   });
 
   /// The application whose permissions were targeted.
-  PartialApplication? get application => applicationId == null ? null : manager.client.applications[applicationId!];
+  PartialApplication? get application => applicationId == null
+      ? null
+      : manager.client.applications[applicationId!];
 
   /// The channel in which entities were targeted.
-  PartialChannel? get channel => channelId == null ? null : manager.client.channels[channelId!];
+  PartialChannel? get channel =>
+      channelId == null ? null : manager.client.channels[channelId!];
 
   /// The targeted message.
-  PartialMessage? get message => messageId == null ? null : (channel as PartialTextChannel?)?.messages[messageId!];
+  PartialMessage? get message => messageId == null
+      ? null
+      : (channel as PartialTextChannel?)?.messages[messageId!];
 }

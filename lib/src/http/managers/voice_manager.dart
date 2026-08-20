@@ -1,19 +1,19 @@
-import 'package:nyxx/src/cache/cache.dart';
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/voice/voice_region.dart';
-import 'package:nyxx/src/models/voice/voice_state.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/cache/cache.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/voice/voice_region.dart';
+import 'package:uhxx/src/models/voice/voice_state.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A manager for [VoiceState]s.
 ///
 /// {@category managers}
 class VoiceManager {
   /// The client this manager belongs to.
-  final NyxxRest client;
+  final UhxxRest client;
 
   /// The cache for voice states.
   @Deprecated('Use PartialGuild.voiceStates instead')
@@ -21,7 +21,9 @@ class VoiceManager {
 
   /// Create a new [VoiceManager].
   // ignore: deprecated_member_use_from_same_package
-  VoiceManager(this.client) : cache = client.cache.getCache('voiceStates', client.options.voiceStateConfig);
+  VoiceManager(this.client)
+      : cache = client.cache
+            .getCache('voiceStates', client.options.voiceStateConfig);
 
   /// Parse a [VoiceState] from a [Map].
   VoiceState parseVoiceState(Map<String, Object?> raw, {Snowflake? guildId}) {
@@ -33,7 +35,11 @@ class VoiceManager {
       guildId: guildId,
       channelId: maybeParse(raw['channel_id'], Snowflake.parse),
       userId: userId,
-      member: maybeParse(raw['member'], (Map<String, Object?> raw) => client.guilds[guildId ?? Snowflake.zero].members.parse(raw, userId: userId)),
+      member: maybeParse(
+          raw['member'],
+          (Map<String, Object?> raw) => client
+              .guilds[guildId ?? Snowflake.zero].members
+              .parse(raw, userId: userId)),
       sessionId: raw['session_id'] as String,
       isServerDeafened: raw['deaf'] as bool,
       isServerMuted: raw['mute'] as bool,
@@ -42,7 +48,8 @@ class VoiceManager {
       isStreaming: raw['self_stream'] as bool? ?? false,
       isVideoEnabled: raw['self_video'] as bool,
       isSuppressed: raw['suppress'] as bool,
-      requestedToSpeakAt: maybeParse(raw['request_to_speak_timestamp'], DateTime.parse),
+      requestedToSpeakAt:
+          maybeParse(raw['request_to_speak_timestamp'], DateTime.parse),
     );
   }
 
@@ -81,7 +88,8 @@ class VoiceManager {
     return state;
   }
 
-  Future<VoiceState> fetchVoiceState(Snowflake guildId, Snowflake userId) async {
+  Future<VoiceState> fetchVoiceState(
+      Snowflake guildId, Snowflake userId) async {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..voiceStates(id: userId.toString());

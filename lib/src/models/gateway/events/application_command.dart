@@ -1,5 +1,5 @@
-import 'package:nyxx/src/models/commands/application_command_permissions.dart';
-import 'package:nyxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/commands/application_command_permissions.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
 
 /// {@template application_command_permissions_update_event}
 /// Emitted when the permissions for an application command are updated.
@@ -15,5 +15,8 @@ class ApplicationCommandPermissionsUpdateEvent extends DispatchEvent {
 
   /// {@macro application_command_permissions_update_event}
   /// @nodoc
-  ApplicationCommandPermissionsUpdateEvent({required super.gateway, required this.permissions, required this.oldPermissions});
+  ApplicationCommandPermissionsUpdateEvent(
+      {required super.gateway,
+      required this.permissions,
+      required this.oldPermissions});
 }

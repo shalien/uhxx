@@ -1,6 +1,6 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/guild/auto_moderation.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/guild/auto_moderation.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@category builders}
 class AutoModerationRuleBuilder extends CreateBuilder<AutoModerationRule> {
@@ -135,13 +135,17 @@ class AutoModerationRuleBuilder extends CreateBuilder<AutoModerationRule> {
         if (metadata != null) 'trigger_metadata': metadata!.build(),
         'actions': actions.map((a) => a.build()).toList(),
         if (isEnabled != null) 'enabled': isEnabled,
-        if (exemptRoleIds != null) 'exempt_roles': exemptRoleIds!.map((id) => id.toString()).toList(),
-        if (exemptChannelIds != null) 'exempt_channels': exemptChannelIds!.map((id) => id.toString()).toList(),
+        if (exemptRoleIds != null)
+          'exempt_roles': exemptRoleIds!.map((id) => id.toString()).toList(),
+        if (exemptChannelIds != null)
+          'exempt_channels':
+              exemptChannelIds!.map((id) => id.toString()).toList(),
       };
 }
 
 /// {@category builders}
-class AutoModerationRuleUpdateBuilder extends UpdateBuilder<AutoModerationRule> {
+class AutoModerationRuleUpdateBuilder
+    extends UpdateBuilder<AutoModerationRule> {
   /// {@macro auto_moderation_rule_name}
   String? name;
 
@@ -180,8 +184,11 @@ class AutoModerationRuleUpdateBuilder extends UpdateBuilder<AutoModerationRule> 
         if (metadata != null) 'trigger_metadata': metadata!.build(),
         if (actions != null) 'actions': actions!.map((a) => a.build()).toList(),
         if (isEnabled != null) 'enabled': isEnabled,
-        if (exemptRoleIds != null) 'exempt_roles': exemptRoleIds!.map((id) => id.toString()).toList(),
-        if (exemptChannelIds != null) 'exempt_channels': exemptChannelIds!.map((id) => id.toString()).toList(),
+        if (exemptRoleIds != null)
+          'exempt_roles': exemptRoleIds!.map((id) => id.toString()).toList(),
+        if (exemptChannelIds != null)
+          'exempt_channels':
+              exemptChannelIds!.map((id) => id.toString()).toList(),
       };
 }
 
@@ -237,7 +244,9 @@ class AutoModerationActionBuilder extends CreateBuilder<AutoModerationAction> {
 
   AutoModerationActionBuilder.blockMessage({String? customMessage})
       : type = ActionType.blockMessage,
-        metadata = customMessage == null ? null : ActionMetadataBuilder(customMessage: customMessage);
+        metadata = customMessage == null
+            ? null
+            : ActionMetadataBuilder(customMessage: customMessage);
 
   AutoModerationActionBuilder.sendAlertMessage({required Snowflake channelId})
       : type = ActionType.sendAlertMessage,

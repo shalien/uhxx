@@ -1,9 +1,10 @@
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 void main() {
   test('PermissionOverwriteBuilder', () {
-    final builder = PermissionOverwriteBuilder(id: Snowflake.zero, type: PermissionOverwriteType.member);
+    final builder = PermissionOverwriteBuilder(
+        id: Snowflake.zero, type: PermissionOverwriteType.member);
 
     expect(
       builder.build(),

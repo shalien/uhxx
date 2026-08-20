@@ -1,21 +1,21 @@
-/// @docImport 'package:nyxx/nyxx.dart';
+/// @docImport 'package:uhxx/uhxx.dart';
 library;
 
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/guild_channel.dart';
-import 'package:nyxx/src/models/channel/types/forum.dart';
-import 'package:nyxx/src/models/channel/types/guild_announcement.dart';
-import 'package:nyxx/src/models/channel/types/guild_category.dart';
-import 'package:nyxx/src/models/channel/types/guild_stage.dart';
-import 'package:nyxx/src/models/channel/types/guild_text.dart';
-import 'package:nyxx/src/models/channel/types/guild_voice.dart';
-import 'package:nyxx/src/models/channel/voice_channel.dart';
-import 'package:nyxx/src/models/permission_overwrite.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/building_helpers.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/guild_channel.dart';
+import 'package:uhxx/src/models/channel/types/forum.dart';
+import 'package:uhxx/src/models/channel/types/guild_announcement.dart';
+import 'package:uhxx/src/models/channel/types/guild_category.dart';
+import 'package:uhxx/src/models/channel/types/guild_stage.dart';
+import 'package:uhxx/src/models/channel/types/guild_text.dart';
+import 'package:uhxx/src/models/channel/types/guild_voice.dart';
+import 'package:uhxx/src/models/channel/voice_channel.dart';
+import 'package:uhxx/src/models/permission_overwrite.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/building_helpers.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// {@category builders}
 class GuildChannelBuilder<T extends GuildChannel> extends CreateBuilder<T> {
@@ -51,12 +51,15 @@ class GuildChannelBuilder<T extends GuildChannel> extends CreateBuilder<T> {
         'name': name,
         'type': type.value,
         if (position != null) 'position': position,
-        if (permissionOverwrites != null) 'permission_overwrites': permissionOverwrites!.map((e) => e.build()).toList(),
+        if (permissionOverwrites != null)
+          'permission_overwrites':
+              permissionOverwrites!.map((e) => e.build()).toList(),
       };
 }
 
 /// {@category builders}
-class GuildChannelUpdateBuilder<T extends GuildChannel> extends UpdateBuilder<T> {
+class GuildChannelUpdateBuilder<T extends GuildChannel>
+    extends UpdateBuilder<T> {
   /// {@macro channel_name}
   String? name;
 
@@ -66,13 +69,16 @@ class GuildChannelUpdateBuilder<T extends GuildChannel> extends UpdateBuilder<T>
   /// {@macro channel_permission_overwrites}
   List<CreateBuilder<PermissionOverwrite>>? permissionOverwrites;
 
-  GuildChannelUpdateBuilder({this.name, this.position = sentinelInteger, this.permissionOverwrites});
+  GuildChannelUpdateBuilder(
+      {this.name, this.position = sentinelInteger, this.permissionOverwrites});
 
   @override
   Map<String, Object?> build() => {
         if (name != null) 'name': name,
         if (!identical(position, sentinelInteger)) 'position': position,
-        if (permissionOverwrites != null) 'permission_overwrites': permissionOverwrites!.map((e) => e.build()).toList(),
+        if (permissionOverwrites != null)
+          'permission_overwrites':
+              permissionOverwrites!.map((e) => e.build()).toList(),
       };
 }
 
@@ -119,15 +125,19 @@ class GuildTextChannelBuilder extends GuildChannelBuilder<GuildTextChannel> {
   Map<String, Object?> build() => {
         ...super.build(),
         if (topic != null) 'topic': topic,
-        if (rateLimitPerUser != null) 'rate_limit_per_user': rateLimitPerUser!.inSeconds,
+        if (rateLimitPerUser != null)
+          'rate_limit_per_user': rateLimitPerUser!.inSeconds,
         if (parentId != null) 'parent_id': parentId!.toString(),
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (defaultAutoArchiveDuration != null) 'default_auto_archive_duration': defaultAutoArchiveDuration!.inMinutes,
+        if (defaultAutoArchiveDuration != null)
+          'default_auto_archive_duration':
+              defaultAutoArchiveDuration!.inMinutes,
       };
 }
 
 /// {@category builders}
-class GuildTextChannelUpdateBuilder extends GuildChannelUpdateBuilder<GuildTextChannel> {
+class GuildTextChannelUpdateBuilder
+    extends GuildChannelUpdateBuilder<GuildTextChannel> {
   /// {@macro channel_type}
   ChannelType? type;
 
@@ -171,15 +181,22 @@ class GuildTextChannelUpdateBuilder extends GuildChannelUpdateBuilder<GuildTextC
         if (type != null) 'type': type!.value,
         if (!identical(topic, sentinelString)) 'topic': topic,
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (!identical(rateLimitPerUser, sentinelDuration)) 'rate_limit_per_user': rateLimitPerUser?.inSeconds,
-        if (!identical(parentId, sentinelSnowflake)) 'parent_id': parentId?.toString(),
-        if (!identical(defaultAutoArchiveDuration, sentinelDuration)) 'default_auto_archive_duration': defaultAutoArchiveDuration?.inMinutes,
-        if (defaultThreadRateLimitPerUser != null) 'default_thread_rate_limit_per_user': defaultThreadRateLimitPerUser!.inSeconds,
+        if (!identical(rateLimitPerUser, sentinelDuration))
+          'rate_limit_per_user': rateLimitPerUser?.inSeconds,
+        if (!identical(parentId, sentinelSnowflake))
+          'parent_id': parentId?.toString(),
+        if (!identical(defaultAutoArchiveDuration, sentinelDuration))
+          'default_auto_archive_duration':
+              defaultAutoArchiveDuration?.inMinutes,
+        if (defaultThreadRateLimitPerUser != null)
+          'default_thread_rate_limit_per_user':
+              defaultThreadRateLimitPerUser!.inSeconds,
       };
 }
 
 /// {@category builders}
-class GuildAnnouncementChannelBuilder extends GuildChannelBuilder<GuildAnnouncementChannel> {
+class GuildAnnouncementChannelBuilder
+    extends GuildChannelBuilder<GuildAnnouncementChannel> {
   /// {@macro channel_topic}
   String? topic;
 
@@ -208,12 +225,15 @@ class GuildAnnouncementChannelBuilder extends GuildChannelBuilder<GuildAnnouncem
         if (topic != null) 'topic': topic,
         if (parentId != null) 'parent_id': parentId!.toString(),
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (defaultAutoArchiveDuration != null) 'default_auto_archive_duration': defaultAutoArchiveDuration!.inMinutes,
+        if (defaultAutoArchiveDuration != null)
+          'default_auto_archive_duration':
+              defaultAutoArchiveDuration!.inMinutes,
       };
 }
 
 /// {@category builders}
-class GuildAnnouncementChannelUpdateBuilder extends GuildChannelUpdateBuilder<GuildAnnouncementChannel> {
+class GuildAnnouncementChannelUpdateBuilder
+    extends GuildChannelUpdateBuilder<GuildAnnouncementChannel> {
   /// {@macro channel_type}
   ChannelType? type;
 
@@ -246,8 +266,11 @@ class GuildAnnouncementChannelUpdateBuilder extends GuildChannelUpdateBuilder<Gu
         if (type != null) 'type': type!.value,
         if (!identical(topic, sentinelString)) 'topic': topic,
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (!identical(parentId, sentinelSnowflake)) 'parent_id': parentId?.toString(),
-        if (!identical(defaultAutoArchiveDuration, sentinelDuration)) 'default_auto_archive_duration': defaultAutoArchiveDuration?.inMinutes,
+        if (!identical(parentId, sentinelSnowflake))
+          'parent_id': parentId?.toString(),
+        if (!identical(defaultAutoArchiveDuration, sentinelDuration))
+          'default_auto_archive_duration':
+              defaultAutoArchiveDuration?.inMinutes,
       };
 }
 
@@ -302,19 +325,29 @@ class ForumChannelBuilder extends GuildChannelBuilder<ForumChannel> {
   Map<String, Object?> build() => {
         ...super.build(),
         if (topic != null) 'topic': topic,
-        if (rateLimitPerUser != null) 'rate_limit_per_user': rateLimitPerUser!.inSeconds,
+        if (rateLimitPerUser != null)
+          'rate_limit_per_user': rateLimitPerUser!.inSeconds,
         if (parentId != null) 'parent_id': parentId!.toString(),
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (defaultAutoArchiveDuration != null) 'default_auto_archive_duration': defaultAutoArchiveDuration!.inMinutes,
+        if (defaultAutoArchiveDuration != null)
+          'default_auto_archive_duration':
+              defaultAutoArchiveDuration!.inMinutes,
         if (!identical(defaultReaction, sentinelDefaultReaction))
-          'default_reaction_emoji': defaultReaction == null ? null : makeEmojiMap(emojiId: defaultReaction!.emojiId, emojiName: defaultReaction!.emojiName),
-        if (tags != null) 'available_tags': tags!.map((e) => e.build()).toList(),
-        if (defaultSortOrder != null) 'default_sort_order': defaultSortOrder!.value,
+          'default_reaction_emoji': defaultReaction == null
+              ? null
+              : makeEmojiMap(
+                  emojiId: defaultReaction!.emojiId,
+                  emojiName: defaultReaction!.emojiName),
+        if (tags != null)
+          'available_tags': tags!.map((e) => e.build()).toList(),
+        if (defaultSortOrder != null)
+          'default_sort_order': defaultSortOrder!.value,
       };
 }
 
 /// {@category builders}
-class ForumChannelUpdateBuilder extends GuildChannelUpdateBuilder<ForumChannel> {
+class ForumChannelUpdateBuilder
+    extends GuildChannelUpdateBuilder<ForumChannel> {
   /// {@macro channel_type}
   String? topic;
 
@@ -373,21 +406,34 @@ class ForumChannelUpdateBuilder extends GuildChannelUpdateBuilder<ForumChannel> 
         ...super.build(),
         if (topic != null) 'topic': topic,
         if (isNsfw != null) 'nsfw': isNsfw,
-        if (!identical(rateLimitPerUser, sentinelDuration)) 'rate_limit_per_user': rateLimitPerUser?.inSeconds,
-        if (!identical(parentId, sentinelSnowflake)) 'parent_id': parentId?.toString(),
-        if (!identical(defaultAutoArchiveDuration, sentinelDuration)) 'default_auto_archive_duration': defaultAutoArchiveDuration?.inMinutes,
+        if (!identical(rateLimitPerUser, sentinelDuration))
+          'rate_limit_per_user': rateLimitPerUser?.inSeconds,
+        if (!identical(parentId, sentinelSnowflake))
+          'parent_id': parentId?.toString(),
+        if (!identical(defaultAutoArchiveDuration, sentinelDuration))
+          'default_auto_archive_duration':
+              defaultAutoArchiveDuration?.inMinutes,
         if (flags != null) 'flags': flags!.value,
-        if (tags != null) 'available_tags': tags!.map((e) => e.build()).toList(),
+        if (tags != null)
+          'available_tags': tags!.map((e) => e.build()).toList(),
         if (!identical(defaultReaction, sentinelDefaultReaction))
-          'default_reaction_emoji': defaultReaction == null ? null : makeEmojiMap(emojiId: defaultReaction!.emojiId, emojiName: defaultReaction!.emojiName),
-        if (defaultThreadRateLimitPerUser != null) 'default_thread_rate_limit_per_user': defaultThreadRateLimitPerUser!.inSeconds,
-        if (defaultSortOrder != null) 'default_sort_order': defaultSortOrder!.value,
+          'default_reaction_emoji': defaultReaction == null
+              ? null
+              : makeEmojiMap(
+                  emojiId: defaultReaction!.emojiId,
+                  emojiName: defaultReaction!.emojiName),
+        if (defaultThreadRateLimitPerUser != null)
+          'default_thread_rate_limit_per_user':
+              defaultThreadRateLimitPerUser!.inSeconds,
+        if (defaultSortOrder != null)
+          'default_sort_order': defaultSortOrder!.value,
         if (defaultLayout != null) 'default_forum_layout': defaultLayout!.value,
       };
 }
 
 /// {@category builders}
-abstract class _GuildVoiceOrStageChannelBuilder<T extends GuildChannel> extends GuildChannelBuilder<T> {
+abstract class _GuildVoiceOrStageChannelBuilder<T extends GuildChannel>
+    extends GuildChannelBuilder<T> {
   /// {@template channel_bitrate}
   /// The bitrate (in bits) of the voice or stage channel; min 8000.
   /// {@endtemplate}
@@ -437,12 +483,14 @@ abstract class _GuildVoiceOrStageChannelBuilder<T extends GuildChannel> extends 
         if (userLimit != null) 'user_limit': userLimit,
         if (parentId != null) 'parent_id': parentId?.toString(),
         if (rtcRegion != null) 'rtc_region': rtcRegion,
-        if (videoQualityMode != null) 'video_quality_mode': videoQualityMode!.value,
+        if (videoQualityMode != null)
+          'video_quality_mode': videoQualityMode!.value,
       };
 }
 
 /// {@category builders}
-class GuildVoiceChannelBuilder extends _GuildVoiceOrStageChannelBuilder<GuildVoiceChannel> {
+class GuildVoiceChannelBuilder
+    extends _GuildVoiceOrStageChannelBuilder<GuildVoiceChannel> {
   GuildVoiceChannelBuilder({
     required super.name,
     super.position,
@@ -457,7 +505,8 @@ class GuildVoiceChannelBuilder extends _GuildVoiceOrStageChannelBuilder<GuildVoi
 }
 
 /// {@category builders}
-class GuildStageChannelBuilder extends _GuildVoiceOrStageChannelBuilder<GuildStageChannel> {
+class GuildStageChannelBuilder
+    extends _GuildVoiceOrStageChannelBuilder<GuildStageChannel> {
   GuildStageChannelBuilder({
     required super.name,
     super.position,
@@ -471,7 +520,8 @@ class GuildStageChannelBuilder extends _GuildVoiceOrStageChannelBuilder<GuildSta
   }) : super(type: ChannelType.guildStageVoice);
 }
 
-class _GuildVoiceOrStageChannelUpdateBuilder<T extends GuildChannel> extends GuildChannelUpdateBuilder<T> {
+class _GuildVoiceOrStageChannelUpdateBuilder<T extends GuildChannel>
+    extends GuildChannelUpdateBuilder<T> {
   /// {@macro channel_nsfw}
   bool? isNsfw;
 
@@ -508,14 +558,17 @@ class _GuildVoiceOrStageChannelUpdateBuilder<T extends GuildChannel> extends Gui
         if (isNsfw != null) 'nsfw': isNsfw,
         if (bitRate != null) 'bitrate': bitRate,
         if (userLimit != null) 'user_limit': userLimit,
-        if (!identical(parentId, sentinelSnowflake)) 'parent_id': parentId?.toString(),
+        if (!identical(parentId, sentinelSnowflake))
+          'parent_id': parentId?.toString(),
         if (!identical(rtcRegion, sentinelString)) 'rtc_region': rtcRegion,
-        if (videoQualityMode != null) 'video_quality_mode': videoQualityMode!.value,
+        if (videoQualityMode != null)
+          'video_quality_mode': videoQualityMode!.value,
       };
 }
 
 /// {@category builders}
-class GuildVoiceChannelUpdateBuilder extends _GuildVoiceOrStageChannelUpdateBuilder<GuildVoiceChannel> {
+class GuildVoiceChannelUpdateBuilder
+    extends _GuildVoiceOrStageChannelUpdateBuilder<GuildVoiceChannel> {
   GuildVoiceChannelUpdateBuilder({
     super.name,
     super.position,
@@ -530,7 +583,8 @@ class GuildVoiceChannelUpdateBuilder extends _GuildVoiceOrStageChannelUpdateBuil
 }
 
 /// {@category builders}
-class GuildStageChannelUpdateBuilder extends _GuildVoiceOrStageChannelUpdateBuilder<GuildStageChannel> {
+class GuildStageChannelUpdateBuilder
+    extends _GuildVoiceOrStageChannelUpdateBuilder<GuildStageChannel> {
   GuildStageChannelUpdateBuilder({
     super.name,
     super.position,
@@ -554,6 +608,8 @@ class GuildCategoryBuilder extends GuildChannelBuilder<GuildCategory> {
 }
 
 /// {@category builders}
-class GuildCategoryUpdateBuilder extends GuildChannelUpdateBuilder<GuildCategory> {
-  GuildCategoryUpdateBuilder({super.name, super.position, super.permissionOverwrites});
+class GuildCategoryUpdateBuilder
+    extends GuildChannelUpdateBuilder<GuildCategory> {
+  GuildCategoryUpdateBuilder(
+      {super.name, super.position, super.permissionOverwrites});
 }

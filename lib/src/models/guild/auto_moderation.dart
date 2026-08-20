@@ -1,20 +1,21 @@
-import 'package:nyxx/src/builders/guild/auto_moderation.dart';
-import 'package:nyxx/src/http/managers/auto_moderation_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/builders/guild/auto_moderation.dart';
+import 'package:uhxx/src/http/managers/auto_moderation_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A partial [AutoModerationRule].
 ///
 /// {@category entities}
-class PartialAutoModerationRule extends WritableSnowflakeEntity<AutoModerationRule> {
+class PartialAutoModerationRule
+    extends WritableSnowflakeEntity<AutoModerationRule> {
   @override
   final AutoModerationManager manager;
 
@@ -83,13 +84,16 @@ class AutoModerationRule extends PartialAutoModerationRule {
 
   PartialMember get creatorMember => guild.members[creatorId];
 
-  List<PartialRole> get exemptRoles => exemptRoleIds.map((e) => guild.roles[e]).toList();
+  List<PartialRole> get exemptRoles =>
+      exemptRoleIds.map((e) => guild.roles[e]).toList();
 
-  List<PartialChannel> get exemptChannels => exemptChannelIds.map((e) => manager.client.channels[e]).toList();
+  List<PartialChannel> get exemptChannels =>
+      exemptChannelIds.map((e) => manager.client.channels[e]).toList();
 }
 
 /// The type of event on which an [AutoModerationRule] triggers.
-final class AutoModerationEventType extends EnumLike<int, AutoModerationEventType> {
+final class AutoModerationEventType
+    extends EnumLike<int, AutoModerationEventType> {
   /// When a member sends or edits a message in the guild.
   static const messageSend = AutoModerationEventType(1);
 
@@ -99,7 +103,8 @@ final class AutoModerationEventType extends EnumLike<int, AutoModerationEventTyp
   /// @nodoc
   const AutoModerationEventType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   AutoModerationEventType.parse(int value) : this(value);
 }
 
@@ -123,7 +128,8 @@ final class TriggerType extends EnumLike<int, TriggerType> {
   /// @nodoc
   const TriggerType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   TriggerType.parse(int value) : this(value);
 }
 
@@ -185,7 +191,8 @@ final class KeywordPresetType extends EnumLike<int, KeywordPresetType> {
   /// @nodoc
   const KeywordPresetType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   KeywordPresetType.parse(int value) : this(value);
 }
 
@@ -195,7 +202,9 @@ final class KeywordPresetType extends EnumLike<int, KeywordPresetType> {
 // TODO(abitofevrything): Remove `implements AutoModerationActionBuilder`
 ///
 /// {@category models}
-class AutoModerationAction with ToStringHelper implements AutoModerationActionBuilder {
+class AutoModerationAction
+    with ToStringHelper
+    implements AutoModerationActionBuilder {
   @override
   final ActionType type;
 
@@ -227,7 +236,8 @@ final class ActionType extends EnumLike<int, ActionType> {
   /// @nodoc
   const ActionType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ActionType.parse(int value) : this(value);
 }
 
@@ -259,7 +269,9 @@ class ActionMetadata with ToStringHelper implements ActionMetadataBuilder {
   });
 
   /// The channel to send the alert message to.
-  PartialTextChannel? get channel => channelId == null ? null : manager.client.channels[channelId!] as PartialTextChannel?;
+  PartialTextChannel? get channel => channelId == null
+      ? null
+      : manager.client.channels[channelId!] as PartialTextChannel?;
 
   @override
   @Deprecated('Use ActionMetadataBuilder instead')

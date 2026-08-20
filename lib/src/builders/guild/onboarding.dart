@@ -1,7 +1,7 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/guild/onboarding.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/guild/onboarding.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@category builders}
 class OnboardingUpdateBuilder extends UpdateBuilder<Onboarding> {
@@ -23,7 +23,8 @@ class OnboardingUpdateBuilder extends UpdateBuilder<Onboarding> {
   @override
   Map<String, Object?> build() => {
         'prompts': prompts.map((prompt) => prompt.build()).toList(),
-        'default_channel_ids': defaultChannelIds.map((channelId) => channelId.toString()).toList(),
+        'default_channel_ids':
+            defaultChannelIds.map((channelId) => channelId.toString()).toList(),
         'enabled': isEnabled,
         'mode': mode.value,
       };
@@ -64,7 +65,8 @@ class OnboardingPromptBuilder extends CreateBuilder<OnboardingPrompt> {
 }
 
 /// {@category builders}
-class OnboardingPromptOptionBuilder extends CreateBuilder<OnboardingPromptOption> {
+class OnboardingPromptOptionBuilder
+    extends CreateBuilder<OnboardingPromptOption> {
   List<Snowflake> channelIds;
 
   List<Snowflake> roleIds;

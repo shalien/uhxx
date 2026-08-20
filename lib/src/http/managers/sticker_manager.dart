@@ -1,26 +1,28 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:nyxx/src/builders/sticker.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/sticker/global_sticker.dart';
-import 'package:nyxx/src/models/sticker/guild_sticker.dart';
-import 'package:nyxx/src/models/sticker/sticker.dart';
-import 'package:nyxx/src/models/sticker/sticker_pack.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/builders/sticker.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/sticker/global_sticker.dart';
+import 'package:uhxx/src/models/sticker/guild_sticker.dart';
+import 'package:uhxx/src/models/sticker/sticker.dart';
+import 'package:uhxx/src/models/sticker/sticker_pack.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// {@category managers}
 class GuildStickerManager extends Manager<GuildSticker> {
   final Snowflake guildId;
 
-  GuildStickerManager(super.config, super.client, {required this.guildId}) : super(identifier: "$guildId.stickers");
+  GuildStickerManager(super.config, super.client, {required this.guildId})
+      : super(identifier: "$guildId.stickers");
 
   @override
-  PartialGuildSticker operator [](Snowflake id) => PartialGuildSticker(id: id, manager: this);
+  PartialGuildSticker operator [](Snowflake id) =>
+      PartialGuildSticker(id: id, manager: this);
 
   @override
   GuildSticker parse(Map<String, Object?> raw) {
@@ -34,13 +36,17 @@ class GuildStickerManager extends Manager<GuildSticker> {
       formatType: StickerFormatType(raw['format_type'] as int),
       available: raw['available'] as bool? ?? false,
       guildId: Snowflake.parse(raw['guild_id']!),
-      user: ((raw['user'] ?? {}) as Map)['id'] != null ? client.users[Snowflake.parse((raw['user'] as Map<String, Object?>)['id']!)] : null,
+      user: ((raw['user'] ?? {}) as Map)['id'] != null
+          ? client.users[
+              Snowflake.parse((raw['user'] as Map<String, Object?>)['id']!)]
+          : null,
       sortValue: raw['sort_value'] as int?,
     );
   }
 
   @override
-  Future<GuildSticker> create(StickerBuilder builder, {String? auditLogReason}) async {
+  Future<GuildSticker> create(StickerBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..stickers();
@@ -64,7 +70,8 @@ class GuildStickerManager extends Manager<GuildSticker> {
     final request = BasicRequest(route);
 
     final response = await client.httpHandler.executeSafe(request);
-    final stickers = parseMany(response.jsonBody as List<Object?>, (Map<String, Object?> raw) => parse(raw));
+    final stickers = parseMany(response.jsonBody as List<Object?>,
+        (Map<String, Object?> raw) => parse(raw));
 
     stickers.forEach(client.updateCacheWith);
     return stickers;
@@ -75,7 +82,8 @@ class GuildStickerManager extends Manager<GuildSticker> {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..stickers(id: id.toString());
-    final request = BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
+    final request =
+        BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
 
     await client.httpHandler.executeSafe(request);
     cache.remove(id);
@@ -97,12 +105,16 @@ class GuildStickerManager extends Manager<GuildSticker> {
   }
 
   @override
-  Future<GuildSticker> update(Snowflake id, StickerUpdateBuilder builder, {String? auditLogReason}) async {
+  Future<GuildSticker> update(Snowflake id, StickerUpdateBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..stickers(id: id.toString());
 
-    final request = BasicRequest(route, body: jsonEncode(builder.build()), method: 'PATCH', auditLogReason: auditLogReason);
+    final request = BasicRequest(route,
+        body: jsonEncode(builder.build()),
+        method: 'PATCH',
+        auditLogReason: auditLogReason);
     final response = await client.httpHandler.executeSafe(request);
 
     final sticker = parse(response.jsonBody as Map<String, Object?>);
@@ -114,10 +126,12 @@ class GuildStickerManager extends Manager<GuildSticker> {
 
 /// {@category managers}
 class GlobalStickerManager extends ReadOnlyManager<GlobalSticker> {
-  GlobalStickerManager(super.config, super.client) : super(identifier: 'stickers');
+  GlobalStickerManager(super.config, super.client)
+      : super(identifier: 'stickers');
 
   @override
-  PartialGlobalSticker operator [](Snowflake id) => PartialGlobalSticker(id: id, manager: this);
+  PartialGlobalSticker operator [](Snowflake id) =>
+      PartialGlobalSticker(id: id, manager: this);
 
   @override
   GlobalSticker parse(Map<String, Object?> raw) {
@@ -131,7 +145,10 @@ class GlobalStickerManager extends ReadOnlyManager<GlobalSticker> {
       type: StickerType.parse(raw['type'] as int),
       formatType: StickerFormatType(raw['format_type'] as int),
       available: raw['available'] as bool? ?? false,
-      user: ((raw['user'] ?? {}) as Map)['id'] != null ? client.users[Snowflake.parse((raw['user'] as Map<String, Object?>)['id']!)] : null,
+      user: ((raw['user'] ?? {}) as Map)['id'] != null
+          ? client.users[
+              Snowflake.parse((raw['user'] as Map<String, Object?>)['id']!)]
+          : null,
       sortValue: raw['sort_value'] as int?,
     );
   }
@@ -148,12 +165,18 @@ class GlobalStickerManager extends ReadOnlyManager<GlobalSticker> {
     return StickerPack(
       id: Snowflake.parse(raw['id']!),
       manager: this,
-      stickers: (raw['stickers'] as List).map((e) => parse(e as Map<String, Object?>)).toList(),
+      stickers: (raw['stickers'] as List)
+          .map((e) => parse(e as Map<String, Object?>))
+          .toList(),
       name: raw['name'] as String,
       skuId: Snowflake.parse(raw['sku_id']!),
-      coverStickerId: raw['cover_sticker_id'] != null ? Snowflake.parse(raw['cover_sticker_id']!) : null,
+      coverStickerId: raw['cover_sticker_id'] != null
+          ? Snowflake.parse(raw['cover_sticker_id']!)
+          : null,
       description: raw['description'] as String,
-      bannerAssetId: raw['banner_asset_id'] != null ? Snowflake.parse(raw['banner_asset_id']!) : null,
+      bannerAssetId: raw['banner_asset_id'] != null
+          ? Snowflake.parse(raw['banner_asset_id']!)
+          : null,
     );
   }
 
@@ -174,7 +197,8 @@ class GlobalStickerManager extends ReadOnlyManager<GlobalSticker> {
     final route = HttpRoute()..stickerPacks(id: id.toString());
     final request = BasicRequest(route);
 
-    final response = (await client.httpHandler.executeSafe(request)).jsonBody as Map<String, Object?>;
+    final response = (await client.httpHandler.executeSafe(request)).jsonBody
+        as Map<String, Object?>;
     final pack = parseStickerPack(response);
 
     client.updateCacheWith(pack);
@@ -185,8 +209,10 @@ class GlobalStickerManager extends ReadOnlyManager<GlobalSticker> {
     final route = HttpRoute()..stickerPacks();
     final request = BasicRequest(route);
 
-    final response = (await client.httpHandler.executeSafe(request)).jsonBody as Map<String, Object?>;
-    final packs = parseMany(response['sticker_packs'] as List, parseStickerPack);
+    final response = (await client.httpHandler.executeSafe(request)).jsonBody
+        as Map<String, Object?>;
+    final packs =
+        parseMany(response['sticker_packs'] as List, parseStickerPack);
 
     packs.forEach(client.updateCacheWith);
     return packs;

@@ -1,9 +1,5 @@
-import 'package:nyxx/nyxx.dart';
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/uhxx.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
 
 /// {@category builders}
 class MemberBuilder extends CreateBuilder<Member> {
@@ -32,7 +28,8 @@ class MemberBuilder extends CreateBuilder<Member> {
   Map<String, Object?> build() => {
         'access_token': accessToken,
         if (nick != null) 'nick': nick,
-        if (roleIds != null) 'roles': roleIds!.map((e) => e.toString()).toList(),
+        if (roleIds != null)
+          'roles': roleIds!.map((e) => e.toString()).toList(),
         if (isMute != null) 'mute': isMute,
         if (isDeaf != null) 'deaf': isDeaf,
       };
@@ -67,11 +64,15 @@ class MemberUpdateBuilder extends UpdateBuilder<Member> {
   @override
   Map<String, Object?> build() => {
         if (!identical(nick, sentinelString)) 'nick': nick,
-        if (roleIds != null) 'roles': roleIds!.map((e) => e.toString()).toList(),
+        if (roleIds != null)
+          'roles': roleIds!.map((e) => e.toString()).toList(),
         if (isMute != null) 'mute': isMute,
         if (isDeaf != null) 'deaf': isDeaf,
-        if (!identical(voiceChannelId, sentinelSnowflake)) 'channel_id': voiceChannelId?.toString(),
-        if (!identical(communicationDisabledUntil, sentinelDateTime)) 'communication_disabled_until': communicationDisabledUntil?.toIso8601String(),
+        if (!identical(voiceChannelId, sentinelSnowflake))
+          'channel_id': voiceChannelId?.toString(),
+        if (!identical(communicationDisabledUntil, sentinelDateTime))
+          'communication_disabled_until':
+              communicationDisabledUntil?.toIso8601String(),
         if (flags != null) 'flags': flags!.value,
       };
 }
@@ -96,8 +97,10 @@ class CurrentMemberUpdateBuilder extends UpdateBuilder<Member> {
   @override
   Map<String, Object?> build() => {
         if (!identical(nick, sentinelString)) 'nick': nick,
-        if (!identical(banner, sentinelImageBuilder)) 'banner': banner?.buildDataString(),
-        if (!identical(avatar, sentinelImageBuilder)) 'avatar': avatar?.buildDataString(),
+        if (!identical(banner, sentinelImageBuilder))
+          'banner': banner?.buildDataString(),
+        if (!identical(avatar, sentinelImageBuilder))
+          'avatar': avatar?.buildDataString(),
         if (!identical(bio, sentinelString)) 'bio': bio,
       };
 }

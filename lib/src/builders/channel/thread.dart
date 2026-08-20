@@ -1,10 +1,10 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/message/message.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/message/message.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// {@category builders}
 class ThreadFromMessageBuilder extends CreateBuilder<Thread> {
@@ -19,13 +19,16 @@ class ThreadFromMessageBuilder extends CreateBuilder<Thread> {
   /// {@macro channel_rate_limit_per_user}
   Duration? rateLimitPerUser;
 
-  ThreadFromMessageBuilder({required this.name, this.autoArchiveDuration, this.rateLimitPerUser});
+  ThreadFromMessageBuilder(
+      {required this.name, this.autoArchiveDuration, this.rateLimitPerUser});
 
   @override
   Map<String, Object?> build() => {
         'name': name,
-        if (autoArchiveDuration != null) 'auto_archive_duration': autoArchiveDuration!.inMinutes,
-        if (rateLimitPerUser != null) 'rate_limit_per_user': rateLimitPerUser!.inSeconds,
+        if (autoArchiveDuration != null)
+          'auto_archive_duration': autoArchiveDuration!.inMinutes,
+        if (rateLimitPerUser != null)
+          'rate_limit_per_user': rateLimitPerUser!.inSeconds,
       };
 }
 
@@ -52,19 +55,33 @@ class ThreadBuilder extends CreateBuilder<Thread> {
   /// {@macro channel_rate_limit_per_user}
   Duration? rateLimitPerUser;
 
-  ThreadBuilder({required this.name, this.autoArchiveDuration, required this.type, this.invitable, this.rateLimitPerUser});
+  ThreadBuilder(
+      {required this.name,
+      this.autoArchiveDuration,
+      required this.type,
+      this.invitable,
+      this.rateLimitPerUser});
 
-  ThreadBuilder.publicThread({required this.name, this.autoArchiveDuration, this.rateLimitPerUser}) : type = ChannelType.publicThread;
+  ThreadBuilder.publicThread(
+      {required this.name, this.autoArchiveDuration, this.rateLimitPerUser})
+      : type = ChannelType.publicThread;
 
-  ThreadBuilder.privateThread({required this.name, this.autoArchiveDuration, this.invitable, this.rateLimitPerUser}) : type = ChannelType.privateThread;
+  ThreadBuilder.privateThread(
+      {required this.name,
+      this.autoArchiveDuration,
+      this.invitable,
+      this.rateLimitPerUser})
+      : type = ChannelType.privateThread;
 
   @override
   Map<String, Object?> build() => {
         'name': name,
-        if (autoArchiveDuration != null) 'auto_archive_duration': autoArchiveDuration!.inMinutes,
+        if (autoArchiveDuration != null)
+          'auto_archive_duration': autoArchiveDuration!.inMinutes,
         'type': type.value,
         if (invitable != null) 'invitable': invitable,
-        if (rateLimitPerUser != null) 'rate_limit_per_user': rateLimitPerUser!.inSeconds,
+        if (rateLimitPerUser != null)
+          'rate_limit_per_user': rateLimitPerUser!.inSeconds,
       };
 }
 
@@ -87,15 +104,23 @@ class ForumThreadBuilder extends CreateBuilder<Thread> {
   /// {@endtemplate}
   List<Snowflake>? appliedTags;
 
-  ForumThreadBuilder({required this.name, this.autoArchiveDuration, this.rateLimitPerUser, required this.message, this.appliedTags});
+  ForumThreadBuilder(
+      {required this.name,
+      this.autoArchiveDuration,
+      this.rateLimitPerUser,
+      required this.message,
+      this.appliedTags});
 
   @override
   Map<String, Object?> build() => {
         'name': name,
-        if (autoArchiveDuration != null) 'auto_archive_duration': autoArchiveDuration!.inMinutes,
-        if (rateLimitPerUser != null) 'rate_limit_per_user': rateLimitPerUser!.inSeconds,
+        if (autoArchiveDuration != null)
+          'auto_archive_duration': autoArchiveDuration!.inMinutes,
+        if (rateLimitPerUser != null)
+          'rate_limit_per_user': rateLimitPerUser!.inSeconds,
         'message': message.build(),
-        if (appliedTags != null) 'applied_tags': appliedTags!.map((e) => e.toString()).toList(),
+        if (appliedTags != null)
+          'applied_tags': appliedTags!.map((e) => e.toString()).toList(),
       };
 }
 
@@ -140,11 +165,14 @@ class ThreadUpdateBuilder extends UpdateBuilder<Thread> {
   Map<String, Object?> build() => {
         if (name != null) 'name': name,
         if (isArchived != null) 'archived': isArchived,
-        if (autoArchiveDuration != null) 'auto_archive_duration': autoArchiveDuration!.inMinutes,
+        if (autoArchiveDuration != null)
+          'auto_archive_duration': autoArchiveDuration!.inMinutes,
         if (isLocked != null) 'locked': isLocked,
         if (isInvitable != null) 'invitable': isInvitable,
-        if (!identical(rateLimitPerUser, sentinelDuration)) 'rate_limit_per_user': rateLimitPerUser?.inSeconds,
+        if (!identical(rateLimitPerUser, sentinelDuration))
+          'rate_limit_per_user': rateLimitPerUser?.inSeconds,
         if (flags != null) 'flags': flags!.value,
-        if (appliedTags != null) 'applied_tags': appliedTags!.map((e) => e.toString()).toList(),
+        if (appliedTags != null)
+          'applied_tags': appliedTags!.map((e) => e.toString()).toList(),
       };
 }

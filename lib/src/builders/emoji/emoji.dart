@@ -1,8 +1,8 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@category builders}
 class EmojiBuilder implements CreateBuilder<GuildEmoji> {
@@ -45,7 +45,8 @@ class EmojiUpdateBuilder implements UpdateBuilder<GuildEmoji> {
   @override
   Map<String, Object?> build() => {
         if (name != null) 'name': name,
-        if (!identical(roles, sentinelList)) 'roles': roles?.map((s) => s.toString()).toList(),
+        if (!identical(roles, sentinelList))
+          'roles': roles?.map((s) => s.toString()).toList(),
       };
 }
 

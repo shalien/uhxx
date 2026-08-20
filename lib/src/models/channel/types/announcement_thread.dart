@@ -1,17 +1,17 @@
-import 'package:nyxx/src/builders/invite.dart';
-import 'package:nyxx/src/builders/permission_overwrite.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/invite/invite.dart';
-import 'package:nyxx/src/models/invite/invite_metadata.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/permission_overwrite.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/models/webhook.dart';
+import 'package:uhxx/src/builders/invite.dart';
+import 'package:uhxx/src/builders/permission_overwrite.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/invite/invite.dart';
+import 'package:uhxx/src/models/invite/invite_metadata.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/permission_overwrite.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/webhook.dart';
 
 /// {@category models}
 /// {@category entities}
@@ -109,7 +109,8 @@ class AnnouncementThread extends TextChannel implements Thread {
   PartialGuild get guild => manager.client.guilds[guildId];
 
   @override
-  PartialMessage? get lastMessage => lastMessageId == null ? null : messages[lastMessageId!];
+  PartialMessage? get lastMessage =>
+      lastMessageId == null ? null : messages[lastMessageId!];
 
   @override
   PartialUser get owner => manager.client.users[ownerId];
@@ -118,33 +119,44 @@ class AnnouncementThread extends TextChannel implements Thread {
   PartialMember get ownerMember => guild.members[ownerId];
 
   @override
-  PartialChannel? get parent => parentId == null ? null : manager.client.channels[parentId!];
+  PartialChannel? get parent =>
+      parentId == null ? null : manager.client.channels[parentId!];
 
   @override
-  Future<void> addThreadMember(Snowflake memberId) => manager.addThreadMember(id, memberId);
+  Future<void> addThreadMember(Snowflake memberId) =>
+      manager.addThreadMember(id, memberId);
 
   @override
-  Future<void> deletePermissionOverwrite(Snowflake id) => manager.deletePermissionOverwrite(this.id, id);
+  Future<void> deletePermissionOverwrite(Snowflake id) =>
+      manager.deletePermissionOverwrite(this.id, id);
 
   @override
-  Future<ThreadMember> fetchThreadMember(Snowflake memberId) => manager.fetchThreadMember(id, memberId);
+  Future<ThreadMember> fetchThreadMember(Snowflake memberId) =>
+      manager.fetchThreadMember(id, memberId);
 
   @override
-  Future<List<ThreadMember>> listThreadMembers({bool? withMembers, Snowflake? after, int? limit}) =>
-      manager.listThreadMembers(id, after: after, limit: limit, withMembers: withMembers);
+  Future<List<ThreadMember>> listThreadMembers(
+          {bool? withMembers, Snowflake? after, int? limit}) =>
+      manager.listThreadMembers(id,
+          after: after, limit: limit, withMembers: withMembers);
 
   @override
-  Future<void> removeThreadMember(Snowflake memberId) => manager.removeThreadMember(id, memberId);
+  Future<void> removeThreadMember(Snowflake memberId) =>
+      manager.removeThreadMember(id, memberId);
 
   @override
-  Future<void> updatePermissionOverwrite(PermissionOverwriteBuilder builder) => manager.updatePermissionOverwrite(id, builder);
+  Future<void> updatePermissionOverwrite(PermissionOverwriteBuilder builder) =>
+      manager.updatePermissionOverwrite(id, builder);
 
   @override
-  Future<List<Webhook>> fetchWebhooks() => manager.client.webhooks.fetchChannelWebhooks(id);
+  Future<List<Webhook>> fetchWebhooks() =>
+      manager.client.webhooks.fetchChannelWebhooks(id);
 
   @override
   Future<List<InviteWithMetadata>> listInvites() => manager.listInvites(id);
 
   @override
-  Future<Invite> createInvite(InviteBuilder builder, {String? auditLogReason}) => manager.createInvite(id, builder, auditLogReason: auditLogReason);
+  Future<Invite> createInvite(InviteBuilder builder,
+          {String? auditLogReason}) =>
+      manager.createInvite(id, builder, auditLogReason: auditLogReason);
 }

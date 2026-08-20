@@ -1,12 +1,12 @@
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/gateway/event.dart';
-import 'package:nyxx/src/models/guild/auto_moderation.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/guild/auto_moderation.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
 
 /// {@template auto_moderation_rule_create_event}
 /// Emitted when an auto moderation rule is created.
@@ -36,7 +36,8 @@ class AutoModerationRuleUpdateEvent extends DispatchEvent {
 
   /// {@macro auto_moderation_rule_update_event}
   /// @nodoc
-  AutoModerationRuleUpdateEvent({required super.gateway, required this.oldRule, required this.rule});
+  AutoModerationRuleUpdateEvent(
+      {required super.gateway, required this.oldRule, required this.rule});
 }
 
 /// {@template auto_moderation_rule_delete_event}
@@ -122,8 +123,11 @@ class AutoModerationActionExecutionEvent extends DispatchEvent {
   PartialMember get member => guild.members[userId];
 
   /// The channel in which the rule was triggered.
-  PartialChannel? get channel => channelId == null ? null : gateway.client.channels[channelId!];
+  PartialChannel? get channel =>
+      channelId == null ? null : gateway.client.channels[channelId!];
 
   /// The message that triggered the rule.
-  PartialMessage? get message => messageId == null ? null : (channel as PartialTextChannel?)?.messages[messageId!];
+  PartialMessage? get message => messageId == null
+      ? null
+      : (channel as PartialTextChannel?)?.messages[messageId!];
 }

@@ -1,17 +1,18 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/client.dart';
 
-class MockSnowflakeEntity extends ManagedSnowflakeEntity<MockSnowflakeEntity> with Fake {
+class MockSnowflakeEntity extends ManagedSnowflakeEntity<MockSnowflakeEntity>
+    with Fake {
   MockSnowflakeEntity({required super.id});
 }
 
 void main() {
   group('Cache', () {
     test('stores entities', () async {
-      final cache = MockNyxx().cache.getCache('test', CacheConfig());
+      final cache = MockUhxx().cache.getCache('test', CacheConfig());
 
       final entity = MockSnowflakeEntity(id: Snowflake.zero);
 
@@ -26,7 +27,7 @@ void main() {
     });
 
     test('respects maximum size', () async {
-      final cache = MockNyxx().cache.getCache('test', CacheConfig(maxSize: 3));
+      final cache = MockUhxx().cache.getCache('test', CacheConfig(maxSize: 3));
 
       final entity1 = MockSnowflakeEntity(id: Snowflake(1));
       final entity2 = MockSnowflakeEntity(id: Snowflake(2));
@@ -45,7 +46,7 @@ void main() {
     });
 
     test('keeps most used items', () async {
-      final cache = MockNyxx().cache.getCache('test', CacheConfig(maxSize: 3));
+      final cache = MockUhxx().cache.getCache('test', CacheConfig(maxSize: 3));
 
       final entity1 = MockSnowflakeEntity(id: Snowflake(1));
       final entity2 = MockSnowflakeEntity(id: Snowflake(2));
@@ -75,7 +76,8 @@ void main() {
     });
 
     test("doesn't cache items if a filter is provided", () {
-      final cache = MockNyxx().cache.getCache<MockSnowflakeEntity>('test', CacheConfig(shouldCache: (e) => e.id.value > 3));
+      final cache = MockUhxx().cache.getCache<MockSnowflakeEntity>(
+          'test', CacheConfig(shouldCache: (e) => e.id.value > 3));
 
       final entity1 = MockSnowflakeEntity(id: Snowflake(1));
       final entity2 = MockSnowflakeEntity(id: Snowflake(2));
@@ -96,7 +98,7 @@ void main() {
     });
 
     test('shares resources with the same identifier', () {
-      final client = MockNyxx();
+      final client = MockUhxx();
 
       final cache1 = client.cache.getCache('test', CacheConfig());
       final cache2 = client.cache.getCache('test', CacheConfig());
@@ -108,8 +110,10 @@ void main() {
     });
 
     test("doesn't share resources across clients", () {
-      final cache1 = MockNyxx().cache.getCache<MockSnowflakeEntity>('test', CacheConfig());
-      final cache2 = MockNyxx().cache.getCache<MockSnowflakeEntity>('test', CacheConfig());
+      final cache1 =
+          MockUhxx().cache.getCache<MockSnowflakeEntity>('test', CacheConfig());
+      final cache2 =
+          MockUhxx().cache.getCache<MockSnowflakeEntity>('test', CacheConfig());
 
       final entity = MockSnowflakeEntity(id: Snowflake.zero);
 
@@ -118,7 +122,8 @@ void main() {
     });
 
     test('toList', () {
-      final cache = MockNyxx().cache.getCache<MockSnowflakeEntity>('test', CacheConfig());
+      final cache =
+          MockUhxx().cache.getCache<MockSnowflakeEntity>('test', CacheConfig());
 
       final entity1 = MockSnowflakeEntity(id: Snowflake(1));
       final entity2 = MockSnowflakeEntity(id: Snowflake(2));

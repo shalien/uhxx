@@ -1,8 +1,8 @@
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/flags.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/flags.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template client_status}
 /// The status of a client on multiple platforms.
@@ -21,7 +21,8 @@ class ClientStatus with ToStringHelper {
 
   /// {@macro client_status}
   /// @nodoc
-  ClientStatus({required this.desktop, required this.mobile, required this.web});
+  ClientStatus(
+      {required this.desktop, required this.mobile, required this.web});
 }
 
 /// The status of a client.
@@ -34,7 +35,8 @@ final class UserStatus extends EnumLike<String, UserStatus> {
   /// @nodoc
   const UserStatus(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   UserStatus.parse(String value) : this(value);
 }
 
@@ -121,7 +123,8 @@ final class ActivityType extends EnumLike<int, ActivityType> {
 
   const ActivityType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ActivityType.parse(int value) : this(value);
 }
 
@@ -159,7 +162,8 @@ class ActivityParty with ToStringHelper {
 
   /// {@macro activity_party}
   /// @nodoc
-  ActivityParty({required this.id, required this.currentSize, required this.maxSize});
+  ActivityParty(
+      {required this.id, required this.currentSize, required this.maxSize});
 }
 
 /// {@template activity_assets}
@@ -209,7 +213,8 @@ class ActivitySecrets with ToStringHelper {
 
   /// {@macro activity_secrets}
   /// @nodoc
-  ActivitySecrets({required this.join, required this.spectate, required this.match});
+  ActivitySecrets(
+      {required this.join, required this.spectate, required this.match});
 }
 
 /// Information about the data in an [Activity] instance.

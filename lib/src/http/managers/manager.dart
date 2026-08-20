@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/cache/cache.dart';
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/cache/cache.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
 
 /// A [Manager] that provides only read access to the API.
 ///
@@ -15,10 +15,12 @@ abstract class ReadOnlyManager<T extends ManagedSnowflakeEntity<T>> {
   final Cache<T> cache;
 
   /// The client this manager belongs to.
-  final NyxxRest client;
+  final UhxxRest client;
 
   /// Create a new read-only manager.
-  ReadOnlyManager(CacheConfig<T> config, this.client, {required String identifier}) : cache = client.cache.getCache(identifier, config);
+  ReadOnlyManager(CacheConfig<T> config, this.client,
+      {required String identifier})
+      : cache = client.cache.getCache(identifier, config);
 
   /// Parse the [raw] data received from the API into an instance of the type of this manager.
   T parse(Map<String, Object?> raw);
@@ -52,7 +54,8 @@ abstract class ReadOnlyManager<T extends ManagedSnowflakeEntity<T>> {
 ///
 /// {@category managers}
 /// {@category core}
-abstract class Manager<T extends WritableSnowflakeEntity<T>> extends ReadOnlyManager<T> {
+abstract class Manager<T extends WritableSnowflakeEntity<T>>
+    extends ReadOnlyManager<T> {
   /// Create a new manager.
   ///
   /// {@macro manager}

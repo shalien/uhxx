@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/plugin/plugin.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/plugin/plugin.dart';
 
 /// A global instance of the [CliIntegration] plugin.
 ///
@@ -12,11 +12,11 @@ final cliIntegration = CliIntegration();
 /// A plugin that lets clients close their session gracefully when the process is terminated.
 ///
 /// {@category plugins}
-class CliIntegration extends NyxxPlugin {
+class CliIntegration extends UhxxPlugin {
   @override
   String get name => 'CliIntegration';
 
-  final Set<Nyxx> _watchedClients = {};
+  final Set<Uhxx> _watchedClients = {};
   List<StreamSubscription<ProcessSignal>>? _subscriptions;
 
   void _ensureListening() {
@@ -34,7 +34,8 @@ class CliIntegration extends NyxxPlugin {
 
     _subscriptions ??= [
       ProcessSignal.sigint.watch().listen(closeClients),
-      if (!Platform.isWindows) ProcessSignal.sigterm.watch().listen(closeClients),
+      if (!Platform.isWindows)
+        ProcessSignal.sigterm.watch().listen(closeClients),
     ];
   }
 
@@ -50,7 +51,7 @@ class CliIntegration extends NyxxPlugin {
   }
 
   @override
-  void afterConnect(Nyxx client) {
+  void afterConnect(Uhxx client) {
     _ensureListening();
 
     _watchedClients.add(client);
@@ -58,7 +59,7 @@ class CliIntegration extends NyxxPlugin {
   }
 
   @override
-  void beforeClose(Nyxx client) {
+  void beforeClose(Uhxx client) {
     _watchedClients.remove(client);
     _removeListenersIfNeeded();
   }

@@ -1,9 +1,9 @@
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
 
 /// {@template group_dm_channel}
 /// A DM channel with multiple recipients.
@@ -59,11 +59,14 @@ class GroupDmChannel extends TextChannel {
   });
 
   @override
-  PartialMessage? get lastMessage => lastMessageId == null ? null : messages[lastMessageId!];
+  PartialMessage? get lastMessage =>
+      lastMessageId == null ? null : messages[lastMessageId!];
 
   /// This channel's owner.
   PartialUser get owner => manager.client.users[ownerId];
 
   /// The application that created this channel, if it was created by an application.
-  PartialApplication? get application => applicationId == null ? null : manager.client.applications[applicationId!];
+  PartialApplication? get application => applicationId == null
+      ? null
+      : manager.client.applications[applicationId!];
 }

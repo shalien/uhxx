@@ -1,15 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:http/http.dart';
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/http/cdn/cdn_asset.dart';
-import 'package:nyxx/src/http/managers/message_manager.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/flags.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/http/cdn/cdn_asset.dart';
+import 'package:uhxx/src/http/managers/message_manager.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/flags.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template attachment}
 /// An attachment in a [Message].
@@ -84,16 +84,20 @@ class Attachment with ToStringHelper implements CdnAsset {
   final Application? application;
 
   @override
-  Nyxx get client => manager.client;
+  Uhxx get client => manager.client;
 
   @override
   String get hash => fileName;
 
   @override
-  HttpRoute get base => HttpRoute()..parts.addAll(proxiedUrl.pathSegments.take(proxiedUrl.pathSegments.length - 1).map((part) => HttpRoutePart(part)));
+  HttpRoute get base => HttpRoute()
+    ..parts.addAll(proxiedUrl.pathSegments
+        .take(proxiedUrl.pathSegments.length - 1)
+        .map((part) => HttpRoutePart(part)));
 
   @override
-  CdnFormat get defaultFormat => throw UnsupportedError('Cannot get attachment format');
+  CdnFormat get defaultFormat =>
+      throw UnsupportedError('Cannot get attachment format');
 
   @override
   bool get isAnimated => flags?.hasIsAnimated ?? false;
@@ -139,7 +143,8 @@ class Attachment with ToStringHelper implements CdnAsset {
       throw UnsupportedError('Cannot specify attachment format or size');
     }
 
-    final response = await client.httpHandler.httpClient.send(Request('GET', url));
+    final response =
+        await client.httpHandler.httpClient.send(Request('GET', url));
     yield* response.stream;
   }
 }

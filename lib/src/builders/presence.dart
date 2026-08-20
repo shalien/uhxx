@@ -1,6 +1,6 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/gateway/events/presence.dart';
-import 'package:nyxx/src/models/presence.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/gateway/events/presence.dart';
+import 'package:uhxx/src/models/presence.dart';
 
 /// {@category builders}
 class PresenceBuilder extends CreateBuilder<PresenceUpdateEvent> {
@@ -12,7 +12,8 @@ class PresenceBuilder extends CreateBuilder<PresenceUpdateEvent> {
 
   bool isAfk;
 
-  PresenceBuilder({this.since, this.activities, required this.status, required this.isAfk});
+  PresenceBuilder(
+      {this.since, this.activities, required this.status, required this.isAfk});
 
   @override
   Map<String, Object?> build() => {
@@ -48,7 +49,8 @@ class ActivityBuilder extends CreateBuilder<Activity> {
 
   Uri? url;
 
-  ActivityBuilder({required this.name, required this.type, this.state, this.url});
+  ActivityBuilder(
+      {required this.name, required this.type, this.state, this.url});
 
   @override
   Map<String, Object?> build() => {

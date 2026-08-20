@@ -1,11 +1,11 @@
-import 'package:nyxx/src/http/managers/channel_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/guild_channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/http/managers/channel_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/guild_channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// A thread channel.
 ///
@@ -81,7 +81,8 @@ abstract class Thread implements TextChannel, GuildChannel {
   /// External references:
   /// * [ChannelManager.listThreadMembers]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#list-thread-members
-  Future<List<ThreadMember>> listThreadMembers({bool? withMembers, Snowflake? after, int? limit});
+  Future<List<ThreadMember>> listThreadMembers(
+      {bool? withMembers, Snowflake? after, int? limit});
 }
 
 /// {@template partial_thread_member}
@@ -130,7 +131,8 @@ class ThreadMember extends PartialThreadMember {
   });
 
   /// The thread this member is in.
-  PartialTextChannel get thread => manager.client.channels[threadId] as PartialTextChannel;
+  PartialTextChannel get thread =>
+      manager.client.channels[threadId] as PartialTextChannel;
 
   /// The user associated with this thread member.
   PartialUser get user => manager.client.users[userId];

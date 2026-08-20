@@ -4,7 +4,7 @@ set -euo pipefail
 echo "Checking for unexported classes...."
 
 find lib -type f -name '*.dart' -exec grep -nPo '(?<=class )[A-Z]\w+' {} + | while IFS=: read -r file line class; do
-    if ! grep -q "$class" lib/nyxx.dart; then
+    if ! grep -q "$class" lib/uhxx.dart; then
         echo "$file:$line: $class"
     fi
 done

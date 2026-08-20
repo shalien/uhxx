@@ -1,5 +1,5 @@
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
 
 /// A voice channel.
 ///
@@ -33,6 +33,7 @@ final class VideoQualityMode extends EnumLike<int, VideoQualityMode> {
   /// @nodoc
   const VideoQualityMode(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   VideoQualityMode.parse(int value) : this(value);
 }

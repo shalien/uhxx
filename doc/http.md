@@ -1,12 +1,12 @@
 Discord's HTTP API provides endpoints for accessing and updating entities. This
-topic contains the classes used by `nyxx` to create and send requests to the
+topic contains the classes used by `uhxx` to create and send requests to the
 API, as well as handling the responses sent back.
 
 This topic does not contain the classes responsible for serialization or
 exposing Dart APIs corresponding to specific HTTP endpoints. For that, see the
 [Managers] topic.
 
-The core of `nyxx`'s HTTP component is the [HttpHandler] class, wrapping a
+The core of `uhxx`'s HTTP component is the [HttpHandler] class, wrapping a
 `package:http` [Client]. It exposes two methods: [HttpHandler.execute] and
 [HttpHandler.executeSafe] both of which will send a request and return the
 associated response. [HttpHandler.executeSafe] performs additional checks on the
@@ -34,7 +34,7 @@ The request object is then passed to [HttpHandler.execute] or
 ### 2. Plugin interception
 
 [Plugins] are then allowed to intercept the request by overriding
-[NyxxPlugin.interceptRequest]. These interceptors are called immediately after
+[UhxxPlugin.interceptRequest]. These interceptors are called immediately after
 the request is submitted.
 
 ### 3. OAuth2 credential check
@@ -102,27 +102,27 @@ If [HttpHandler.executeSafe] was used, the response is returned only if it as a
 exception.
 
 [Managers]: ./managers-topic.html
-[HttpHandler]: ../nyxx/HttpHandler-class.html
+[HttpHandler]: ../uhxx/HttpHandler-class.html
 [Client]: https://pub.dev/documentation/http/latest/http/Client-class.html
-[HttpHandler.execute]: ../nyxx/HttpHandler/execute.html
-[HttpHandler.executeSafe]: ../nyxx/HttpHandler/executeSafe.html
-[CdnAsset]: ../nyxx/CdnAsset-class.html
-[HttpResponseError]: ../nyxx/HttpResponseError-class.html
-[HttpErrorData]: ../nyxx/HttpErrorData-class.html
-[FieldError]: ../nyxx/FieldError-class.html
-[HttpRequest]: ../nyxx/HttpRequest-class.html
-[BasicRequest]: ../nyxx/BasicRequest-class.html
-[MultipartRequest]: ../nyxx/MultipartRequest-class.html
-[CdnRequest]: ../nyxx/CdnRequest-class.html
+[HttpHandler.execute]: ../uhxx/HttpHandler/execute.html
+[HttpHandler.executeSafe]: ../uhxx/HttpHandler/executeSafe.html
+[CdnAsset]: ../uhxx/CdnAsset-class.html
+[HttpResponseError]: ../uhxx/HttpResponseError-class.html
+[HttpErrorData]: ../uhxx/HttpErrorData-class.html
+[FieldError]: ../uhxx/FieldError-class.html
+[HttpRequest]: ../uhxx/HttpRequest-class.html
+[BasicRequest]: ../uhxx/BasicRequest-class.html
+[MultipartRequest]: ../uhxx/MultipartRequest-class.html
+[CdnRequest]: ../uhxx/CdnRequest-class.html
 [Plugins]: ./plugins-topic.html
-[NyxxPlugin.interceptRequest]: ../nyxx/NyxxPlugin/interceptRequest.html
-[HttpHandler.latency]: ../nyxx/HttpHandler/latency.html
-[HttpBucket]: ../nyxx/HttpBucket-class.html
-[rateLimitId]: ../nyxx/HttpRequest/rateLimitId.html
-[HttpRoute]: ../nyxx/HttpRoute-class.html
-[HttpRoutePart]: ../nyxx/HttpRoutePart-class.html
-[HttpHandler.onRateLimit]: ../nyxx/HttpHandler/onRateLimit.html
+[UhxxPlugin.interceptRequest]: ../uhxx/UhxxPlugin/interceptRequest.html
+[HttpHandler.latency]: ../uhxx/HttpHandler/latency.html
+[HttpBucket]: ../uhxx/HttpBucket-class.html
+[rateLimitId]: ../uhxx/HttpRequest/rateLimitId.html
+[HttpRoute]: ../uhxx/HttpRoute-class.html
+[HttpRoutePart]: ../uhxx/HttpRoutePart-class.html
+[HttpHandler.onRateLimit]: ../uhxx/HttpHandler/onRateLimit.html
 [Request]: https://pub.dev/documentation/http/latest/http/Request-class.html
-[HttpRequest.prepare]: ../nyxx/HttpRequest/prepare.html
-[HttpHandler.realLatency]: ../nyxx/HttpHandler/realLatency.html
-[HttpResponseSuccess]: ../nyxx/HttpResponseSuccess-class.html
+[HttpRequest.prepare]: ../uhxx/HttpRequest/prepare.html
+[HttpHandler.realLatency]: ../uhxx/HttpHandler/realLatency.html
+[HttpResponseSuccess]: ../uhxx/HttpResponseSuccess-class.html

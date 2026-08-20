@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart';
-import 'package:nyxx/src/errors.dart';
-import 'package:nyxx/src/http/request.dart';
+import 'package:uhxx/src/errors.dart';
+import 'package:uhxx/src/http/request.dart';
 
 /// A response to a [HttpRequest] from the Discord API.
 ///
@@ -69,7 +69,8 @@ abstract class HttpResponse {
   }
 
   @override
-  String toString() => '$statusCode (${response.reasonPhrase}) ${request.method} ${response.request!.url}';
+  String toString() =>
+      '$statusCode (${response.reasonPhrase}) ${request.method} ${response.request!.url}';
 }
 
 /// A successful [HttpResponse].
@@ -77,7 +78,8 @@ abstract class HttpResponse {
 /// {@category http}
 class HttpResponseSuccess extends HttpResponse {
   /// Create a new [HttpResponseSuccess].
-  HttpResponseSuccess({required super.response, required super.request, required super.body});
+  HttpResponseSuccess(
+      {required super.response, required super.request, required super.body});
 
   /// Create a [HttpResponseSuccess] from a [StreamedResponse].
   static Future<HttpResponseSuccess> fromResponse(
@@ -94,10 +96,11 @@ class HttpResponseSuccess extends HttpResponse {
 /// An [HttpResponse] which represents an error from the API.
 ///
 /// {@category http}
-class HttpResponseError extends HttpResponse implements NyxxException {
+class HttpResponseError extends HttpResponse implements UhxxException {
   /// A message containing details about why the request failed.
   @override
-  String get message => errorData?.errorMessage ?? response.reasonPhrase ?? textBody!;
+  String get message =>
+      errorData?.errorMessage ?? response.reasonPhrase ?? textBody!;
 
   /// The error code of this response.
   ///
@@ -109,7 +112,8 @@ class HttpResponseError extends HttpResponse implements NyxxException {
   late final HttpErrorData? errorData;
 
   /// Create a new [HttpResponseError].
-  HttpResponseError({required super.response, required super.request, required super.body}) {
+  HttpResponseError(
+      {required super.response, required super.request, required super.body}) {
     HttpErrorData? errorData;
     if (hasJsonBody) {
       try {
@@ -139,13 +143,15 @@ class HttpResponseError extends HttpResponse implements NyxxException {
       return super.toString();
     }
 
-    final result = StringBuffer('$message ($errorCode) ${request.method} ${response.request!.url}\n');
+    final result = StringBuffer(
+        '$message ($errorCode) ${request.method} ${response.request!.url}\n');
 
     if (errorData?.fieldErrors.isNotEmpty ?? false) {
       result.writeln('Errors:');
 
       for (final field in errorData!.fieldErrors.values) {
-        result.writeln('  ${field.name}: ${field.errorMessage} (${field.errorCode})');
+        result.writeln(
+            '  ${field.name}: ${field.errorMessage} (${field.errorCode})');
       }
     }
 
@@ -184,7 +190,8 @@ class HttpErrorData {
     }
   }
 
-  void _initErrors(Map<String, Object?> fields, [List<String> path = const []]) {
+  void _initErrors(Map<String, Object?> fields,
+      [List<String> path = const []]) {
     final errors = fields['_errors'] as List?;
 
     if (errors != null) {
@@ -204,7 +211,8 @@ class HttpErrorData {
         continue;
       }
 
-      _initErrors(nestedElement.value as Map<String, Object?>, [...path, nestedElement.key]);
+      _initErrors(nestedElement.value as Map<String, Object?>,
+          [...path, nestedElement.key]);
     }
   }
 }

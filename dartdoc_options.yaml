@@ -1,7 +1,7 @@
 dartdoc:
   linkToSource:
     root: .
-    uriTemplate: "https://github.com/nyxx-discord/nyxx/blob/main/%f%#L%l%"
+    uriTemplate: "https://github.com/uhxx-discord/uhxx/blob/main/%f%#L%l%"
 
   categories:
     core:

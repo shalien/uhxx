@@ -1,9 +1,9 @@
-import 'package:nyxx/src/http/managers/guild_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/guild_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template guild_widget}
 /// A [Guild]'s widget.
@@ -72,7 +72,8 @@ class WidgetSettings with ToStringHelper {
   });
 
   /// The channel the widget should send users to.
-  PartialChannel? get channel => channelId == null ? null : manager.client.channels[channelId!];
+  PartialChannel? get channel =>
+      channelId == null ? null : manager.client.channels[channelId!];
 }
 
 /// The style of a guild widget image.

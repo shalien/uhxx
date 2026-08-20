@@ -1,4 +1,4 @@
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -18,14 +18,17 @@ void main() {
           color: DiscordColor.fromRgb(0, 0, 0),
           footer: EmbedFooterBuilder(text: 'footer text'),
           image: EmbedImageBuilder(
-            url: Uri.parse('https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
+            url: Uri.parse(
+                'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
           ),
           thumbnail: EmbedThumbnailBuilder(
-            url: Uri.parse('https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
+            url: Uri.parse(
+                'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
           ),
           author: EmbedAuthorBuilder(name: 'test embed author'),
           fields: [
-            EmbedFieldBuilder(name: 'whoops', value: 'no error here', isInline: false),
+            EmbedFieldBuilder(
+                name: 'whoops', value: 'no error here', isInline: false),
           ],
         ),
       ],
@@ -55,10 +58,12 @@ void main() {
               'text': 'footer text',
             },
             'image': {
-              'url': 'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
+              'url':
+                  'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
             },
             'thumbnail': {
-              'url': 'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
+              'url':
+                  'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
             },
             'author': {
               'name': 'test embed author',
@@ -102,14 +107,17 @@ void main() {
           color: DiscordColor.fromRgb(0, 0, 0),
           footer: EmbedFooterBuilder(text: 'footer text'),
           image: EmbedImageBuilder(
-            url: Uri.parse('https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
+            url: Uri.parse(
+                'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
           ),
           thumbnail: EmbedThumbnailBuilder(
-            url: Uri.parse('https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
+            url: Uri.parse(
+                'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg'),
           ),
           author: EmbedAuthorBuilder(name: 'test embed author'),
           fields: [
-            EmbedFieldBuilder(name: 'whoops', value: 'no error here', isInline: false),
+            EmbedFieldBuilder(
+                name: 'whoops', value: 'no error here', isInline: false),
           ],
         ),
       ],
@@ -131,10 +139,12 @@ void main() {
               'text': 'footer text',
             },
             'image': {
-              'url': 'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
+              'url':
+                  'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
             },
             'thumbnail': {
-              'url': 'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
+              'url':
+                  'https://github.com/dart-lang/sdk/raw/main/docs/assets/Dart-platforms.svg',
             },
             'author': {
               'name': 'test embed author',

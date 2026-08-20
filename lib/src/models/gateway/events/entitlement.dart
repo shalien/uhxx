@@ -1,5 +1,5 @@
-import 'package:nyxx/src/models/entitlement.dart';
-import 'package:nyxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/entitlement.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
 
 /// {@template entitlement_create_event}
 /// Emitted when an entitlement is created.
@@ -29,7 +29,10 @@ class EntitlementUpdateEvent extends DispatchEvent {
 
   /// {@macro entitlement_update_event}
   /// @nodoc
-  EntitlementUpdateEvent({required super.gateway, required this.entitlement, required this.oldEntitlement});
+  EntitlementUpdateEvent(
+      {required super.gateway,
+      required this.entitlement,
+      required this.oldEntitlement});
 }
 
 /// {@template entitlement_delete_event}
@@ -46,5 +49,8 @@ class EntitlementDeleteEvent extends DispatchEvent {
 
   /// {@macro entitlement_delete_event}
   /// @nodoc
-  EntitlementDeleteEvent({required super.gateway, required this.entitlement, required this.deletedEntitlement});
+  EntitlementDeleteEvent(
+      {required super.gateway,
+      required this.entitlement,
+      required this.deletedEntitlement});
 }

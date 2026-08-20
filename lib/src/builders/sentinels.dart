@@ -1,18 +1,18 @@
-import 'package:nyxx/src/builders/guild/scheduled_event.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/models/channel/types/forum.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/guild/scheduled_event.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/guild/scheduled_event.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/models/channel/types/forum.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/guild/scheduled_event.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
-// ASCII encoded "nyxx"
+// ASCII encoded "uhxx"
 const sentinelInteger = 0x6E797878;
 
 const sentinelDouble = sentinelInteger * 1.0;
 
-// ESC-"nyxx"
-const sentinelString = '\u{1B}nyxx';
+// ESC-"uhxx"
+const sentinelString = '\u{1B}uhxx';
 
 const sentinelDuration = _SentinelDuration();
 

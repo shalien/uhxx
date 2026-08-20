@@ -1,6 +1,6 @@
-import 'package:nyxx/src/gateway/gateway.dart';
-import 'package:nyxx/src/models/gateway/opcode.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/gateway/gateway.dart';
+import 'package:uhxx/src/models/gateway/opcode.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template gateway_event}
 /// The base class for all events received from the Gateway.
@@ -34,7 +34,9 @@ class RawDispatchEvent extends GatewayEvent {
 
   /// {@macro raw_dispatch_event}
   /// @nodoc
-  RawDispatchEvent({required this.seq, required this.name, required this.payload}) : super(opcode: Opcode.dispatch);
+  RawDispatchEvent(
+      {required this.seq, required this.name, required this.payload})
+      : super(opcode: Opcode.dispatch);
 }
 
 /// {@template dispatch_event}
@@ -55,7 +57,7 @@ abstract class DispatchEvent extends GatewayEvent {
 /// {@template unknown_dispatch_event}
 /// Emitted when a [RawDispatchEvent] could not be parsed to a [DispatchEvent] due to the event being unknown.
 ///
-/// This either means the event is internal and not documented, or that nyxx has not yet updated to support it.
+/// This either means the event is internal and not documented, or that uhxx has not yet updated to support it.
 /// {@endtemplate}
 ///
 /// {@category events}
@@ -99,7 +101,8 @@ class InvalidSessionEvent extends GatewayEvent {
 
   /// {@macro invalid_session_event}
   /// @nodoc
-  InvalidSessionEvent({required this.isResumable}) : super(opcode: Opcode.invalidSession);
+  InvalidSessionEvent({required this.isResumable})
+      : super(opcode: Opcode.invalidSession);
 }
 
 /// {@template hello_event}
@@ -127,5 +130,6 @@ class HeartbeatAckEvent extends GatewayEvent {
 
   /// {@macro heartbeat_ack_event}
   /// @nodoc
-  HeartbeatAckEvent({required this.latency}) : super(opcode: Opcode.heartbeatAck);
+  HeartbeatAckEvent({required this.latency})
+      : super(opcode: Opcode.heartbeatAck);
 }

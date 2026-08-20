@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/http/cdn/cdn_request.dart';
-import 'package:nyxx/src/http/response.dart';
-import 'package:nyxx/src/http/route.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/http/cdn/cdn_request.dart';
+import 'package:uhxx/src/http/response.dart';
+import 'package:uhxx/src/http/route.dart';
 
 /// Available formats for CDN endpoints.
 ///
@@ -49,7 +49,7 @@ enum CdnFormat {
 /// {@category http}
 class CdnAsset {
   /// The client this asset is associated with.
-  final Nyxx client;
+  final Uhxx client;
 
   /// The hash of the asset.
   // TODO(lexedia): make it nullable next major version.
@@ -77,7 +77,10 @@ class CdnAsset {
     CdnFormat? defaultFormat,
     bool? isAnimated,
   })  : isAnimated = isAnimated ?? hash.startsWith('a_'),
-        defaultFormat = defaultFormat ?? ((isAnimated ?? hash.startsWith('a_')) ? CdnFormat.gif : CdnFormat.png);
+        defaultFormat = defaultFormat ??
+            ((isAnimated ?? hash.startsWith('a_'))
+                ? CdnFormat.gif
+                : CdnFormat.png);
 
   CdnRequest _getRequest(CdnFormat format, int? size) {
     final route = HttpRoute();
@@ -91,12 +94,14 @@ class CdnAsset {
 
     route.add(HttpRoutePart('$hash$ext'));
 
-    return CdnRequest(route, queryParameters: {if (size != null) 'size': size.toString()});
+    return CdnRequest(route,
+        queryParameters: {if (size != null) 'size': size.toString()});
   }
 
   /// Fetch this asset and return its binary data.
   Future<Uint8List> fetch({CdnFormat? format, int? size}) async {
-    assert(format != CdnFormat.gif || isAnimated, 'Asset must be animated to fetch as GIF');
+    assert(format != CdnFormat.gif || isAnimated,
+        'Asset must be animated to fetch as GIF');
 
     final request = _getRequest(format ?? defaultFormat, size);
 
@@ -106,7 +111,8 @@ class CdnAsset {
 
   /// Fetch this asset and return a stream of its binary data.
   Stream<List<int>> fetchStreamed({CdnFormat? format, int? size}) async* {
-    assert(format != CdnFormat.gif || isAnimated, 'Asset must be animated to fetch as GIF');
+    assert(format != CdnFormat.gif || isAnimated,
+        'Asset must be animated to fetch as GIF');
 
     final request = _getRequest(format ?? defaultFormat, size);
     final rawRequest = request.prepare(client);

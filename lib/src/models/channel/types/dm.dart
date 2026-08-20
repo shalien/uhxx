@@ -1,8 +1,8 @@
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
 
 /// {@template dm_channel}
 /// A DM channel.
@@ -38,5 +38,6 @@ class DmChannel extends TextChannel {
   });
 
   @override
-  PartialMessage? get lastMessage => lastMessageId == null ? null : messages[lastMessageId!];
+  PartialMessage? get lastMessage =>
+      lastMessageId == null ? null : messages[lastMessageId!];
 }

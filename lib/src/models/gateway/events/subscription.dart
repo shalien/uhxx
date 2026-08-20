@@ -1,5 +1,5 @@
-import 'package:nyxx/src/models/gateway/event.dart';
-import 'package:nyxx/src/models/subscription.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/subscription.dart';
 
 /// Sent when a [Subscription] is created.
 ///
@@ -23,7 +23,10 @@ class SubscriptionUpdateEvent extends DispatchEvent {
   final Subscription subscription;
 
   /// @nodoc
-  SubscriptionUpdateEvent({required super.gateway, required this.oldSubscription, required this.subscription});
+  SubscriptionUpdateEvent(
+      {required super.gateway,
+      required this.oldSubscription,
+      required this.subscription});
 }
 
 /// Sent when a [Subscription] is deleted.

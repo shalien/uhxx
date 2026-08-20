@@ -21,9 +21,9 @@ command, a user command, or a message command depending on the value of the
 which fields are compatible with which type, in which case named constructors
 corresponding to each possible type are provided with only the allowed fields.
 
-[Builder]: ../nyxx/Builder-class.html
-[CreateBuilder]: ../nyxx/CreateBuilder-class.html
-[UpdateBuilder]: ../nyxx/UpdateBuilder-class.html
+[Builder]: ../uhxx/Builder-class.html
+[CreateBuilder]: ../uhxx/CreateBuilder-class.html
+[UpdateBuilder]: ../uhxx/UpdateBuilder-class.html
 [Model]: ./models-topic.html
-[ApplicationCommandBuilder]: ../nyxx/ApplicationCommandBuilder-class.html
-[ApplicationCommandBuilder.type]: ../nyxx/ApplicationCommandBuilder/type.html
+[ApplicationCommandBuilder]: ../uhxx/ApplicationCommandBuilder-class.html
+[ApplicationCommandBuilder.type]: ../uhxx/ApplicationCommandBuilder/type.html

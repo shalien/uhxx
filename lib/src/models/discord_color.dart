@@ -21,7 +21,9 @@ class DiscordColor {
   int get b => value & 0xff;
 
   /// Create a [DiscordColor] from a 24 bit encoded [value].
-  const DiscordColor(this.value) : assert(value >= 0 && value <= 0xffffff, 'value must be between 0 and ${0xffffff}');
+  const DiscordColor(this.value)
+      : assert(value >= 0 && value <= 0xffffff,
+            'value must be between 0 and ${0xffffff}');
 
   /// Create a [DiscordColor] from [r], [g] and [b] channels ranging from 0 to 255 combined.
   ///
@@ -60,7 +62,8 @@ class DiscordColor {
     }
 
     if (color.length != 6) {
-      throw FormatException('Source must contain 6 hexadecimal digits', color, color.length);
+      throw FormatException(
+          'Source must contain 6 hexadecimal digits', color, color.length);
     }
 
     return DiscordColor(int.parse(color, radix: 16));
@@ -75,13 +78,15 @@ class DiscordColor {
 
   /// Convert this [DiscordColor] to a hexadecimal string that can be parsed with
   /// [DiscordColor.parseHexString].
-  String toHexString() => '#${value.toRadixString(16).padLeft(6, '0')}'.toUpperCase();
+  String toHexString() =>
+      '#${value.toRadixString(16).padLeft(6, '0')}'.toUpperCase();
 
   @override
   String toString() => 'DiscordColor(${toHexString()})';
 
   @override
-  bool operator ==(Object other) => identical(this, other) || (other is DiscordColor && other.value == value);
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is DiscordColor && other.value == value);
 
   @override
   int get hashCode => value.hashCode;

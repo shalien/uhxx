@@ -1,15 +1,15 @@
 import 'package:meta/meta.dart';
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/commands/application_command_option.dart';
-import 'package:nyxx/src/models/discord_color.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/component.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/commands/application_command_option.dart';
+import 'package:uhxx/src/models/discord_color.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/component.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
 
 /// {@category builders}
 abstract class ComponentBuilder<T extends Component> extends CreateBuilder<T> {
@@ -32,7 +32,8 @@ typedef MessageComponentBuilder = ComponentBuilder;
 class ActionRowBuilder extends ComponentBuilder<ActionRowComponent> {
   List<ComponentBuilder> components;
 
-  ActionRowBuilder({required this.components}) : super(type: ComponentType.actionRow);
+  ActionRowBuilder({required this.components})
+      : super(type: ComponentType.actionRow);
 
   @override
   Map<String, Object?> build() => {
@@ -129,7 +130,8 @@ class ButtonBuilder extends ComponentBuilder<ButtonComponent> {
           'emoji': {
             'id': emoji!.id == Snowflake.zero ? null : emoji!.id.toString(),
             'name': emoji!.name,
-            if (emoji is GuildEmoji) 'animated': (emoji as GuildEmoji).isAnimated == true,
+            if (emoji is GuildEmoji)
+              'animated': (emoji as GuildEmoji).isAnimated == true,
           },
         if (customId != null) 'custom_id': customId,
         if (skuId != null) 'sku_id': skuId.toString(),
@@ -232,9 +234,11 @@ class SelectMenuBuilder extends ComponentBuilder<SelectMenuComponent> {
         ...super.build(),
         'custom_id': customId,
         if (options != null) 'options': options?.map((e) => e.build()).toList(),
-        if (channelTypes != null) 'channel_types': channelTypes?.map((e) => e.value).toList(),
+        if (channelTypes != null)
+          'channel_types': channelTypes?.map((e) => e.value).toList(),
         if (placeholder != null) 'placeholder': placeholder,
-        if (defaultValues != null) 'default_values': defaultValues!.map((e) => e.build()).toList(),
+        if (defaultValues != null)
+          'default_values': defaultValues!.map((e) => e.build()).toList(),
         if (minValues != null) 'min_values': minValues,
         if (maxValues != null) 'max_values': maxValues,
         if (isDisabled != null) 'disabled': isDisabled,
@@ -271,14 +275,16 @@ class SelectMenuOptionBuilder extends CreateBuilder<SelectMenuOption> {
           'emoji': {
             'id': emoji!.id.toString(),
             'name': emoji!.name,
-            'animated': emoji is GuildEmoji && (emoji as GuildEmoji).isAnimated == true,
+            'animated':
+                emoji is GuildEmoji && (emoji as GuildEmoji).isAnimated == true,
           },
         if (isDefault != null) 'default': isDefault,
       };
 }
 
 /// {@category builders}
-class DefaultValue<T extends SnowflakeEntity<T>> extends CreateBuilder<DefaultValue<T>> {
+class DefaultValue<T extends SnowflakeEntity<T>>
+    extends CreateBuilder<DefaultValue<T>> {
   Snowflake id;
 
   String type;
@@ -288,11 +294,14 @@ class DefaultValue<T extends SnowflakeEntity<T>> extends CreateBuilder<DefaultVa
     required this.type,
   });
 
-  static DefaultValue<User> user({required Snowflake id}) => DefaultValue(id: id, type: 'user');
+  static DefaultValue<User> user({required Snowflake id}) =>
+      DefaultValue(id: id, type: 'user');
 
-  static DefaultValue<Role> role({required Snowflake id}) => DefaultValue(id: id, type: 'role');
+  static DefaultValue<Role> role({required Snowflake id}) =>
+      DefaultValue(id: id, type: 'role');
 
-  static DefaultValue<Channel> channel({required Snowflake id}) => DefaultValue(id: id, type: 'channel');
+  static DefaultValue<Channel> channel({required Snowflake id}) =>
+      DefaultValue(id: id, type: 'channel');
 
   @override
   Map<String, Object?> build() => {
@@ -354,7 +363,9 @@ class SectionComponentBuilder extends ComponentBuilder<SectionComponent> {
 
   ComponentBuilder accessory;
 
-  SectionComponentBuilder({super.id, required this.components, required this.accessory}) : super(type: ComponentType.section);
+  SectionComponentBuilder(
+      {super.id, required this.components, required this.accessory})
+      : super(type: ComponentType.section);
 
   @override
   Map<String, Object?> build() => {
@@ -365,10 +376,12 @@ class SectionComponentBuilder extends ComponentBuilder<SectionComponent> {
 }
 
 /// {@category builders}
-class TextDisplayComponentBuilder extends ComponentBuilder<TextDisplayComponent> {
+class TextDisplayComponentBuilder
+    extends ComponentBuilder<TextDisplayComponent> {
   final String content;
 
-  TextDisplayComponentBuilder({required this.content, super.id}) : super(type: ComponentType.textDisplay);
+  TextDisplayComponentBuilder({required this.content, super.id})
+      : super(type: ComponentType.textDisplay);
 
   @override
   Map<String, Object?> build() => {
@@ -395,7 +408,9 @@ class ThumbnailComponentBuilder extends ComponentBuilder<ThumbnailComponent> {
 
   bool? isSpoiler;
 
-  ThumbnailComponentBuilder({required this.media, this.description, this.isSpoiler, super.id}) : super(type: ComponentType.thumbnail);
+  ThumbnailComponentBuilder(
+      {required this.media, this.description, this.isSpoiler, super.id})
+      : super(type: ComponentType.thumbnail);
 
   @override
   Map<String, Object?> build() => {
@@ -414,7 +429,8 @@ class MediaGalleryItemBuilder extends CreateBuilder<MediaGalleryItem> {
 
   bool? isSpoiler;
 
-  MediaGalleryItemBuilder({required this.media, this.description, this.isSpoiler});
+  MediaGalleryItemBuilder(
+      {required this.media, this.description, this.isSpoiler});
 
   @override
   Map<String, Object?> build() => {
@@ -425,10 +441,12 @@ class MediaGalleryItemBuilder extends CreateBuilder<MediaGalleryItem> {
 }
 
 /// {@category builders}
-class MediaGalleryComponentBuilder extends ComponentBuilder<MediaGalleryComponent> {
+class MediaGalleryComponentBuilder
+    extends ComponentBuilder<MediaGalleryComponent> {
   List<MediaGalleryItemBuilder> items;
 
-  MediaGalleryComponentBuilder({required this.items, super.id}) : super(type: ComponentType.mediaGallery);
+  MediaGalleryComponentBuilder({required this.items, super.id})
+      : super(type: ComponentType.mediaGallery);
 
   @override
   Map<String, Object?> build() => {
@@ -443,7 +461,8 @@ class SeparatorComponentBuilder extends ComponentBuilder<SeparatorComponent> {
 
   SeparatorSpacingSize? spacing;
 
-  SeparatorComponentBuilder({this.isDivider, this.spacing, super.id}) : super(type: ComponentType.separator);
+  SeparatorComponentBuilder({this.isDivider, this.spacing, super.id})
+      : super(type: ComponentType.separator);
 
   @override
   Map<String, Object?> build() => {
@@ -459,7 +478,8 @@ class FileComponentBuilder extends ComponentBuilder<FileComponent> {
 
   bool? isSpoiler;
 
-  FileComponentBuilder({required this.file, this.isSpoiler, super.id}) : super(type: ComponentType.file);
+  FileComponentBuilder({required this.file, this.isSpoiler, super.id})
+      : super(type: ComponentType.file);
 
   @override
   Map<String, Object?> build() => {
@@ -477,7 +497,9 @@ class ContainerComponentBuilder extends ComponentBuilder<ContainerComponent> {
 
   List<ComponentBuilder> components;
 
-  ContainerComponentBuilder({required this.components, this.accentColor, this.isSpoiler, super.id}) : super(type: ComponentType.container);
+  ContainerComponentBuilder(
+      {required this.components, this.accentColor, this.isSpoiler, super.id})
+      : super(type: ComponentType.container);
 
   @override
   Map<String, Object?> build() => {
@@ -522,7 +544,13 @@ class FileUploadComponentBuilder extends ComponentBuilder<FileUploadComponent> {
 
   bool? isRequired;
 
-  FileUploadComponentBuilder({required this.customId, this.minValues, this.maxValues, this.isRequired, super.id}) : super(type: ComponentType.fileUpload);
+  FileUploadComponentBuilder(
+      {required this.customId,
+      this.minValues,
+      this.maxValues,
+      this.isRequired,
+      super.id})
+      : super(type: ComponentType.fileUpload);
 
   @override
   Map<String, Object?> build() => {
@@ -535,14 +563,20 @@ class FileUploadComponentBuilder extends ComponentBuilder<FileUploadComponent> {
 }
 
 /// {@category builders}
-class RadioGroupComponentBuilder extends ComponentBuilder<SubmittedRadioGroupComponent> {
+class RadioGroupComponentBuilder
+    extends ComponentBuilder<SubmittedRadioGroupComponent> {
   String customId;
 
   List<RadioGroupOptionBuilder> options;
 
   bool? isRequired;
 
-  RadioGroupComponentBuilder({required this.customId, required this.options, this.isRequired, super.id}) : super(type: ComponentType.radioGroup);
+  RadioGroupComponentBuilder(
+      {required this.customId,
+      required this.options,
+      this.isRequired,
+      super.id})
+      : super(type: ComponentType.radioGroup);
 
   @override
   Map<String, Object?> build() => {
@@ -560,7 +594,11 @@ class RadioGroupOptionBuilder extends CreateBuilder<RadioGroupOptionBuilder> {
   String? description;
   bool? defaultValue;
 
-  RadioGroupOptionBuilder({required this.value, required this.label, this.description, this.defaultValue});
+  RadioGroupOptionBuilder(
+      {required this.value,
+      required this.label,
+      this.description,
+      this.defaultValue});
 
   @override
   Map<String, Object?> build() => {
@@ -572,14 +610,21 @@ class RadioGroupOptionBuilder extends CreateBuilder<RadioGroupOptionBuilder> {
 }
 
 /// {@category builders}
-class CheckboxGroupComponentBuilder extends ComponentBuilder<SubmittedCheckboxGroupComponent> {
+class CheckboxGroupComponentBuilder
+    extends ComponentBuilder<SubmittedCheckboxGroupComponent> {
   String customId;
   List<CheckboxGroupOptionBuilder> options;
   int? minValues;
   int? maxValues;
   bool? isRequired;
 
-  CheckboxGroupComponentBuilder({required this.customId, required this.options, this.minValues, this.maxValues, this.isRequired, super.id})
+  CheckboxGroupComponentBuilder(
+      {required this.customId,
+      required this.options,
+      this.minValues,
+      this.maxValues,
+      this.isRequired,
+      super.id})
       : super(type: ComponentType.checkboxGroup);
 
   @override
@@ -594,13 +639,18 @@ class CheckboxGroupComponentBuilder extends ComponentBuilder<SubmittedCheckboxGr
 }
 
 /// {@category builders}
-class CheckboxGroupOptionBuilder extends CreateBuilder<CheckboxGroupOptionBuilder> {
+class CheckboxGroupOptionBuilder
+    extends CreateBuilder<CheckboxGroupOptionBuilder> {
   String value;
   String label;
   String? description;
   bool? defaultValue;
 
-  CheckboxGroupOptionBuilder({required this.value, required this.label, this.description, this.defaultValue});
+  CheckboxGroupOptionBuilder(
+      {required this.value,
+      required this.label,
+      this.description,
+      this.defaultValue});
 
   @override
   Map<String, Object?> build() => {
@@ -612,11 +662,14 @@ class CheckboxGroupOptionBuilder extends CreateBuilder<CheckboxGroupOptionBuilde
 }
 
 /// {@category builders}
-class CheckboxComponentBuilder extends ComponentBuilder<SubmittedCheckboxComponent> {
+class CheckboxComponentBuilder
+    extends ComponentBuilder<SubmittedCheckboxComponent> {
   String customId;
   bool? defaultValue;
 
-  CheckboxComponentBuilder({required this.customId, this.defaultValue, super.id}) : super(type: ComponentType.checkbox);
+  CheckboxComponentBuilder(
+      {required this.customId, this.defaultValue, super.id})
+      : super(type: ComponentType.checkbox);
 
   @override
   Map<String, Object?> build() => {

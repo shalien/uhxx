@@ -1,10 +1,10 @@
-import 'package:nyxx/src/http/managers/subscription_manager.dart';
-import 'package:nyxx/src/models/entitlement.dart';
-import 'package:nyxx/src/models/sku.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/http/managers/subscription_manager.dart';
+import 'package:uhxx/src/models/entitlement.dart';
+import 'package:uhxx/src/models/sku.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
 
 /// A partial [Subscription].
 ///
@@ -67,12 +67,15 @@ class Subscription extends PartialSubscription {
 
   /// The SKUs this subscription is for.
   List<PartialSku> get skus => [
-        for (final skuId in skuIds) manager.client.applications[manager.applicationId].skus[skuId],
+        for (final skuId in skuIds)
+          manager.client.applications[manager.applicationId].skus[skuId],
       ];
 
   /// The entitlements this subscription grants.
   List<PartialEntitlement> get entitlements => [
-        for (final entitlementId in entitlementIds) manager.client.applications[manager.applicationId].entitlements[entitlementId],
+        for (final entitlementId in entitlementIds)
+          manager.client.applications[manager.applicationId]
+              .entitlements[entitlementId],
       ];
 }
 

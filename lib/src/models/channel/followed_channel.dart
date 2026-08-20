@@ -1,8 +1,8 @@
-import 'package:nyxx/src/http/managers/channel_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/webhook.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/channel_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/webhook.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template followed_channel}
 /// Information about a channel which has been followed.
@@ -21,7 +21,10 @@ class FollowedChannel with ToStringHelper {
 
   /// {@macro followed_channel}
   /// @nodoc
-  FollowedChannel({required this.manager, required this.channelId, required this.webhookId});
+  FollowedChannel(
+      {required this.manager,
+      required this.channelId,
+      required this.webhookId});
 
   /// The followed channel.
   PartialChannel get channel => manager.client.channels[channelId];

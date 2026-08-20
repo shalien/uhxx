@@ -1,11 +1,11 @@
-import 'package:nyxx/src/http/managers/message_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/message_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template message_reference}
 /// A reference to an external entity contained in a message.
@@ -77,10 +77,13 @@ class MessageReference with ToStringHelper {
   PartialChannel get channel => manager.client.channels[channelId];
 
   /// The originating message.
-  PartialMessage? get message => messageId == null ? null : (channel as PartialTextChannel).messages[messageId!];
+  PartialMessage? get message => messageId == null
+      ? null
+      : (channel as PartialTextChannel).messages[messageId!];
 
   /// The guild of the originating message.
-  PartialGuild? get guild => guildId == null ? null : manager.client.guilds[guildId!];
+  PartialGuild? get guild =>
+      guildId == null ? null : manager.client.guilds[guildId!];
 }
 
 final class MessageReferenceType extends EnumLike<int, MessageReferenceType> {

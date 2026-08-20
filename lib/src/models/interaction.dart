@@ -1,32 +1,33 @@
-import 'package:nyxx/src/builders/application_command.dart';
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/interaction_response.dart';
-import 'package:nyxx/src/builders/message/message.dart';
-import 'package:nyxx/src/errors.dart';
-import 'package:nyxx/src/http/managers/interaction_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/commands/application_command.dart';
-import 'package:nyxx/src/models/commands/application_command_option.dart';
-import 'package:nyxx/src/models/entitlement.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/locale.dart';
-import 'package:nyxx/src/models/message/attachment.dart';
-import 'package:nyxx/src/models/component.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/builders/application_command.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/interaction_response.dart';
+import 'package:uhxx/src/builders/message/message.dart';
+import 'package:uhxx/src/errors.dart';
+import 'package:uhxx/src/http/managers/interaction_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/commands/application_command.dart';
+import 'package:uhxx/src/models/commands/application_command_option.dart';
+import 'package:uhxx/src/models/entitlement.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/locale.dart';
+import 'package:uhxx/src/models/message/attachment.dart';
+import 'package:uhxx/src/models/component.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A context indicating whether command can be used in DMs, groups, or guilds.
 ///
 /// External references:
 /// * Discord API Reference: https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-context-types
-final class InteractionContextType extends EnumLike<int, InteractionContextType> {
+final class InteractionContextType
+    extends EnumLike<int, InteractionContextType> {
   /// Interaction can be used within servers.
   static const InteractionContextType guild = InteractionContextType(0);
 
@@ -34,12 +35,14 @@ final class InteractionContextType extends EnumLike<int, InteractionContextType>
   static const InteractionContextType botDm = InteractionContextType(1);
 
   /// Interaction can be used within Group DMs and DMs other than the app's bot user.
-  static const InteractionContextType privateChannel = InteractionContextType(2);
+  static const InteractionContextType privateChannel =
+      InteractionContextType(2);
 
   /// @nodoc
   const InteractionContextType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   InteractionContextType.parse(int value) : this(value);
 }
 
@@ -102,7 +105,8 @@ abstract class Interaction<T> with ToStringHelper {
   final List<Entitlement> entitlements;
 
   /// Mapping of installation contexts that the interaction was authorized for to related user or guild IDs.
-  final Map<ApplicationIntegrationType, Snowflake>? authorizingIntegrationOwners;
+  final Map<ApplicationIntegrationType, Snowflake>?
+      authorizingIntegrationOwners;
 
   /// Context where the interaction was triggered from.
   final InteractionContextType? context;
@@ -136,7 +140,8 @@ abstract class Interaction<T> with ToStringHelper {
   });
 
   /// The guild in which this interaction was triggered.
-  PartialGuild? get guild => guildId == null ? null : manager.client.guilds[guildId!];
+  PartialGuild? get guild =>
+      guildId == null ? null : manager.client.guilds[guildId!];
 }
 
 mixin MessageResponse<T> on Interaction<T> {
@@ -146,7 +151,8 @@ mixin MessageResponse<T> on Interaction<T> {
   bool? _wasEphemeral;
 
   /// Acknowledge this interaction.
-  Future<InteractionCallbackResponse?> acknowledge({bool? isEphemeral, bool? withResponse}) async {
+  Future<InteractionCallbackResponse?> acknowledge(
+      {bool? isEphemeral, bool? withResponse}) async {
     if (_didAcknowledge) {
       throw AlreadyAcknowledgedError(this);
     }
@@ -154,7 +160,12 @@ mixin MessageResponse<T> on Interaction<T> {
     _didAcknowledge = true;
     _wasEphemeral = isEphemeral;
 
-    return manager.createResponse(id, token, InteractionResponseBuilder.deferredChannelMessage(isEphemeral: isEphemeral), withResponse: withResponse);
+    return manager.createResponse(
+        id,
+        token,
+        InteractionResponseBuilder.deferredChannelMessage(
+            isEphemeral: isEphemeral),
+        withResponse: withResponse);
   }
 
   /// Send a response to this interaction.
@@ -173,9 +184,15 @@ mixin MessageResponse<T> on Interaction<T> {
       _wasEphemeral = isEphemeral;
 
       // ignore: deprecated_member_use_from_same_package
-      return manager.createResponse(id, token, InteractionResponseBuilder.channelMessage(builder, isEphemeral: isEphemeral), withResponse: withResponse);
+      return manager.createResponse(
+          id,
+          token,
+          InteractionResponseBuilder.channelMessage(builder,
+              isEphemeral: isEphemeral),
+          withResponse: withResponse);
     } else {
-      assert(isEphemeral == _wasEphemeral || isEphemeral == null, 'Cannot change the value of isEphemeral between acknowledge and respond');
+      assert(isEphemeral == _wasEphemeral || isEphemeral == null,
+          'Cannot change the value of isEphemeral between acknowledge and respond');
       _didRespond = true;
 
       await manager.createFollowup(token, builder);
@@ -185,25 +202,32 @@ mixin MessageResponse<T> on Interaction<T> {
   }
 
   /// Fetch the original response to this interaction.
-  Future<Message> fetchOriginalResponse() => manager.fetchOriginalResponse(token);
+  Future<Message> fetchOriginalResponse() =>
+      manager.fetchOriginalResponse(token);
 
   /// Update the original response to this interaction.
-  Future<Message> updateOriginalResponse(MessageUpdateBuilder builder) => manager.updateOriginalResponse(token, builder);
+  Future<Message> updateOriginalResponse(MessageUpdateBuilder builder) =>
+      manager.updateOriginalResponse(token, builder);
 
   /// Delete the original response to this interaction.
-  Future<void> deleteOriginalResponse() => manager.deleteOriginalResponse(token);
+  Future<void> deleteOriginalResponse() =>
+      manager.deleteOriginalResponse(token);
 
   /// Create a followup to this interaction.
-  Future<Message> createFollowup(MessageBuilder builder, {bool? isEphemeral}) => manager.createFollowup(token, builder, isEphemeral: isEphemeral);
+  Future<Message> createFollowup(MessageBuilder builder, {bool? isEphemeral}) =>
+      manager.createFollowup(token, builder, isEphemeral: isEphemeral);
 
   /// Fetch a followup to this interaction.
-  Future<Message> fetchFollowup(Snowflake id) => manager.fetchFollowup(token, id);
+  Future<Message> fetchFollowup(Snowflake id) =>
+      manager.fetchFollowup(token, id);
 
   /// Update a followup to this interaction.
-  Future<Message> updateFollowup(Snowflake id, MessageUpdateBuilder builder) => manager.updateFollowup(token, id, builder);
+  Future<Message> updateFollowup(Snowflake id, MessageUpdateBuilder builder) =>
+      manager.updateFollowup(token, id, builder);
 
   /// Delete a followup to this interaction.
-  Future<void> deleteFollowup(Snowflake id) => manager.deleteFollowup(token, id);
+  Future<void> deleteFollowup(Snowflake id) =>
+      manager.deleteFollowup(token, id);
 }
 
 mixin ModalResponse<T> on Interaction<T> {
@@ -212,12 +236,14 @@ mixin ModalResponse<T> on Interaction<T> {
 
   /// Send a modal response to this interaction.
   Future<void> respondModal(ModalBuilder builder) async {
-    assert(!_didAcknowledge, 'Cannot open a modal after a response or acknowledge has been sent');
+    assert(!_didAcknowledge,
+        'Cannot open a modal after a response or acknowledge has been sent');
 
     _didAcknowledge = true;
     _didRespond = true;
 
-    await manager.createResponse(id, token, InteractionResponseBuilder.modal(builder));
+    await manager.createResponse(
+        id, token, InteractionResponseBuilder.modal(builder));
   }
 }
 
@@ -252,7 +278,8 @@ class PingInteraction extends Interaction<void> {
   }) : super(data: null);
 
   /// Send a pong response to this interaction.
-  Future<void> respond() => manager.createResponse(id, token, InteractionResponseBuilder.pong());
+  Future<void> respond() =>
+      manager.createResponse(id, token, InteractionResponseBuilder.pong());
 }
 
 /// {@template application_command_interaction}
@@ -260,8 +287,11 @@ class PingInteraction extends Interaction<void> {
 /// {@endtemplate}
 ///
 /// {@category models}
-class ApplicationCommandInteraction extends Interaction<ApplicationCommandInteractionData>
-    with MessageResponse<ApplicationCommandInteractionData>, ModalResponse<ApplicationCommandInteractionData> {
+class ApplicationCommandInteraction
+    extends Interaction<ApplicationCommandInteractionData>
+    with
+        MessageResponse<ApplicationCommandInteractionData>,
+        ModalResponse<ApplicationCommandInteractionData> {
   /// {@macro application_command_interaction}
   /// @nodoc
   ApplicationCommandInteraction({
@@ -293,8 +323,11 @@ class ApplicationCommandInteraction extends Interaction<ApplicationCommandIntera
 /// {@endtemplate}
 ///
 /// {@category models}
-class MessageComponentInteraction extends Interaction<MessageComponentInteractionData>
-    with MessageResponse<MessageComponentInteractionData>, ModalResponse<MessageComponentInteractionData> {
+class MessageComponentInteraction
+    extends Interaction<MessageComponentInteractionData>
+    with
+        MessageResponse<MessageComponentInteractionData>,
+        ModalResponse<MessageComponentInteractionData> {
   /// {@macro message_component_interaction}
   /// @nodoc
   MessageComponentInteraction({
@@ -323,8 +356,10 @@ class MessageComponentInteraction extends Interaction<MessageComponentInteractio
   bool? _didUpdateMessage;
 
   @override
-  Future<InteractionCallbackResponse?> acknowledge({bool? updateMessage, bool? isEphemeral, bool? withResponse}) async {
-    assert(updateMessage != true || isEphemeral != true, 'Cannot set isEphemeral to true if updateMessage is set to true');
+  Future<InteractionCallbackResponse?> acknowledge(
+      {bool? updateMessage, bool? isEphemeral, bool? withResponse}) async {
+    assert(updateMessage != true || isEphemeral != true,
+        'Cannot set isEphemeral to true if updateMessage is set to true');
 
     if (_didAcknowledge) {
       throw AlreadyAcknowledgedError(this);
@@ -335,9 +370,16 @@ class MessageComponentInteraction extends Interaction<MessageComponentInteractio
     _wasEphemeral = isEphemeral;
 
     if (updateMessage == true) {
-      return manager.createResponse(id, token, InteractionResponseBuilder.deferredUpdateMessage(), withResponse: withResponse);
+      return manager.createResponse(
+          id, token, InteractionResponseBuilder.deferredUpdateMessage(),
+          withResponse: withResponse);
     } else {
-      return manager.createResponse(id, token, InteractionResponseBuilder.deferredChannelMessage(isEphemeral: isEphemeral), withResponse: withResponse);
+      return manager.createResponse(
+          id,
+          token,
+          InteractionResponseBuilder.deferredChannelMessage(
+              isEphemeral: isEphemeral),
+          withResponse: withResponse);
     }
   }
 
@@ -348,9 +390,12 @@ class MessageComponentInteraction extends Interaction<MessageComponentInteractio
     @Deprecated('Use MessageBuilder.flags instead') bool? isEphemeral,
     bool? withResponse,
   }) async {
-    assert(updateMessage != true || isEphemeral != true, 'Cannot set isEphemeral to true if updateMessage is set to true');
-    assert(updateMessage != true || builder is MessageUpdateBuilder, 'builder must be a MessageUpdateBuilder if updateMessage is true');
-    assert(updateMessage == true || builder is MessageBuilder, 'builder must be a MessageBuilder if updateMessage is null or false');
+    assert(updateMessage != true || isEphemeral != true,
+        'Cannot set isEphemeral to true if updateMessage is set to true');
+    assert(updateMessage != true || builder is MessageUpdateBuilder,
+        'builder must be a MessageUpdateBuilder if updateMessage is true');
+    assert(updateMessage == true || builder is MessageBuilder,
+        'builder must be a MessageBuilder if updateMessage is null or false');
 
     if (_didRespond) {
       throw AlreadyRespondedError(this);
@@ -363,20 +408,32 @@ class MessageComponentInteraction extends Interaction<MessageComponentInteractio
       _wasEphemeral = isEphemeral;
 
       if (updateMessage == true) {
-        return manager.createResponse(id, token, InteractionResponseBuilder.updateMessage(builder as MessageUpdateBuilder), withResponse: withResponse);
+        return manager.createResponse(
+            id,
+            token,
+            InteractionResponseBuilder.updateMessage(
+                builder as MessageUpdateBuilder),
+            withResponse: withResponse);
       } else {
         // ignore: deprecated_member_use_from_same_package
-        return manager.createResponse(id, token, InteractionResponseBuilder.channelMessage(builder as MessageBuilder, isEphemeral: isEphemeral),
+        return manager.createResponse(
+            id,
+            token,
+            InteractionResponseBuilder.channelMessage(builder as MessageBuilder,
+                isEphemeral: isEphemeral),
             withResponse: withResponse);
       }
     } else {
-      assert(updateMessage == _didUpdateMessage || updateMessage == null, 'Cannot change the value of updateMessage between acknowledge and respond');
-      assert(isEphemeral == _wasEphemeral || isEphemeral == null, 'Cannot change the value of isEphemeral between acknowledge and respond');
+      assert(updateMessage == _didUpdateMessage || updateMessage == null,
+          'Cannot change the value of updateMessage between acknowledge and respond');
+      assert(isEphemeral == _wasEphemeral || isEphemeral == null,
+          'Cannot change the value of isEphemeral between acknowledge and respond');
 
       _didRespond = true;
 
       if (_didUpdateMessage == true) {
-        await manager.updateOriginalResponse(token, builder as MessageUpdateBuilder);
+        await manager.updateOriginalResponse(
+            token, builder as MessageUpdateBuilder);
       } else {
         await manager.createFollowup(token, builder as MessageBuilder);
       }
@@ -391,7 +448,8 @@ class MessageComponentInteraction extends Interaction<MessageComponentInteractio
 /// {@endtemplate}
 ///
 /// {@category models}
-class ModalSubmitInteraction extends Interaction<ModalSubmitInteractionData> with MessageResponse<ModalSubmitInteractionData> {
+class ModalSubmitInteraction extends Interaction<ModalSubmitInteractionData>
+    with MessageResponse<ModalSubmitInteractionData> {
   /// {@macro modal_submit_interaction}
   /// @nodoc
   ModalSubmitInteraction({
@@ -421,7 +479,8 @@ class ModalSubmitInteraction extends Interaction<ModalSubmitInteractionData> wit
 /// {@template application_command_autocomplete_interaction}
 /// An application command autocomplete interaction.
 /// {@endtemplate}
-class ApplicationCommandAutocompleteInteraction extends Interaction<ApplicationCommandInteractionData> {
+class ApplicationCommandAutocompleteInteraction
+    extends Interaction<ApplicationCommandInteractionData> {
   /// {@macro application_command_autocomplete_interaction}
   /// @nodoc
   ApplicationCommandAutocompleteInteraction({
@@ -449,7 +508,8 @@ class ApplicationCommandAutocompleteInteraction extends Interaction<ApplicationC
 
   /// Send a response to this interaction.
   Future<void> respond(List<CommandOptionChoiceBuilder<dynamic>> builders) =>
-      manager.createResponse(id, token, InteractionResponseBuilder.autocompleteResult(builders));
+      manager.createResponse(
+          id, token, InteractionResponseBuilder.autocompleteResult(builders));
 }
 
 /// The type of an interaction.
@@ -463,7 +523,8 @@ final class InteractionType extends EnumLike<int, InteractionType> {
   /// @nodoc
   const InteractionType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   InteractionType.parse(int value) : this(value);
 }
 
@@ -595,7 +656,11 @@ class MessageComponentInteractionData with ToStringHelper {
 
   /// {@macro message_component_interaction_data}
   /// @nodoc
-  MessageComponentInteractionData({required this.customId, required this.type, required this.values, required this.resolved});
+  MessageComponentInteractionData(
+      {required this.customId,
+      required this.type,
+      required this.values,
+      required this.resolved});
 }
 
 /// {@template modal_submit_interaction_data}
@@ -612,7 +677,8 @@ class ModalSubmitInteractionData with ToStringHelper {
 
   /// {@macro modal_submit_interaction_data}
   /// @nodoc
-  ModalSubmitInteractionData({required this.customId, required this.components});
+  ModalSubmitInteractionData(
+      {required this.customId, required this.components});
 }
 
 /// An unknown interaction.

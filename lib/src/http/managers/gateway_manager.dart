@@ -1,10 +1,10 @@
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/gateway/gateway.dart';
-import 'package:nyxx/src/models/presence.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/gateway/gateway.dart';
+import 'package:uhxx/src/models/presence.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A [Manager] for gateway information.
 ///
@@ -15,14 +15,14 @@ import 'package:nyxx/src/utils/parsing_helpers.dart';
 // allowing us to override it in Gateway to have a more specific type.
 abstract class GatewayManager {
   /// The client this manager is for.
-  NyxxRest get client;
+  UhxxRest get client;
 
   /// @nodoc
   // We need a constructor to be allowed to use this class as a superclass.
   GatewayManager.create();
 
   /// Create a new [GatewayManager].
-  factory GatewayManager(NyxxRest client) = _GatewayManagerImpl;
+  factory GatewayManager(UhxxRest client) = _GatewayManagerImpl;
 
   GatewayConfiguration parseGatewayConfiguration(Map<String, Object?> raw) {
     return GatewayConfiguration(url: Uri.parse(raw['url'] as String));
@@ -32,7 +32,8 @@ abstract class GatewayManager {
     return GatewayBot(
       url: Uri.parse(raw['url'] as String),
       shards: raw['shards'] as int,
-      sessionStartLimit: parseSessionStartLimit(raw['session_start_limit'] as Map<String, Object?>),
+      sessionStartLimit: parseSessionStartLimit(
+          raw['session_start_limit'] as Map<String, Object?>),
     );
   }
 
@@ -51,7 +52,8 @@ abstract class GatewayManager {
       name: raw['name'] as String,
       type: ActivityType(raw['type'] as int),
       url: tryParse(raw['url'], Uri.parse),
-      createdAt: tryParse(raw['created_at'], DateTime.fromMillisecondsSinceEpoch),
+      createdAt:
+          tryParse(raw['created_at'], DateTime.fromMillisecondsSinceEpoch),
       timestamps: tryParse(raw['timestamps'], parseActivityTimestamps),
       applicationId: tryParse(raw['application_id'], Snowflake.parse),
       details: tryParse(raw['details']),
@@ -68,8 +70,14 @@ abstract class GatewayManager {
 
   ActivityTimestamps parseActivityTimestamps(Map<String, Object?> raw) {
     return ActivityTimestamps(
-      start: maybeParse(raw['start'], (int milliseconds) => DateTime.fromMillisecondsSinceEpoch(milliseconds)),
-      end: maybeParse(raw['end'], (int milliseconds) => DateTime.fromMillisecondsSinceEpoch(milliseconds)),
+      start: maybeParse(
+          raw['start'],
+          (int milliseconds) =>
+              DateTime.fromMillisecondsSinceEpoch(milliseconds)),
+      end: maybeParse(
+          raw['end'],
+          (int milliseconds) =>
+              DateTime.fromMillisecondsSinceEpoch(milliseconds)),
     );
   }
 
@@ -136,7 +144,7 @@ abstract class GatewayManager {
 
 class _GatewayManagerImpl extends GatewayManager {
   @override
-  final NyxxRest client;
+  final UhxxRest client;
 
   _GatewayManagerImpl(this.client) : super.create();
 }

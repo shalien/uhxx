@@ -1,7 +1,7 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/sticker/guild_sticker.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/sticker/guild_sticker.dart';
 
 /// {@category builders}
 class StickerBuilder implements CreateBuilder<GuildSticker> {
@@ -17,7 +17,11 @@ class StickerBuilder implements CreateBuilder<GuildSticker> {
   /// The sticker file to upload
   ImageBuilder file;
 
-  StickerBuilder({required this.name, this.description = '', required this.tags, required this.file});
+  StickerBuilder(
+      {required this.name,
+      this.description = '',
+      required this.tags,
+      required this.file});
 
   @override
   Map<String, String> build() => {
@@ -38,11 +42,13 @@ class StickerUpdateBuilder implements UpdateBuilder<GuildSticker> {
   /// Autocomplete/suggestion tags for the sticker (max 200 characters)
   String? tags;
 
-  StickerUpdateBuilder({this.name, this.description = sentinelString, this.tags});
+  StickerUpdateBuilder(
+      {this.name, this.description = sentinelString, this.tags});
 
   @override
   Map<String, Object?> build() => {
-        if (!identical(description, sentinelString)) "description": description ?? '',
+        if (!identical(description, sentinelString))
+          "description": description ?? '',
         if (name != null) "name": name,
         if (tags != null) "tags": tags,
       };

@@ -1,15 +1,16 @@
 import 'dart:async';
 
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// The base class for all entities in the API identified by a [Snowflake].
 ///
 /// {@category core}
 /// {@category entities}
-abstract class SnowflakeEntity<T extends SnowflakeEntity<T>> with ToStringHelper {
+abstract class SnowflakeEntity<T extends SnowflakeEntity<T>>
+    with ToStringHelper {
   /// The id of this entity.
   final Snowflake id;
 
@@ -25,7 +26,8 @@ abstract class SnowflakeEntity<T extends SnowflakeEntity<T>> with ToStringHelper
   Future<T> fetch();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || (other is SnowflakeEntity<T> && other.id == id);
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is SnowflakeEntity<T> && other.id == id);
 
   @override
   int get hashCode => id.hashCode;
@@ -38,7 +40,8 @@ abstract class SnowflakeEntity<T extends SnowflakeEntity<T>> with ToStringHelper
 ///
 /// {@category core}
 /// {@category entities}
-abstract class ManagedSnowflakeEntity<T extends ManagedSnowflakeEntity<T>> extends SnowflakeEntity<T> {
+abstract class ManagedSnowflakeEntity<T extends ManagedSnowflakeEntity<T>>
+    extends SnowflakeEntity<T> {
   /// The manager for this entity.
   ReadOnlyManager<T> get manager;
 
@@ -57,7 +60,8 @@ abstract class ManagedSnowflakeEntity<T extends ManagedSnowflakeEntity<T>> exten
 ///
 /// {@category core}
 /// {@category entities}
-abstract class WritableSnowflakeEntity<T extends WritableSnowflakeEntity<T>> extends ManagedSnowflakeEntity<T> {
+abstract class WritableSnowflakeEntity<T extends WritableSnowflakeEntity<T>>
+    extends ManagedSnowflakeEntity<T> {
   @override
   Manager<T> get manager;
 
@@ -66,7 +70,8 @@ abstract class WritableSnowflakeEntity<T extends WritableSnowflakeEntity<T>> ext
   WritableSnowflakeEntity({required super.id});
 
   /// Update this entity using the provided builder and return the updated entity.
-  Future<T> update(covariant UpdateBuilder<T> builder) => manager.update(id, builder);
+  Future<T> update(covariant UpdateBuilder<T> builder) =>
+      manager.update(id, builder);
 
   /// Delete this entity.
   Future<void> delete() => manager.delete(id);

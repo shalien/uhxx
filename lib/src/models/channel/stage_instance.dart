@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:nyxx/src/http/managers/channel_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/scheduled_event.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/http/managers/channel_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/scheduled_event.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
 
 /// {@template stage_instance}
 /// Information about a live stage.
@@ -52,13 +52,16 @@ class StageInstance extends SnowflakeEntity<StageInstance> {
   PartialChannel get channel => manager.client.channels[channelId];
 
   /// The scheduled event associated with this instance.
-  PartialScheduledEvent? get scheduledEvent => scheduledEventId == null ? null : guild.scheduledEvents[scheduledEventId!];
+  PartialScheduledEvent? get scheduledEvent => scheduledEventId == null
+      ? null
+      : guild.scheduledEvents[scheduledEventId!];
 
   @override
   Future<StageInstance> fetch() => manager.fetchStageInstance(channelId);
 
   @override
-  Future<StageInstance> get() async => manager.stageInstanceCache[channelId] ?? await fetch();
+  Future<StageInstance> get() async =>
+      manager.stageInstanceCache[channelId] ?? await fetch();
 }
 
 /// The privacy level of a [StageInstance].
@@ -69,6 +72,7 @@ final class PrivacyLevel extends EnumLike<int, PrivacyLevel> {
   /// @nodoc
   const PrivacyLevel(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   PrivacyLevel.parse(int value) : this(value);
 }

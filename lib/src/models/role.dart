@@ -1,14 +1,14 @@
-import 'package:nyxx/src/builders/role.dart';
-import 'package:nyxx/src/http/cdn/cdn_asset.dart';
-import 'package:nyxx/src/http/managers/role_manager.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/commands/application_command_option.dart';
-import 'package:nyxx/src/models/discord_color.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/utils/flags.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/builders/role.dart';
+import 'package:uhxx/src/http/cdn/cdn_asset.dart';
+import 'package:uhxx/src/http/managers/role_manager.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/commands/application_command_option.dart';
+import 'package:uhxx/src/models/discord_color.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/utils/flags.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A partial [Role].
 ///
@@ -27,7 +27,8 @@ class PartialRole extends WritableSnowflakeEntity<Role> {
   /// * [RoleManager.update]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/guild#modify-guild-role
   @override
-  Future<Role> update(RoleUpdateBuilder builder, {String? auditLogReason}) => manager.update(id, builder, auditLogReason: auditLogReason);
+  Future<Role> update(RoleUpdateBuilder builder, {String? auditLogReason}) =>
+      manager.update(id, builder, auditLogReason: auditLogReason);
 
   /// Delete this role.
   ///
@@ -35,7 +36,8 @@ class PartialRole extends WritableSnowflakeEntity<Role> {
   /// * [RoleManager.delete]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/guild#delete-guild-role
   @override
-  Future<void> delete({String? auditLogReason}) => manager.delete(id, auditLogReason: auditLogReason);
+  Future<void> delete({String? auditLogReason}) =>
+      manager.delete(id, auditLogReason: auditLogReason);
 }
 
 /// {@template role}

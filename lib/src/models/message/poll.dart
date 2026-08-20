@@ -1,6 +1,6 @@
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A layout type indicating how poll looks.
 ///
@@ -13,7 +13,8 @@ final class PollLayoutType extends EnumLike<int, PollLayoutType> {
   /// @nodoc
   const PollLayoutType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   PollLayoutType.parse(int value) : this(value);
 }
 
@@ -73,7 +74,8 @@ class PollAnswerCount with ToStringHelper {
   final bool me;
 
   /// @nodoc
-  PollAnswerCount({required this.answerId, required this.count, required this.me});
+  PollAnswerCount(
+      {required this.answerId, required this.count, required this.me});
 }
 
 /// {@template poll_results}
@@ -132,5 +134,11 @@ class Poll with ToStringHelper {
 
   /// {@macro poll}
   /// @nodoc
-  Poll({required this.question, required this.answers, required this.endsAt, required this.allowsMultiselect, required this.layoutType, required this.results});
+  Poll(
+      {required this.question,
+      required this.answers,
+      required this.endsAt,
+      required this.allowsMultiselect,
+      required this.layoutType,
+      required this.results});
 }

@@ -1,32 +1,32 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' hide MultipartRequest;
-import 'package:nyxx/src/builders/interaction_response.dart';
-import 'package:nyxx/src/builders/message/message.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/commands/application_command.dart';
-import 'package:nyxx/src/models/commands/application_command_option.dart';
-import 'package:nyxx/src/models/interaction.dart';
-import 'package:nyxx/src/models/locale.dart';
-import 'package:nyxx/src/models/component.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/builders/interaction_response.dart';
+import 'package:uhxx/src/builders/message/message.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/commands/application_command.dart';
+import 'package:uhxx/src/models/commands/application_command_option.dart';
+import 'package:uhxx/src/models/interaction.dart';
+import 'package:uhxx/src/models/locale.dart';
+import 'package:uhxx/src/models/component.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A [Manager] for [Interaction]s.
 ///
 /// {@category managers}
 class InteractionManager {
   /// The client for this [InteractionManager].
-  final NyxxRest client;
+  final UhxxRest client;
 
   /// The ID of the application for this [InteractionManager].
   final Snowflake applicationId;
@@ -41,26 +41,38 @@ class InteractionManager {
     final channelId = maybeParse(raw['channel_id'], Snowflake.parse);
     final id = Snowflake.parse(raw['id']!);
     final applicationId = Snowflake.parse(raw['application_id']!);
-    final channel = maybeParse(raw['channel'], (Map<String, Object?> raw) => client.channels[Snowflake.parse(raw['id']!)]);
+    final channel = maybeParse(
+        raw['channel'],
+        (Map<String, Object?> raw) =>
+            client.channels[Snowflake.parse(raw['id']!)]);
     // Don't use a tearoff so we don't evaluate `guildId!` unless member is set.
-    final member = maybeParse(raw['member'], (Map<String, Object?> raw) => client.guilds[guildId!].members.parse(raw));
+    final member = maybeParse(
+        raw['member'],
+        (Map<String, Object?> raw) =>
+            client.guilds[guildId!].members.parse(raw));
     final user = maybeParse(raw['user'], client.users.parse);
     final token = raw['token'] as String;
     final version = raw['version'] as int;
     // Don't use a tearoff so we don't evaluate `channelId!` unless message is set.
     final message = maybeParse(
       raw['message'],
-      (Map<String, Object?> raw) => (client.channels[channelId!] as PartialTextChannel).messages.parse(raw, guildId: guildId),
+      (Map<String, Object?> raw) =>
+          (client.channels[channelId!] as PartialTextChannel)
+              .messages
+              .parse(raw, guildId: guildId),
     );
-    final appPermissions = Permissions(int.parse(raw['app_permissions'] as String));
+    final appPermissions =
+        Permissions(int.parse(raw['app_permissions'] as String));
     final locale = maybeParse(raw['locale'], Locale.parse);
     final guildLocale = maybeParse(raw['guild_locale'], Locale.parse);
-    final entitlements = parseMany(raw['entitlements'] as List, client.applications[applicationId].entitlements.parse);
+    final entitlements = parseMany(raw['entitlements'] as List,
+        client.applications[applicationId].entitlements.parse);
 
     final authorizingIntegrationOwners = maybeParse(
       raw['authorizing_integration_owners'],
       (Map<String, Object?> map) => {
-        for (final MapEntry(:key, :value) in map.entries) ApplicationIntegrationType(int.parse(key)): Snowflake.parse(value!),
+        for (final MapEntry(:key, :value) in map.entries)
+          ApplicationIntegrationType(int.parse(key)): Snowflake.parse(value!),
       },
     );
     final context = maybeParse(raw['context'], InteractionContextType.new);
@@ -93,7 +105,10 @@ class InteractionManager {
             id: id,
             applicationId: applicationId,
             type: type,
-            data: parseApplicationCommandInteractionData(raw['data'] as Map<String, Object?>, guildId: guildId, channelId: channelId),
+            data: parseApplicationCommandInteractionData(
+                raw['data'] as Map<String, Object?>,
+                guildId: guildId,
+                channelId: channelId),
             guildId: guildId,
             channel: channel,
             channelId: channelId,
@@ -115,7 +130,10 @@ class InteractionManager {
             id: id,
             applicationId: applicationId,
             type: type,
-            data: parseMessageComponentInteractionData(raw['data'] as Map<String, Object?>, guildId: guildId, channelId: channelId),
+            data: parseMessageComponentInteractionData(
+                raw['data'] as Map<String, Object?>,
+                guildId: guildId,
+                channelId: channelId),
             guildId: guildId,
             channel: channel,
             channelId: channelId,
@@ -137,7 +155,10 @@ class InteractionManager {
             id: id,
             applicationId: applicationId,
             type: type,
-            data: parseModalSubmitInteractionData(raw['data'] as Map<String, Object?>, guildId: guildId, channelId: channelId),
+            data: parseModalSubmitInteractionData(
+                raw['data'] as Map<String, Object?>,
+                guildId: guildId,
+                channelId: channelId),
             guildId: guildId,
             channel: channel,
             channelId: channelId,
@@ -154,12 +175,16 @@ class InteractionManager {
             context: context,
             attachmentSizeLimit: attachmentSizeLimit,
           ),
-      InteractionType.applicationCommandAutocomplete: () => ApplicationCommandAutocompleteInteraction(
+      InteractionType.applicationCommandAutocomplete: () =>
+          ApplicationCommandAutocompleteInteraction(
             manager: this,
             id: id,
             applicationId: applicationId,
             type: type,
-            data: parseApplicationCommandInteractionData(raw['data'] as Map<String, Object?>, guildId: guildId, channelId: channelId),
+            data: parseApplicationCommandInteractionData(
+                raw['data'] as Map<String, Object?>,
+                guildId: guildId,
+                channelId: channelId),
             guildId: guildId,
             channel: channel,
             channelId: channelId,
@@ -202,12 +227,18 @@ class InteractionManager {
         );
   }
 
-  ApplicationCommandInteractionData parseApplicationCommandInteractionData(Map<String, Object?> raw, {Snowflake? guildId, Snowflake? channelId}) {
+  ApplicationCommandInteractionData parseApplicationCommandInteractionData(
+      Map<String, Object?> raw,
+      {Snowflake? guildId,
+      Snowflake? channelId}) {
     return ApplicationCommandInteractionData(
       id: Snowflake.parse(raw['id']!),
       name: raw['name'] as String,
       type: ApplicationCommandType(raw['type'] as int),
-      resolved: maybeParse(raw['resolved'], (Map<String, Object?> raw) => parseResolvedData(raw, guildId: guildId, channelId: channelId)),
+      resolved: maybeParse(
+          raw['resolved'],
+          (Map<String, Object?> raw) =>
+              parseResolvedData(raw, guildId: guildId, channelId: channelId)),
       options: maybeParseMany(raw['options'], parseInteractionOption),
       // This guild_id is the ID of the guild the command is registered in, so it may be null even if the command was executed in a guild.
       // Because of this, we still need the guildId parameter for the actual guild the command was executed in.
@@ -216,32 +247,41 @@ class InteractionManager {
     );
   }
 
-  ResolvedData parseResolvedData(Map<String, Object?> raw, {Snowflake? guildId, Snowflake? channelId}) {
+  ResolvedData parseResolvedData(Map<String, Object?> raw,
+      {Snowflake? guildId, Snowflake? channelId}) {
     return ResolvedData(
       users: maybeParse(
         raw['users'],
-        (Map<String, Object?> raw) => raw.map((key, value) => MapEntry(Snowflake.parse(key), client.users.parse(value as Map<String, Object?>))),
+        (Map<String, Object?> raw) => raw.map((key, value) => MapEntry(
+            Snowflake.parse(key),
+            client.users.parse(value as Map<String, Object?>))),
       ),
       members: maybeParse(
         raw['members'],
         (Map<String, Object?> raw) => raw.map(
           (key, value) => MapEntry(
             Snowflake.parse(key),
-            client.guilds[guildId ?? Snowflake.zero].members.parse(value as Map<String, Object?>, userId: Snowflake.parse(key)),
+            client.guilds[guildId ?? Snowflake.zero].members.parse(
+                value as Map<String, Object?>,
+                userId: Snowflake.parse(key)),
           ),
         ),
       ),
       roles: maybeParse(
         raw['roles'],
-        (Map<String, Object?> raw) =>
-            raw.map((key, value) => MapEntry(Snowflake.parse(key), client.guilds[guildId ?? Snowflake.zero].roles.parse(value as Map<String, Object?>))),
+        (Map<String, Object?> raw) => raw.map((key, value) => MapEntry(
+            Snowflake.parse(key),
+            client.guilds[guildId ?? Snowflake.zero].roles
+                .parse(value as Map<String, Object?>))),
       ),
       channels: maybeParse(
         raw['channels'],
         (Map<String, Object?> raw) => raw.map(
           (key, value) => MapEntry(
             Snowflake.parse(key),
-            PartialChannel(id: Snowflake.parse((value as Map<String, Object?>)['id']!), manager: client.channels),
+            PartialChannel(
+                id: Snowflake.parse((value as Map<String, Object?>)['id']!),
+                manager: client.channels),
           ),
         ),
       ),
@@ -252,7 +292,9 @@ class InteractionManager {
             Snowflake.parse(key),
             PartialMessage(
                 id: Snowflake.parse((value as Map<String, Object?>)['id']!),
-                manager: (client.channels[channelId ?? Snowflake.zero] as PartialTextChannel).messages),
+                manager: (client.channels[channelId ?? Snowflake.zero]
+                        as PartialTextChannel)
+                    .messages),
           ),
         ),
       ),
@@ -261,7 +303,9 @@ class InteractionManager {
         (Map<String, Object?> raw) => raw.map(
           (key, value) => MapEntry(
             Snowflake.parse(key),
-            (client.channels[channelId ?? Snowflake.zero] as PartialTextChannel).messages.parseAttachment(value as Map<String, Object?>),
+            (client.channels[channelId ?? Snowflake.zero] as PartialTextChannel)
+                .messages
+                .parseAttachment(value as Map<String, Object?>),
           ),
         ),
       ),
@@ -278,29 +322,42 @@ class InteractionManager {
     );
   }
 
-  MessageComponentInteractionData parseMessageComponentInteractionData(Map<String, Object?> raw, {Snowflake? guildId, Snowflake? channelId}) {
+  MessageComponentInteractionData parseMessageComponentInteractionData(
+      Map<String, Object?> raw,
+      {Snowflake? guildId,
+      Snowflake? channelId}) {
     return MessageComponentInteractionData(
       customId: raw['custom_id'] as String,
       type: ComponentType(raw['component_type'] as int),
       values: maybeParseMany(raw['values']),
-      resolved: maybeParse(raw['resolved'], (Map<String, Object?> raw) => parseResolvedData(raw, guildId: guildId, channelId: channelId)),
+      resolved: maybeParse(
+          raw['resolved'],
+          (Map<String, Object?> raw) =>
+              parseResolvedData(raw, guildId: guildId, channelId: channelId)),
     );
   }
 
-  ModalSubmitInteractionData parseModalSubmitInteractionData(Map<String, Object?> raw, {Snowflake? guildId, Snowflake? channelId}) {
+  ModalSubmitInteractionData parseModalSubmitInteractionData(
+      Map<String, Object?> raw,
+      {Snowflake? guildId,
+      Snowflake? channelId}) {
     return ModalSubmitInteractionData(
       customId: raw['custom_id'] as String,
       components: parseMany(
         raw['components'] as List,
         (Map<String, Object?> raw) =>
-            (client.channels[channelId ?? Snowflake.zero] as PartialTextChannel).messages.parseSubmittedComponent(raw, guildId: guildId),
+            (client.channels[channelId ?? Snowflake.zero] as PartialTextChannel)
+                .messages
+                .parseSubmittedComponent(raw, guildId: guildId),
       ),
     );
   }
 
-  InteractionCallbackResponse parseInteractionCallbackResponse(Map<String, Object?> raw) {
+  InteractionCallbackResponse parseInteractionCallbackResponse(
+      Map<String, Object?> raw) {
     return InteractionCallbackResponse(
-      interaction: parseInteractionCallback(raw['interaction'] as Map<String, Object?>),
+      interaction:
+          parseInteractionCallback(raw['interaction'] as Map<String, Object?>),
       resource: maybeParse(raw['resource'], parseInteractionResource),
     );
   }
@@ -310,7 +367,8 @@ class InteractionManager {
       id: Snowflake.parse(raw['id']!),
       type: InteractionType(raw['type'] as int),
       activityInstanceId: raw['activity_instance_id'] as String?,
-      responseMessageId: maybeParse(raw['response_message_id'], Snowflake.parse),
+      responseMessageId:
+          maybeParse(raw['response_message_id'], Snowflake.parse),
       responseMessageLoading: raw['response_message_loading'] as bool?,
       responseMessageEphemeral: raw['response_message_ephemeral'] as bool?,
     );
@@ -319,29 +377,39 @@ class InteractionManager {
   InteractionResource parseInteractionResource(Map<String, Object?> raw) {
     return InteractionResource(
       type: InteractionCallbackType(raw['type'] as int),
-      activityInstance: maybeParse(raw['activity_instance'], parseInteractionCallbackActivityInstanceResource),
+      activityInstance: maybeParse(raw['activity_instance'],
+          parseInteractionCallbackActivityInstanceResource),
       message: maybeParse(raw['message'], (Map<String, Object?> m) {
         final rawChannelId = m['channel_id'];
 
-        final channelId = maybeParse(rawChannelId, Snowflake.parse) ?? Snowflake.zero;
+        final channelId =
+            maybeParse(rawChannelId, Snowflake.parse) ?? Snowflake.zero;
 
-        return (client.channels[channelId] as PartialTextChannel).messages.parse(m);
+        return (client.channels[channelId] as PartialTextChannel)
+            .messages
+            .parse(m);
       }),
     );
   }
 
-  InteractionCallbackActivityInstanceResource parseInteractionCallbackActivityInstanceResource(Map<String, Object?> raw) {
+  InteractionCallbackActivityInstanceResource
+      parseInteractionCallbackActivityInstanceResource(
+          Map<String, Object?> raw) {
     return InteractionCallbackActivityInstanceResource(id: raw['id'] as String);
   }
 
   /// Create a response to an interaction.
-  Future<InteractionCallbackResponse?> createResponse(Snowflake id, String token, InteractionResponseBuilder builder, {bool? withResponse}) async {
+  Future<InteractionCallbackResponse?> createResponse(
+      Snowflake id, String token, InteractionResponseBuilder builder,
+      {bool? withResponse}) async {
     final route = HttpRoute()
       ..interactions(id: id.toString(), token: token)
       ..callback();
 
     final HttpRequest request;
-    if (builder.data case MessageBuilder(:final attachments?) || MessageUpdateBuilder(:final attachments?)
+    if (builder.data
+        case MessageBuilder(:final attachments?) ||
+            MessageUpdateBuilder(:final attachments?)
         when !identical(attachments, sentinelList) && attachments.isNotEmpty) {
       final payload = builder.build();
 
@@ -353,7 +421,8 @@ class InteractionManager {
           filename: attachments[i].fileName,
         ));
 
-        (((payload['data'] as Map<String, Object?>)['attachments'] as List)[i] as Map<String, Object?>)['id'] = i.toString();
+        (((payload['data'] as Map<String, Object?>)['attachments'] as List)[i]
+            as Map<String, Object?>)['id'] = i.toString();
       }
 
       request = MultipartRequest(
@@ -362,7 +431,9 @@ class InteractionManager {
         jsonPayload: jsonEncode(payload),
         files: files,
         applyGlobalRateLimit: false,
-        queryParameters: withResponse != null ? {'with_response': withResponse.toString()} : {},
+        queryParameters: withResponse != null
+            ? {'with_response': withResponse.toString()}
+            : {},
       );
     } else {
       request = BasicRequest(
@@ -370,7 +441,9 @@ class InteractionManager {
         method: 'POST',
         body: jsonEncode(builder.build()),
         applyGlobalRateLimit: false,
-        queryParameters: withResponse != null ? {'with_response': withResponse.toString()} : {},
+        queryParameters: withResponse != null
+            ? {'with_response': withResponse.toString()}
+            : {},
       );
     }
 
@@ -380,7 +453,8 @@ class InteractionManager {
       return null;
     }
 
-    final interactionCallback = parseInteractionCallbackResponse(response.jsonBody);
+    final interactionCallback =
+        parseInteractionCallbackResponse(response.jsonBody);
 
     client.updateCacheWith(interactionCallback);
 
@@ -388,27 +462,35 @@ class InteractionManager {
   }
 
   /// Fetch an interaction's original response.
-  Future<Message> fetchOriginalResponse(String token) => _fetchResponse(token, '@original');
+  Future<Message> fetchOriginalResponse(String token) =>
+      _fetchResponse(token, '@original');
 
   /// Update an interaction's original response.
-  Future<Message> updateOriginalResponse(String token, MessageUpdateBuilder builder) => _updateResponse(token, '@original', builder);
+  Future<Message> updateOriginalResponse(
+          String token, MessageUpdateBuilder builder) =>
+      _updateResponse(token, '@original', builder);
 
   /// Delete an interaction's original response.
-  Future<void> deleteOriginalResponse(String token) => _deleteResponse(token, '@original');
+  Future<void> deleteOriginalResponse(String token) =>
+      _deleteResponse(token, '@original');
 
   /// Create a followup to an interaction.
-  Future<Message> createFollowup(String token, MessageBuilder builder, {bool? isEphemeral}) async {
+  Future<Message> createFollowup(String token, MessageBuilder builder,
+      {bool? isEphemeral}) async {
     final route = HttpRoute()
       ..webhooks(id: applicationId.toString())
       ..add(HttpRoutePart(token));
 
     final builtMessagePayload = builder.build();
     if (isEphemeral != null) {
-      builtMessagePayload['flags'] = (builtMessagePayload['flags'] as int? ?? 0) | (isEphemeral ? MessageFlags.ephemeral.value : 0);
+      builtMessagePayload['flags'] =
+          (builtMessagePayload['flags'] as int? ?? 0) |
+              (isEphemeral ? MessageFlags.ephemeral.value : 0);
     }
 
     final HttpRequest request;
-    if (!identical(builder.attachments, sentinelList) && builder.attachments?.isNotEmpty == true) {
+    if (!identical(builder.attachments, sentinelList) &&
+        builder.attachments?.isNotEmpty == true) {
       final attachments = builder.attachments!;
 
       final files = <MultipartFile>[];
@@ -419,7 +501,8 @@ class InteractionManager {
           filename: attachments[i].fileName,
         ));
 
-        ((builtMessagePayload['attachments'] as List)[i] as Map)['id'] = i.toString();
+        ((builtMessagePayload['attachments'] as List)[i] as Map)['id'] =
+            i.toString();
       }
 
       request = MultipartRequest(
@@ -440,21 +523,28 @@ class InteractionManager {
 
     final response = await client.httpHandler.executeSafe(request);
 
-    final channelId = Snowflake.parse((response.jsonBody as Map<String, Object?>)['channel_id']!);
-    final message = (client.channels[channelId] as PartialTextChannel).messages.parse(response.jsonBody as Map<String, Object?>);
+    final channelId = Snowflake.parse(
+        (response.jsonBody as Map<String, Object?>)['channel_id']!);
+    final message = (client.channels[channelId] as PartialTextChannel)
+        .messages
+        .parse(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(message);
     return message;
   }
 
   /// Fetch a followup to an interaction.
-  Future<Message> fetchFollowup(String token, Snowflake messageId) => _fetchResponse(token, messageId.toString());
+  Future<Message> fetchFollowup(String token, Snowflake messageId) =>
+      _fetchResponse(token, messageId.toString());
 
   /// Update a followup to an interaction.
-  Future<Message> updateFollowup(String token, Snowflake messageId, MessageUpdateBuilder builder) => _updateResponse(token, messageId.toString(), builder);
+  Future<Message> updateFollowup(
+          String token, Snowflake messageId, MessageUpdateBuilder builder) =>
+      _updateResponse(token, messageId.toString(), builder);
 
   /// Delete a followup to an interaction.
-  Future<void> deleteFollowup(String token, Snowflake messageId) => _deleteResponse(token, messageId.toString());
+  Future<void> deleteFollowup(String token, Snowflake messageId) =>
+      _deleteResponse(token, messageId.toString());
 
   Future<Message> _fetchResponse(String token, String messageId) async {
     final route = HttpRoute()
@@ -464,20 +554,25 @@ class InteractionManager {
 
     final response = await client.httpHandler.executeSafe(request);
 
-    final channelId = Snowflake.parse((response.jsonBody as Map<String, Object?>)['channel_id']!);
-    final message = (client.channels[channelId] as PartialTextChannel).messages.parse(response.jsonBody as Map<String, Object?>);
+    final channelId = Snowflake.parse(
+        (response.jsonBody as Map<String, Object?>)['channel_id']!);
+    final message = (client.channels[channelId] as PartialTextChannel)
+        .messages
+        .parse(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(message);
     return message;
   }
 
-  Future<Message> _updateResponse(String token, String messageId, MessageUpdateBuilder builder) async {
+  Future<Message> _updateResponse(
+      String token, String messageId, MessageUpdateBuilder builder) async {
     final route = HttpRoute()
       ..webhooks(id: applicationId.toString(), token: token)
       ..messages(id: messageId.toString());
 
     final HttpRequest request;
-    if (!identical(builder.attachments, sentinelList) && builder.attachments?.isNotEmpty == true) {
+    if (!identical(builder.attachments, sentinelList) &&
+        builder.attachments?.isNotEmpty == true) {
       final attachments = builder.attachments!;
       final payload = builder.build();
 
@@ -509,8 +604,11 @@ class InteractionManager {
     }
 
     final response = await client.httpHandler.executeSafe(request);
-    final channelId = Snowflake.parse((response.jsonBody as Map<String, Object?>)['channel_id']!);
-    final message = (client.channels[channelId] as PartialTextChannel).messages.parse(response.jsonBody as Map<String, Object?>);
+    final channelId = Snowflake.parse(
+        (response.jsonBody as Map<String, Object?>)['channel_id']!);
+    final message = (client.channels[channelId] as PartialTextChannel)
+        .messages
+        .parse(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(message);
     return message;
@@ -520,7 +618,8 @@ class InteractionManager {
     final route = HttpRoute()
       ..webhooks(id: applicationId.toString(), token: token)
       ..messages(id: messageId);
-    final request = BasicRequest(route, method: 'DELETE', applyGlobalRateLimit: false);
+    final request =
+        BasicRequest(route, method: 'DELETE', applyGlobalRateLimit: false);
 
     await client.httpHandler.executeSafe(request);
   }

@@ -1,29 +1,29 @@
-import 'package:nyxx/src/builders/emoji/reaction.dart';
-import 'package:nyxx/src/builders/message/message.dart';
-import 'package:nyxx/src/http/managers/message_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/interaction.dart';
-import 'package:nyxx/src/models/message/activity.dart';
-import 'package:nyxx/src/models/message/attachment.dart';
-import 'package:nyxx/src/models/message/channel_mention.dart';
-import 'package:nyxx/src/models/component.dart';
-import 'package:nyxx/src/models/message/embed.dart';
-import 'package:nyxx/src/models/message/author.dart';
-import 'package:nyxx/src/models/message/poll.dart';
-import 'package:nyxx/src/models/message/reference.dart';
-import 'package:nyxx/src/models/message/reaction.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/message/role_subscription_data.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/sticker/sticker.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/models/webhook.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/flags.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/builders/emoji/reaction.dart';
+import 'package:uhxx/src/builders/message/message.dart';
+import 'package:uhxx/src/http/managers/message_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/interaction.dart';
+import 'package:uhxx/src/models/message/activity.dart';
+import 'package:uhxx/src/models/message/attachment.dart';
+import 'package:uhxx/src/models/message/channel_mention.dart';
+import 'package:uhxx/src/models/component.dart';
+import 'package:uhxx/src/models/message/embed.dart';
+import 'package:uhxx/src/models/message/author.dart';
+import 'package:uhxx/src/models/message/poll.dart';
+import 'package:uhxx/src/models/message/reference.dart';
+import 'package:uhxx/src/models/message/reaction.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/message/role_subscription_data.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/sticker/sticker.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/webhook.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/flags.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template partial_message}
 /// A partial [Message] object.
@@ -42,7 +42,8 @@ class PartialMessage extends WritableSnowflakeEntity<Message> {
   PartialMessage({required super.id, required this.manager});
 
   /// The channel this message was sent in.
-  PartialTextChannel get channel => manager.client.channels[channelId] as PartialTextChannel;
+  PartialTextChannel get channel =>
+      manager.client.channels[channelId] as PartialTextChannel;
 
   /// Update this message.
   // An often-used alias to update
@@ -52,10 +53,12 @@ class PartialMessage extends WritableSnowflakeEntity<Message> {
   Future<void> crosspost() => manager.crosspost(id);
 
   /// Pin this message.
-  Future<void> pin({String? auditLogReason}) => manager.pin(id, auditLogReason: auditLogReason);
+  Future<void> pin({String? auditLogReason}) =>
+      manager.pin(id, auditLogReason: auditLogReason);
 
   /// Unpin this message.
-  Future<void> unpin({String? auditLogReason}) => manager.unpin(id, auditLogReason: auditLogReason);
+  Future<void> unpin({String? auditLogReason}) =>
+      manager.unpin(id, auditLogReason: auditLogReason);
 
   /// Creates a reaction on this message.
   /// ```dart
@@ -71,19 +74,26 @@ class PartialMessage extends WritableSnowflakeEntity<Message> {
   /// Deletes a reaction by a user, if specified on this message.
   /// Otherwise deletes reactions by [emoji].
   Future<void> deleteReaction(ReactionBuilder emoji, {Snowflake? userId}) =>
-      userId == null ? manager.deleteReaction(id, emoji) : manager.deleteReactionForUser(id, userId, emoji);
+      userId == null
+          ? manager.deleteReaction(id, emoji)
+          : manager.deleteReactionForUser(id, userId, emoji);
 
   /// Deletes all reactions on this message.
   Future<void> deleteAllReactions() => manager.deleteAllReactions(id);
 
   /// Deletes reaction the current user has made on this message.
-  Future<void> deleteOwnReaction(ReactionBuilder emoji) => manager.deleteOwnReaction(id, emoji);
+  Future<void> deleteOwnReaction(ReactionBuilder emoji) =>
+      manager.deleteOwnReaction(id, emoji);
 
   /// Get a list of users that reacted with a given emoji on a message.
-  Future<List<User>> fetchReactions(ReactionBuilder emoji, {Snowflake? after, int? limit}) => manager.fetchReactions(id, emoji, after: after, limit: limit);
+  Future<List<User>> fetchReactions(ReactionBuilder emoji,
+          {Snowflake? after, int? limit}) =>
+      manager.fetchReactions(id, emoji, after: after, limit: limit);
 
   /// Get a list of users that voted for this specific answer.
-  Future<List<User>> fetchAnswerVoters(int answerId, {Snowflake? after, int? limit}) => manager.fetchAnswerVoters(id, answerId, after: after, limit: limit);
+  Future<List<User>> fetchAnswerVoters(int answerId,
+          {Snowflake? after, int? limit}) =>
+      manager.fetchAnswerVoters(id, answerId, after: after, limit: limit);
 
   /// Immediately ends the poll.
   Future<Message> endPoll() => manager.endPoll(id);
@@ -250,7 +260,8 @@ class Message extends PartialMessage implements MessageSnapshot {
   });
 
   /// The webhook that sent this message if it was sent by a webhook, `null` otherwise.
-  PartialWebhook? get webhook => webhookId == null ? null : manager.client.webhooks[webhookId!];
+  PartialWebhook? get webhook =>
+      webhookId == null ? null : manager.client.webhooks[webhookId!];
 
   // Cannot provide roleMentions as we do not have access to the guild.
 }
@@ -301,7 +312,8 @@ final class MessageType extends EnumLike<int, MessageType> {
   /// @nodoc
   const MessageType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   MessageType.parse(int value) : this(value);
 }
 
@@ -335,7 +347,8 @@ class MessageFlags extends Flags<MessageFlags> {
   static const loading = Flag<MessageFlags>.fromOffset(7);
 
   /// This message failed to mention some roles and add their members to the thread.
-  static const failedToMentionSomeRolesInThread = Flag<MessageFlags>.fromOffset(8);
+  static const failedToMentionSomeRolesInThread =
+      Flag<MessageFlags>.fromOffset(8);
 
   /// This message will not trigger push and desktop notifications.
   static const suppressNotifications = Flag<MessageFlags>.fromOffset(12);
@@ -374,7 +387,8 @@ class MessageFlags extends Flags<MessageFlags> {
   bool get isLoading => has(loading);
 
   /// Whether this set of flags has the [failedToMentionSomeRolesInThread] flag set.
-  bool get didFailToMentionSomeRolesInThread => has(failedToMentionSomeRolesInThread);
+  bool get didFailToMentionSomeRolesInThread =>
+      has(failedToMentionSomeRolesInThread);
 
   /// Whether this set of flags has the [suppressNotifications] flag set.
   bool get suppressesNotifications => has(suppressNotifications);
@@ -472,10 +486,10 @@ class MessageInteractionMetadata with ToStringHelper {
 
 /// A limited set of fields of a [Message].
 // Technically this class should contain a single `message` field, of type
-// `PartialMessage`. However, partials in nyxx require the ID of the object to
+// `PartialMessage`. However, partials in uhxx require the ID of the object to
 // be known, and the id field is not included in the nested partial message
 // object. Since this object would then be useless as it cannot contain any
-// useful data using existing nyxx types, we instead forward the field of the
+// useful data using existing uhxx types, we instead forward the field of the
 // nested object into this type.
 ///
 /// {@category models}
@@ -559,7 +573,8 @@ class MessageCall with ToStringHelper {
 
   /// The users in the call.
   List<PartialUser> get participants => [
-        for (final participantId in participantIds) manager.client.users[participantId],
+        for (final participantId in participantIds)
+          manager.client.users[participantId],
       ];
 }
 

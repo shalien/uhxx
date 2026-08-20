@@ -1,8 +1,8 @@
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/locale.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/locale.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template command_option}
 /// An option in an [ApplicationCommand] with a type of [ApplicationCommandType.chatInput].
@@ -89,7 +89,8 @@ final class CommandOptionType extends EnumLike<int, CommandOptionType> {
   /// @nodoc
   const CommandOptionType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   CommandOptionType.parse(int value) : this(value);
 }
 
@@ -110,7 +111,10 @@ class CommandOptionChoice {
 
   /// {@macro command_option_choice}
   /// @nodoc
-  CommandOptionChoice({required this.name, required this.nameLocalizations, required this.value});
+  CommandOptionChoice(
+      {required this.name,
+      required this.nameLocalizations,
+      required this.value});
 }
 
 /// A common superclass for entities that can be passed in options of type [CommandOptionType.mentionable].
@@ -118,4 +122,5 @@ class CommandOptionChoice {
 /// The only subtypes are [User] and [Role].
 ///
 /// {@category entities}
-abstract interface class CommandOptionMentionable<T extends CommandOptionMentionable<T>> implements SnowflakeEntity<T> {}
+abstract interface class CommandOptionMentionable<
+    T extends CommandOptionMentionable<T>> implements SnowflakeEntity<T> {}

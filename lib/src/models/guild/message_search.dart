@@ -1,9 +1,9 @@
-/// @docImport 'package:nyxx/nyxx.dart';
+/// @docImport 'package:uhxx/uhxx.dart';
 library;
 
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// The result of searching for messages within a [Guild].
 ///

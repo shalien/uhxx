@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/channel/types/group_dm.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/channel/types/group_dm.dart';
 
 /// {@category builders}
 class GroupDmUpdateBuilder extends UpdateBuilder<GroupDmChannel> {

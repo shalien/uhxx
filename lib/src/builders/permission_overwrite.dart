@@ -1,8 +1,8 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/permission_overwrite.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/permission_overwrite.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// {@category builders}
 class PermissionOverwriteBuilder extends CreateBuilder<PermissionOverwrite> {
@@ -14,7 +14,8 @@ class PermissionOverwriteBuilder extends CreateBuilder<PermissionOverwrite> {
 
   Flags<Permissions>? deny;
 
-  PermissionOverwriteBuilder({required this.id, required this.type, this.allow, this.deny});
+  PermissionOverwriteBuilder(
+      {required this.id, required this.type, this.allow, this.deny});
 
   @override
   Map<String, Object?> build({bool includeId = true}) => {

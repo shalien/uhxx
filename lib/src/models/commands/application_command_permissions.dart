@@ -1,11 +1,11 @@
-import 'package:nyxx/src/http/managers/application_command_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/commands/application_command.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/application_command_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/commands/application_command.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template command_permissions}
 /// The permissions for an [ApplicationCommand] in a guild.
@@ -37,10 +37,12 @@ class CommandPermissions extends SnowflakeEntity<CommandPermissions> {
   });
 
   /// The command these permissions apply to, or `null` if these permissions apply to the entire application.
-  PartialApplicationCommand? get command => id == applicationId ? null : manager.client.guilds[guildId].commands[id];
+  PartialApplicationCommand? get command =>
+      id == applicationId ? null : manager.client.guilds[guildId].commands[id];
 
   /// The application these permissions apply to.
-  PartialApplication get application => manager.client.applications[applicationId];
+  PartialApplication get application =>
+      manager.client.applications[applicationId];
 
   /// The guild these permissions apply in.
   PartialGuild get guild => manager.client.guilds[guildId];
@@ -56,7 +58,8 @@ class CommandPermissions extends SnowflakeEntity<CommandPermissions> {
   }
 
   @override
-  Future<CommandPermissions> get() async => manager.permissionsCache[id] ?? await fetch();
+  Future<CommandPermissions> get() async =>
+      manager.permissionsCache[id] ?? await fetch();
 }
 
 /// {@template command_permission}
@@ -76,7 +79,8 @@ class CommandPermission with ToStringHelper {
 
   /// {@macro command_permission}
   /// @nodoc
-  CommandPermission({required this.id, required this.type, required this.hasPermission});
+  CommandPermission(
+      {required this.id, required this.type, required this.hasPermission});
 }
 
 /// The type of a [CommandPermission].
@@ -93,6 +97,7 @@ final class CommandPermissionType extends EnumLike<int, CommandPermissionType> {
   /// @nodoc
   const CommandPermissionType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   CommandPermissionType.parse(int value) : this(value);
 }

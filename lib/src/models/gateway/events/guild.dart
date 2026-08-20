@@ -1,18 +1,18 @@
-import 'package:nyxx/src/models/channel/guild_channel.dart';
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/gateway/event.dart';
-import 'package:nyxx/src/models/gateway/events/presence.dart';
-import 'package:nyxx/src/models/guild/audit_log.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/guild/scheduled_event.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/sticker/guild_sticker.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/models/voice/voice_state.dart';
+import 'package:uhxx/src/models/channel/guild_channel.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/gateway/events/presence.dart';
+import 'package:uhxx/src/models/guild/audit_log.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/guild/scheduled_event.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/sticker/guild_sticker.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/voice/voice_state.dart';
 
 /// {@template unavailable_guild_create_event}
 /// Emitted when the client is added to an unavailable guild, or when initially receiving guilds over the Gateway.
@@ -33,7 +33,8 @@ class UnavailableGuildCreateEvent extends DispatchEvent {
 /// {@endtemplate}
 ///
 /// {@category events}
-class GuildCreateEvent extends DispatchEvent implements UnavailableGuildCreateEvent {
+class GuildCreateEvent extends DispatchEvent
+    implements UnavailableGuildCreateEvent {
   @override
   final Guild guild;
 
@@ -99,7 +100,8 @@ class GuildUpdateEvent extends DispatchEvent {
 
   /// {@macro guild_update_event}
   /// @nodoc
-  GuildUpdateEvent({required super.gateway, required this.oldGuild, required this.guild});
+  GuildUpdateEvent(
+      {required super.gateway, required this.oldGuild, required this.guild});
 }
 
 /// {@template guild_delete_event}
@@ -119,7 +121,11 @@ class GuildDeleteEvent extends DispatchEvent {
 
   /// {@macro guild_delete_event}
   /// @nodoc
-  GuildDeleteEvent({required super.gateway, required this.guild, required this.isUnavailable, required this.deletedGuild});
+  GuildDeleteEvent(
+      {required super.gateway,
+      required this.guild,
+      required this.isUnavailable,
+      required this.deletedGuild});
 }
 
 /// {@template guild_audit_log_create_event}
@@ -136,7 +142,8 @@ class GuildAuditLogCreateEvent extends DispatchEvent {
 
   /// {@macro guild_audit_log_create_event}
   /// @nodoc
-  GuildAuditLogCreateEvent({required super.gateway, required this.entry, required this.guildId});
+  GuildAuditLogCreateEvent(
+      {required super.gateway, required this.entry, required this.guildId});
 
   /// The guild in which the entry was created.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -156,7 +163,8 @@ class GuildBanAddEvent extends DispatchEvent {
 
   /// {@macro guild_ban_add_event}
   /// @nodoc
-  GuildBanAddEvent({required super.gateway, required this.guildId, required this.user});
+  GuildBanAddEvent(
+      {required super.gateway, required this.guildId, required this.user});
 
   /// The guild in which the user was banned.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -176,7 +184,8 @@ class GuildBanRemoveEvent extends DispatchEvent {
 
   /// {@macro guild_ban_remove_event}
   /// @nodoc
-  GuildBanRemoveEvent({required super.gateway, required this.guildId, required this.user});
+  GuildBanRemoveEvent(
+      {required super.gateway, required this.guildId, required this.user});
 
   /// The guild in which the user was unbanned.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -196,7 +205,8 @@ class GuildEmojisUpdateEvent extends DispatchEvent {
 
   /// {@macro guild_emojis_update_event}
   /// @nodoc
-  GuildEmojisUpdateEvent({required super.gateway, required this.guildId, required this.emojis});
+  GuildEmojisUpdateEvent(
+      {required super.gateway, required this.guildId, required this.emojis});
 
   /// The guild in which emojis were updated.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -216,7 +226,8 @@ class GuildStickersUpdateEvent extends DispatchEvent {
 
   /// {@macro guild_stickers_update_event}
   /// @nodoc
-  GuildStickersUpdateEvent({required super.gateway, required this.guildId, required this.stickers});
+  GuildStickersUpdateEvent(
+      {required super.gateway, required this.guildId, required this.stickers});
 
   /// The guild in which the stickers were updated.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -253,7 +264,8 @@ class GuildMemberAddEvent extends DispatchEvent {
 
   /// {@macro guild_member_add_event}
   /// @nodoc
-  GuildMemberAddEvent({required super.gateway, required this.guildId, required this.member});
+  GuildMemberAddEvent(
+      {required super.gateway, required this.guildId, required this.member});
 
   /// The guild in which the member was added.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -276,7 +288,11 @@ class GuildMemberRemoveEvent extends DispatchEvent {
 
   /// {@macro guild_member_remove_event}
   /// @nodoc
-  GuildMemberRemoveEvent({required super.gateway, required this.guildId, required this.user, required this.removedMember});
+  GuildMemberRemoveEvent(
+      {required super.gateway,
+      required this.guildId,
+      required this.user,
+      required this.removedMember});
 
   /// The guild in which the member was removed.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -299,7 +315,11 @@ class GuildMemberUpdateEvent extends DispatchEvent {
 
   /// {@macro guild_member_update_event}
   /// @nodoc
-  GuildMemberUpdateEvent({required super.gateway, required this.oldMember, required this.member, required this.guildId});
+  GuildMemberUpdateEvent(
+      {required super.gateway,
+      required this.oldMember,
+      required this.member,
+      required this.guildId});
 
   /// The guild in which the member was updated.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -363,7 +383,8 @@ class GuildRoleCreateEvent extends DispatchEvent {
 
   /// {@macro guild_role_create_event}
   /// @nodoc
-  GuildRoleCreateEvent({required super.gateway, required this.guildId, required this.role});
+  GuildRoleCreateEvent(
+      {required super.gateway, required this.guildId, required this.role});
 
   /// The guild in which the role was created.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -386,7 +407,11 @@ class GuildRoleUpdateEvent extends DispatchEvent {
 
   /// {@macro guild_role_update_event}
   /// @nodoc
-  GuildRoleUpdateEvent({required super.gateway, required this.guildId, required this.oldRole, required this.role});
+  GuildRoleUpdateEvent(
+      {required super.gateway,
+      required this.guildId,
+      required this.oldRole,
+      required this.role});
 
   /// The guild in which the role was updated.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -409,7 +434,11 @@ class GuildRoleDeleteEvent extends DispatchEvent {
 
   /// {@macro guild_role_delete_event}
   /// @nodoc
-  GuildRoleDeleteEvent({required super.gateway, required this.roleId, required this.guildId, required this.deletedRole});
+  GuildRoleDeleteEvent(
+      {required super.gateway,
+      required this.roleId,
+      required this.guildId,
+      required this.deletedRole});
 
   /// The guild in which the role was deleted.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -443,7 +472,8 @@ class GuildScheduledEventUpdateEvent extends DispatchEvent {
 
   /// {@macro guild_scheduled_event_update_event}
   /// @nodoc
-  GuildScheduledEventUpdateEvent({required super.gateway, required this.oldEvent, required this.event});
+  GuildScheduledEventUpdateEvent(
+      {required super.gateway, required this.oldEvent, required this.event});
 }
 
 /// {@template guild_scheduled_event_delete_event}
@@ -477,13 +507,18 @@ class GuildScheduledEventUserAddEvent extends DispatchEvent {
 
   /// {@macro guild_scheduled_event_user_add_event}
   /// @nodoc
-  GuildScheduledEventUserAddEvent({required super.gateway, required this.scheduledEventId, required this.userId, required this.guildId});
+  GuildScheduledEventUserAddEvent(
+      {required super.gateway,
+      required this.scheduledEventId,
+      required this.userId,
+      required this.guildId});
 
   /// The guild that the scheduled event is in.
   PartialGuild get guild => gateway.client.guilds[guildId];
 
   /// The scheduled event.
-  PartialScheduledEvent get scheduledEvent => guild.scheduledEvents[scheduledEventId];
+  PartialScheduledEvent get scheduledEvent =>
+      guild.scheduledEvents[scheduledEventId];
 
   /// The user that was added.
   PartialUser get user => gateway.client.users[userId];
@@ -509,13 +544,18 @@ class GuildScheduledEventUserRemoveEvent extends DispatchEvent {
 
   /// {@macro guild_scheduled_event_user_remove_event}
   /// @nodoc
-  GuildScheduledEventUserRemoveEvent({required super.gateway, required this.scheduledEventId, required this.userId, required this.guildId});
+  GuildScheduledEventUserRemoveEvent(
+      {required super.gateway,
+      required this.scheduledEventId,
+      required this.userId,
+      required this.guildId});
 
   /// The guild that the scheduled event is in.
   PartialGuild get guild => gateway.client.guilds[guildId];
 
   /// The scheduled event.
-  PartialScheduledEvent get scheduledEvent => guild.scheduledEvents[scheduledEventId];
+  PartialScheduledEvent get scheduledEvent =>
+      guild.scheduledEvents[scheduledEventId];
 
   /// The user that was removed.
   PartialUser get user => gateway.client.users[userId];

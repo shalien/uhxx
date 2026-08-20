@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:nyxx/src/builders/entitlement.dart';
-import 'package:nyxx/src/errors.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/entitlement.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/builders/entitlement.dart';
+import 'package:uhxx/src/errors.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/entitlement.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A [Manager] for [Entitlement]s.
 ///
@@ -18,10 +18,12 @@ class EntitlementManager extends ReadOnlyManager<Entitlement> {
   final Snowflake applicationId;
 
   /// Create a new [EntitlementManager].
-  EntitlementManager(super.config, super.client, {required this.applicationId}) : super(identifier: '$applicationId.entitlements');
+  EntitlementManager(super.config, super.client, {required this.applicationId})
+      : super(identifier: '$applicationId.entitlements');
 
   @override
-  PartialEntitlement operator [](Snowflake id) => PartialEntitlement(manager: this, id: id);
+  PartialEntitlement operator [](Snowflake id) =>
+      PartialEntitlement(manager: this, id: id);
 
   @override
   Entitlement parse(Map<String, Object?> raw) {
@@ -81,11 +83,13 @@ class EntitlementManager extends ReadOnlyManager<Entitlement> {
   }
 
   /// Create a test entitlement that never expires.
-  Future<Entitlement> createTestEntitlement(TestEntitlementBuilder builder) async {
+  Future<Entitlement> createTestEntitlement(
+      TestEntitlementBuilder builder) async {
     final route = HttpRoute()
       ..applications(id: applicationId.toString())
       ..entitlements();
-    final request = BasicRequest(route, method: 'POST', body: jsonEncode(builder.build()));
+    final request =
+        BasicRequest(route, method: 'POST', body: jsonEncode(builder.build()));
 
     final response = await client.httpHandler.executeSafe(request);
     final entitlement = parse(response.jsonBody as Map<String, Object?>);

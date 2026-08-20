@@ -1,10 +1,10 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/discord_color.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/discord_color.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// {@category builders}
 class RoleColorsBuilder extends CreateBuilder<RoleColors> {
@@ -134,8 +134,10 @@ class RoleUpdateBuilder extends UpdateBuilder<Role> {
         if (name != null) 'name': name,
         if (permissions != null) 'permissions': permissions!.value.toString(),
         if (isHoisted != null) 'hoist': isHoisted,
-        if (!identical(icon, sentinelImageBuilder)) 'icon': icon?.buildDataString(),
-        if (!identical(unicodeEmoji, sentinelString)) 'unicode_emoji': unicodeEmoji,
+        if (!identical(icon, sentinelImageBuilder))
+          'icon': icon?.buildDataString(),
+        if (!identical(unicodeEmoji, sentinelString))
+          'unicode_emoji': unicodeEmoji,
         if (isMentionable != null) 'mentionable': isMentionable,
         if (colors != null) 'colors': colors!.build(),
       };

@@ -1,14 +1,14 @@
-/// @docImport 'package:nyxx/nyxx.dart';
+/// @docImport 'package:uhxx/uhxx.dart';
 library;
 
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/gateway/event.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/models/voice/voice_state.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/models/voice/voice_state.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
 
 /// {@template voice_state_update_event}
 /// Emitted when a user's voice state is updated.
@@ -24,7 +24,8 @@ class VoiceStateUpdateEvent extends DispatchEvent {
 
   /// {@macro voice_state_update_event}
   /// @nodoc
-  VoiceStateUpdateEvent({required super.gateway, required this.oldState, required this.state});
+  VoiceStateUpdateEvent(
+      {required super.gateway, required this.oldState, required this.state});
 }
 
 /// {@template voice_server_update_event}
@@ -44,7 +45,11 @@ class VoiceServerUpdateEvent extends DispatchEvent {
 
   /// {@macro voice_server_update_event}
   /// @nodoc
-  VoiceServerUpdateEvent({required super.gateway, required this.token, required this.guildId, required this.endpoint});
+  VoiceServerUpdateEvent(
+      {required super.gateway,
+      required this.token,
+      required this.guildId,
+      required this.endpoint});
 
   /// The guild.
   PartialGuild get guild => gateway.client.guilds[guildId];

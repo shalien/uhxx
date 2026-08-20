@@ -1,15 +1,15 @@
-import 'package:nyxx/src/http/cdn/cdn_asset.dart';
-import 'package:nyxx/src/http/managers/user_manager.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/commands/application_command_option.dart';
-import 'package:nyxx/src/models/discord_color.dart';
-import 'package:nyxx/src/models/locale.dart';
-import 'package:nyxx/src/models/message/author.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/avatar_decoration_data.dart';
-import 'package:nyxx/src/models/user/primary_guild.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/http/cdn/cdn_asset.dart';
+import 'package:uhxx/src/http/managers/user_manager.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/commands/application_command_option.dart';
+import 'package:uhxx/src/models/discord_color.dart';
+import 'package:uhxx/src/models/locale.dart';
+import 'package:uhxx/src/models/message/author.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/avatar_decoration_data.dart';
+import 'package:uhxx/src/models/user/primary_guild.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// A partial [User] object.
 ///
@@ -35,7 +35,8 @@ class PartialUser extends ManagedSnowflakeEntity<User> {
 ///
 /// {@category models}
 /// {@category entities}
-class User extends PartialUser implements MessageAuthor, CommandOptionMentionable<User> {
+class User extends PartialUser
+    implements MessageAuthor, CommandOptionMentionable<User> {
   /// The user's username.
   @override
   final String username;
@@ -121,7 +122,9 @@ class User extends PartialUser implements MessageAuthor, CommandOptionMentionabl
   /// This user's default avatar.
   CdnAsset get defaultAvatar {
     final parsedDiscriminator = int.tryParse(discriminator);
-    final hash = parsedDiscriminator == null || parsedDiscriminator == 0 ? (id.value >> 22) % 6 : parsedDiscriminator % 5;
+    final hash = parsedDiscriminator == null || parsedDiscriminator == 0
+        ? (id.value >> 22) % 6
+        : parsedDiscriminator % 5;
 
     return CdnAsset(
       client: manager.client,
@@ -257,6 +260,7 @@ final class NitroType extends EnumLike<int, NitroType> {
   /// @nodoc
   const NitroType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   NitroType.parse(int value) : this(value);
 }

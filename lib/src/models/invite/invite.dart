@@ -1,15 +1,15 @@
-import 'package:nyxx/src/http/managers/invite_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/scheduled_event.dart';
-import 'package:nyxx/src/models/invite/job_status.dart';
-import 'package:nyxx/src/models/role.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/flags.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/invite_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/scheduled_event.dart';
+import 'package:uhxx/src/models/invite/job_status.dart';
+import 'package:uhxx/src/models/role.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/flags.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template invite}
 /// An invite to a [Guild] or [Channel].
@@ -28,7 +28,7 @@ class Invite with ToStringHelper {
   final String code;
 
   /// The [Guild] this invite is for.
-  final PartialGuild? guild;
+  final InviteGuild? guild;
 
   /// The [PartialChannel] this invite is for.
   final PartialChannel channel;
@@ -92,16 +92,20 @@ class Invite with ToStringHelper {
   });
 
   /// Delete this invite.
-  Future<Invite> delete({String? auditLogReason}) => manager.delete(code, auditLogReason: auditLogReason);
+  Future<Invite> delete({String? auditLogReason}) =>
+      manager.delete(code, auditLogReason: auditLogReason);
 
   /// Fetch the users this invite is for.
-  Future<List<PartialUser>> fetchTargetUsers() => manager.fetchTargetUsers(code);
+  Future<List<PartialUser>> fetchTargetUsers() =>
+      manager.fetchTargetUsers(code);
 
   /// Update the users targeted by this invite.
-  Future<void> updateTargetUsers(List<Snowflake> userIds) => manager.updateTargetUsers(code, userIds);
+  Future<void> updateTargetUsers(List<Snowflake> userIds) =>
+      manager.updateTargetUsers(code, userIds);
 
   /// Fetch the status of processing the target users for this invite.
-  Future<InviteTargetsJobStatus> fetchTargetUsersJobStatus() => manager.fetchTargetUsersJobStatus(code);
+  Future<InviteTargetsJobStatus> fetchTargetUsersJobStatus() =>
+      manager.fetchTargetUsersJobStatus(code);
 }
 
 /// The type of an [Invite]'s target.
@@ -112,7 +116,8 @@ final class TargetType extends EnumLike<int, TargetType> {
   /// @nodoc
   const TargetType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   TargetType.parse(int value) : this(value);
 }
 

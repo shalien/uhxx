@@ -1,21 +1,23 @@
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/subscription.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/subscription.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
 
 /// {@category managers}
 class SubscriptionManager extends ReadOnlyManager<Subscription> {
   final Snowflake applicationId;
   final Snowflake skuId;
 
-  SubscriptionManager(super.config, super.client, {required this.applicationId, required this.skuId})
+  SubscriptionManager(super.config, super.client,
+      {required this.applicationId, required this.skuId})
       : super(identifier: '$applicationId.$skuId.subscriptions');
 
   @override
-  PartialSubscription operator [](Snowflake id) => PartialSubscription(manager: this, id: id);
+  PartialSubscription operator [](Snowflake id) =>
+      PartialSubscription(manager: this, id: id);
 
   @override
   Subscription parse(Map<String, Object?> raw) {
@@ -24,7 +26,8 @@ class SubscriptionManager extends ReadOnlyManager<Subscription> {
       id: Snowflake.parse(raw['id']!),
       userId: Snowflake.parse(raw['user_id']!),
       skuIds: parseMany(raw['sku_ids'] as List, Snowflake.parse),
-      entitlementIds: parseMany(raw['entitlement_ids'] as List, Snowflake.parse),
+      entitlementIds:
+          parseMany(raw['entitlement_ids'] as List, Snowflake.parse),
       currentPeriodStart: DateTime.parse(raw['current_period_start'] as String),
       currentPeriodEnd: DateTime.parse(raw['current_period_end'] as String),
       status: SubscriptionStatus(raw['status'] as int),
@@ -47,7 +50,11 @@ class SubscriptionManager extends ReadOnlyManager<Subscription> {
     return subscription;
   }
 
-  Future<List<Subscription>> list({Snowflake? before, Snowflake? after, int? limit, Snowflake? userId}) async {
+  Future<List<Subscription>> list(
+      {Snowflake? before,
+      Snowflake? after,
+      int? limit,
+      Snowflake? userId}) async {
     final route = HttpRoute()
       ..skus(id: skuId.toString())
       ..subscriptions();

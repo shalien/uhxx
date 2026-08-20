@@ -1,44 +1,44 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' show MultipartFile;
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/channel/group_dm.dart';
-import 'package:nyxx/src/builders/channel/stage_instance.dart';
-import 'package:nyxx/src/builders/channel/thread.dart';
-import 'package:nyxx/src/builders/invite.dart';
-import 'package:nyxx/src/builders/permission_overwrite.dart';
-import 'package:nyxx/src/cache/cache.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/followed_channel.dart';
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/channel/text_channel.dart';
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/channel/thread_list.dart';
-import 'package:nyxx/src/models/channel/types/announcement_thread.dart';
-import 'package:nyxx/src/models/channel/types/directory.dart';
-import 'package:nyxx/src/models/channel/types/dm.dart';
-import 'package:nyxx/src/models/channel/types/forum.dart';
-import 'package:nyxx/src/models/channel/types/group_dm.dart';
-import 'package:nyxx/src/models/channel/types/guild_announcement.dart';
-import 'package:nyxx/src/models/channel/types/guild_category.dart';
-import 'package:nyxx/src/models/channel/types/guild_media.dart';
-import 'package:nyxx/src/models/channel/types/guild_stage.dart';
-import 'package:nyxx/src/models/channel/types/guild_text.dart';
-import 'package:nyxx/src/models/channel/types/guild_voice.dart';
-import 'package:nyxx/src/models/channel/types/private_thread.dart';
-import 'package:nyxx/src/models/channel/types/public_thread.dart';
-import 'package:nyxx/src/models/channel/voice_channel.dart';
-import 'package:nyxx/src/models/invite/invite.dart';
-import 'package:nyxx/src/models/invite/invite_metadata.dart';
-import 'package:nyxx/src/models/permission_overwrite.dart';
-import 'package:nyxx/src/models/permissions.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/flags.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/channel/group_dm.dart';
+import 'package:uhxx/src/builders/channel/stage_instance.dart';
+import 'package:uhxx/src/builders/channel/thread.dart';
+import 'package:uhxx/src/builders/invite.dart';
+import 'package:uhxx/src/builders/permission_overwrite.dart';
+import 'package:uhxx/src/cache/cache.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/followed_channel.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/channel/text_channel.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/channel/thread_list.dart';
+import 'package:uhxx/src/models/channel/types/announcement_thread.dart';
+import 'package:uhxx/src/models/channel/types/directory.dart';
+import 'package:uhxx/src/models/channel/types/dm.dart';
+import 'package:uhxx/src/models/channel/types/forum.dart';
+import 'package:uhxx/src/models/channel/types/group_dm.dart';
+import 'package:uhxx/src/models/channel/types/guild_announcement.dart';
+import 'package:uhxx/src/models/channel/types/guild_category.dart';
+import 'package:uhxx/src/models/channel/types/guild_media.dart';
+import 'package:uhxx/src/models/channel/types/guild_stage.dart';
+import 'package:uhxx/src/models/channel/types/guild_text.dart';
+import 'package:uhxx/src/models/channel/types/guild_voice.dart';
+import 'package:uhxx/src/models/channel/types/private_thread.dart';
+import 'package:uhxx/src/models/channel/types/public_thread.dart';
+import 'package:uhxx/src/models/channel/voice_channel.dart';
+import 'package:uhxx/src/models/invite/invite.dart';
+import 'package:uhxx/src/models/invite/invite_metadata.dart';
+import 'package:uhxx/src/models/permission_overwrite.dart';
+import 'package:uhxx/src/models/permissions.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/flags.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A manager for [Channel]s.
 ///
@@ -47,8 +47,10 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   final Cache<StageInstance> stageInstanceCache;
 
   /// Create a new [ChannelManager].
-  ChannelManager(super.config, super.client, {required CacheConfig<StageInstance> stageInstanceConfig})
-      : stageInstanceCache = client.cache.getCache('channels.stageInstances', stageInstanceConfig),
+  ChannelManager(super.config, super.client,
+      {required CacheConfig<StageInstance> stageInstanceConfig})
+      : stageInstanceCache = client.cache
+            .getCache('channels.stageInstances', stageInstanceConfig),
         super(identifier: 'channels');
 
   /// Return a partial instance of the entity with ID [id] containing no data.
@@ -62,7 +64,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   /// If you are sure the channel you are requesting is a text channel, the returned value can safely
   /// be cast to a [PartialTextChannel] to access the channel's messages.
   @override
-  PartialChannel operator [](Snowflake id) => PartialTextChannel(id: id, manager: this);
+  PartialChannel operator [](Snowflake id) =>
+      PartialTextChannel(id: id, manager: this);
 
   @override
   Channel parse(Map<String, Object?> raw, {Snowflake? guildId}) {
@@ -87,26 +90,33 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     return parsers[type]!(raw, guildId: guildId);
   }
 
-  GuildTextChannel parseGuildTextChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildText.value, 'Invalid type for GuildTextChannel');
+  GuildTextChannel parseGuildTextChannel(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildText.value,
+        'Invalid type for GuildTextChannel');
 
     return GuildTextChannel(
       id: Snowflake.parse(raw['id']!),
       manager: this,
       topic: raw['topic'] as String?,
       // Discord doesn't seem to include this field if the default 3 day expiration is used (3 days = 4320 minutes)
-      defaultAutoArchiveDuration: Duration(minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
-      defaultThreadRateLimitPerUser:
-          maybeParse<Duration?, int>(raw['default_thread_rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      defaultAutoArchiveDuration: Duration(
+          minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
+      defaultThreadRateLimitPerUser: maybeParse<Duration?, int>(
+          raw['default_thread_rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       guildId: guildId ?? Snowflake.parse(raw['guild_id']!),
       isNsfw: raw['nsfw'] as bool? ?? false,
       lastMessageId: maybeParse(raw['last_message_id'], Snowflake.parse),
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
       name: raw['name'] as String,
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: raw['position'] as int,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
     );
   }
 
@@ -116,15 +126,19 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     return DmChannel(
       id: Snowflake.parse(raw['id']!),
       manager: this,
-      recipient: client.users.parse((raw['recipients'] as List).single as Map<String, Object?>),
+      recipient: client.users
+          .parse((raw['recipients'] as List).single as Map<String, Object?>),
       lastMessageId: maybeParse(raw['last_message_id'], Snowflake.parse),
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
     );
   }
 
-  GuildVoiceChannel parseGuildVoiceChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildVoice.value, 'Invalid type for GuildVoiceChannel');
+  GuildVoiceChannel parseGuildVoiceChannel(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildVoice.value,
+        'Invalid type for GuildVoiceChannel');
 
     return GuildVoiceChannel(
       id: Snowflake.parse(raw['id']!),
@@ -136,17 +150,24 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
       name: raw['name'] as String,
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: raw['position'] as int,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       rtcRegion: raw['rtc_region'] as String?,
       userLimit: raw['user_limit'] == 0 ? null : raw['user_limit'] as int?,
-      videoQualityMode: maybeParse(raw['video_quality_mode'], VideoQualityMode.new) ?? VideoQualityMode.auto,
+      videoQualityMode:
+          maybeParse(raw['video_quality_mode'], VideoQualityMode.new) ??
+              VideoQualityMode.auto,
     );
   }
 
-  GroupDmChannel parseGroupDmChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.groupDm.value, 'Invalid type for GroupDmChannel');
+  GroupDmChannel parseGroupDmChannel(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.groupDm.value,
+        'Invalid type for GroupDmChannel');
 
     return GroupDmChannel(
       id: Snowflake.parse(raw['id']!),
@@ -159,12 +180,15 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       isManaged: raw['managed'] as bool? ?? false,
       lastMessageId: maybeParse(raw['last_message_id'], Snowflake.parse),
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
     );
   }
 
-  GuildCategory parseGuildCategory(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildCategory.value, 'Invalid type for GuildCategory');
+  GuildCategory parseGuildCategory(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildCategory.value,
+        'Invalid type for GuildCategory');
 
     return GuildCategory(
       id: Snowflake.parse(raw['id']!),
@@ -173,45 +197,63 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       isNsfw: raw['nsfw'] as bool? ?? false,
       name: raw['name'] as String,
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: raw['position'] as int,
     );
   }
 
-  GuildAnnouncementChannel parseGuildAnnouncementChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildAnnouncement.value, 'Invalid type for GuildAnnouncementChannel');
+  GuildAnnouncementChannel parseGuildAnnouncementChannel(
+      Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildAnnouncement.value,
+        'Invalid type for GuildAnnouncementChannel');
 
     return GuildAnnouncementChannel(
       id: Snowflake.parse(raw['id']!),
       manager: this,
       topic: raw['topic'] as String?,
       // Discord doesn't seem to include this field if the default 3 day expiration is used (3 days = 4320 minutes)
-      defaultAutoArchiveDuration: Duration(minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
-      defaultThreadRateLimitPerUser:
-          maybeParse<Duration?, int>(raw['default_thread_rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      defaultAutoArchiveDuration: Duration(
+          minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
+      defaultThreadRateLimitPerUser: maybeParse<Duration?, int>(
+          raw['default_thread_rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       guildId: guildId ?? Snowflake.parse(raw['guild_id']!),
       isNsfw: raw['nsfw'] as bool? ?? false,
       lastMessageId: maybeParse(raw['last_message_id'], Snowflake.parse),
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
       name: raw['name'] as String,
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: raw['position'] as int,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
     );
   }
 
-  AnnouncementThread parseAnnouncementThread(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.announcementThread.value, 'Invalid type for AnnouncementThread');
+  AnnouncementThread parseAnnouncementThread(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.announcementThread.value,
+        'Invalid type for AnnouncementThread');
 
     return AnnouncementThread(
       id: Snowflake.parse(raw['id']!),
       manager: this,
-      appliedTags: maybeParse<List<Snowflake>, List<dynamic>>(raw['applied_tags'], (tags) => parseMany(tags, Snowflake.parse)),
+      appliedTags: maybeParse<List<Snowflake>, List<dynamic>>(
+          raw['applied_tags'], (tags) => parseMany(tags, Snowflake.parse)),
       approximateMemberCount: raw['member_count'] as int,
-      archiveTimestamp: DateTime.parse((raw['thread_metadata'] as Map)['archive_timestamp'] as String),
-      autoArchiveDuration: Duration(minutes: (raw['thread_metadata'] as Map)['auto_archive_duration'] as int),
-      createdAt: maybeParse((raw['thread_metadata'] as Map)['create_timestamp'], DateTime.parse) ?? DateTime(2022, 1, 9),
+      archiveTimestamp: DateTime.parse(
+          (raw['thread_metadata'] as Map)['archive_timestamp'] as String),
+      autoArchiveDuration: Duration(
+          minutes:
+              (raw['thread_metadata'] as Map)['auto_archive_duration'] as int),
+      createdAt: maybeParse((raw['thread_metadata'] as Map)['create_timestamp'],
+              DateTime.parse) ??
+          DateTime(2022, 1, 9),
       guildId: guildId ?? Snowflake.parse(raw['guild_id']!),
       isArchived: (raw['thread_metadata'] as Map)['archived'] as bool,
       isLocked: (raw['thread_metadata'] as Map)['locked'] as bool,
@@ -222,25 +264,36 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       name: raw['name'] as String,
       ownerId: Snowflake.parse(raw['owner_id']!),
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: -1,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       totalMessagesSent: raw['total_message_sent'] as int,
       flags: maybeParse(raw['flags'], ChannelFlags.new),
     );
   }
 
-  PublicThread parsePublicThread(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.publicThread.value, 'Invalid type for PublicThread');
+  PublicThread parsePublicThread(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.publicThread.value,
+        'Invalid type for PublicThread');
 
     return PublicThread(
       id: Snowflake.parse(raw['id']!),
       manager: this,
-      appliedTags: maybeParse<List<Snowflake>, List<dynamic>>(raw['applied_tags'], (tags) => parseMany(tags, Snowflake.parse)),
+      appliedTags: maybeParse<List<Snowflake>, List<dynamic>>(
+          raw['applied_tags'], (tags) => parseMany(tags, Snowflake.parse)),
       approximateMemberCount: raw['member_count'] as int,
-      archiveTimestamp: DateTime.parse((raw['thread_metadata'] as Map)['archive_timestamp'] as String),
-      autoArchiveDuration: Duration(minutes: (raw['thread_metadata'] as Map)['auto_archive_duration'] as int),
-      createdAt: maybeParse((raw['thread_metadata'] as Map)['create_timestamp'], DateTime.parse) ?? DateTime(2022, 1, 9),
+      archiveTimestamp: DateTime.parse(
+          (raw['thread_metadata'] as Map)['archive_timestamp'] as String),
+      autoArchiveDuration: Duration(
+          minutes:
+              (raw['thread_metadata'] as Map)['auto_archive_duration'] as int),
+      createdAt: maybeParse((raw['thread_metadata'] as Map)['create_timestamp'],
+              DateTime.parse) ??
+          DateTime(2022, 1, 9),
       guildId: guildId ?? Snowflake.parse(raw['guild_id']!),
       isArchived: (raw['thread_metadata'] as Map)['archived'] as bool,
       isLocked: (raw['thread_metadata'] as Map)['locked'] as bool,
@@ -251,26 +304,37 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       name: raw['name'] as String,
       ownerId: Snowflake.parse(raw['owner_id']!),
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: -1,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       totalMessagesSent: raw['total_message_sent'] as int,
       flags: maybeParse(raw['flags'], ChannelFlags.new),
     );
   }
 
-  PrivateThread parsePrivateThread(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.privateThread.value, 'Invalid type for PrivateThread');
+  PrivateThread parsePrivateThread(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.privateThread.value,
+        'Invalid type for PrivateThread');
 
     return PrivateThread(
       id: Snowflake.parse(raw['id']!),
       manager: this,
       isInvitable: (raw['thread_metadata'] as Map)['invitable'] as bool,
-      appliedTags: maybeParse<List<Snowflake>, List<dynamic>>(raw['applied_tags'], (tags) => parseMany(tags, Snowflake.parse)),
+      appliedTags: maybeParse<List<Snowflake>, List<dynamic>>(
+          raw['applied_tags'], (tags) => parseMany(tags, Snowflake.parse)),
       approximateMemberCount: raw['member_count'] as int,
-      archiveTimestamp: DateTime.parse((raw['thread_metadata'] as Map)['archive_timestamp'] as String),
-      autoArchiveDuration: Duration(minutes: (raw['thread_metadata'] as Map)['auto_archive_duration'] as int),
-      createdAt: maybeParse((raw['thread_metadata'] as Map)['create_timestamp'], DateTime.parse) ?? DateTime(2022, 1, 9),
+      archiveTimestamp: DateTime.parse(
+          (raw['thread_metadata'] as Map)['archive_timestamp'] as String),
+      autoArchiveDuration: Duration(
+          minutes:
+              (raw['thread_metadata'] as Map)['auto_archive_duration'] as int),
+      createdAt: maybeParse((raw['thread_metadata'] as Map)['create_timestamp'],
+              DateTime.parse) ??
+          DateTime(2022, 1, 9),
       guildId: guildId ?? Snowflake.parse(raw['guild_id']!),
       isArchived: (raw['thread_metadata'] as Map)['archived'] as bool,
       isLocked: (raw['thread_metadata'] as Map)['locked'] as bool,
@@ -281,16 +345,21 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       name: raw['name'] as String,
       ownerId: Snowflake.parse(raw['owner_id']!),
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: -1,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       totalMessagesSent: raw['total_message_sent'] as int,
       flags: maybeParse(raw['flags'], ChannelFlags.new),
     );
   }
 
-  GuildStageChannel parseGuildStageChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildStageVoice.value, 'Invalid type for GuildStageChannel');
+  GuildStageChannel parseGuildStageChannel(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildStageVoice.value,
+        'Invalid type for GuildStageChannel');
 
     return GuildStageChannel(
       id: Snowflake.parse(raw['id']!),
@@ -302,17 +371,24 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
       name: raw['name'] as String,
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: raw['position'] as int,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       rtcRegion: raw['rtc_region'] as String?,
       userLimit: raw['user_limit'] == 0 ? null : raw['user_limit'] as int?,
-      videoQualityMode: maybeParse(raw['video_quality_mode'], VideoQualityMode.new) ?? VideoQualityMode.auto,
+      videoQualityMode:
+          maybeParse(raw['video_quality_mode'], VideoQualityMode.new) ??
+              VideoQualityMode.auto,
     );
   }
 
-  DirectoryChannel parseDirectoryChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildDirectory.value, 'Invalid type for DirectoryChannel');
+  DirectoryChannel parseDirectoryChannel(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildDirectory.value,
+        'Invalid type for DirectoryChannel');
 
     return DirectoryChannel(
       id: Snowflake.parse(raw['id']!),
@@ -320,57 +396,73 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     );
   }
 
-  ForumChannel parseForumChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildForum.value, 'Invalid type for ForumChannel');
+  ForumChannel parseForumChannel(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildForum.value,
+        'Invalid type for ForumChannel');
 
     return ForumChannel(
       id: Snowflake.parse(raw['id']!),
       manager: this,
       defaultLayout: maybeParse(raw['default_forum_layout'], ForumLayout.new),
       topic: raw['topic'] as String?,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       lastThreadId: maybeParse(raw['last_message_id'], Snowflake.parse),
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
       flags: ChannelFlags(raw['flags'] as int),
       availableTags: maybeParseMany(raw['available_tags'], parseForumTag) ?? [],
-      defaultReaction: maybeParse(raw['default_reaction_emoji'], parseDefaultReaction),
+      defaultReaction:
+          maybeParse(raw['default_reaction_emoji'], parseDefaultReaction),
       defaultSortOrder: maybeParse(raw['default_sort_order'], ForumSort.new),
       // Discord doesn't seem to include this field if the default 3 day expiration is used (3 days = 4320 minutes)
-      defaultAutoArchiveDuration: Duration(minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
-      defaultThreadRateLimitPerUser:
-          maybeParse<Duration?, int>(raw['default_thread_rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      defaultAutoArchiveDuration: Duration(
+          minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
+      defaultThreadRateLimitPerUser: maybeParse<Duration?, int>(
+          raw['default_thread_rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       guildId: guildId ?? Snowflake.parse(raw['guild_id']!),
       isNsfw: raw['nsfw'] as bool? ?? false,
       name: raw['name'] as String,
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: raw['position'] as int,
     );
   }
 
-  GuildMediaChannel parseGuildMediaChannel(Map<String, Object?> raw, {Snowflake? guildId}) {
-    assert(raw['type'] == ChannelType.guildMedia.value, 'Invalid type for GuildMediaChannel');
+  GuildMediaChannel parseGuildMediaChannel(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
+    assert(raw['type'] == ChannelType.guildMedia.value,
+        'Invalid type for GuildMediaChannel');
 
     return GuildMediaChannel(
       id: Snowflake.parse(raw['id']!),
       manager: this,
       topic: raw['topic'] as String?,
-      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      rateLimitPerUser: maybeParse<Duration?, int>(raw['rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       lastThreadId: maybeParse(raw['last_message_id'], Snowflake.parse),
       lastPinTimestamp: maybeParse(raw['last_pin_timestamp'], DateTime.parse),
       flags: ChannelFlags(raw['flags'] as int),
       availableTags: parseMany(raw['available_tags'] as List, parseForumTag),
-      defaultReaction: maybeParse(raw['default_reaction_emoji'], parseDefaultReaction),
+      defaultReaction:
+          maybeParse(raw['default_reaction_emoji'], parseDefaultReaction),
       defaultSortOrder: maybeParse(raw['default_sort_order'], ForumSort.new),
       // Discord doesn't seem to include this field if the default 3 day expiration is used (3 days = 4320 minutes)
-      defaultAutoArchiveDuration: Duration(minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
-      defaultThreadRateLimitPerUser:
-          maybeParse<Duration?, int>(raw['default_thread_rate_limit_per_user'], (value) => value == 0 ? null : Duration(seconds: value)),
+      defaultAutoArchiveDuration: Duration(
+          minutes: raw['default_auto_archive_duration'] as int? ?? 4320),
+      defaultThreadRateLimitPerUser: maybeParse<Duration?, int>(
+          raw['default_thread_rate_limit_per_user'],
+          (value) => value == 0 ? null : Duration(seconds: value)),
       guildId: guildId ?? Snowflake.parse(raw['guild_id']!),
       isNsfw: raw['nsfw'] as bool? ?? false,
       name: raw['name'] as String,
       parentId: maybeParse(raw['parent_id'], Snowflake.parse),
-      permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+      permissionOverwrites: maybeParseMany(
+              raw['permission_overwrites'], parsePermissionOverwrite) ??
+          [],
       position: raw['position'] as int,
     );
   }
@@ -409,7 +501,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     );
   }
 
-  ThreadMember parseThreadMember(Map<String, Object?> raw, {Snowflake? guildId}) {
+  ThreadMember parseThreadMember(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
     final userId = Snowflake.parse(raw['user_id']!);
 
     return ThreadMember(
@@ -418,14 +511,21 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       flags: Flags<Never>(raw['flags'] as int),
       threadId: Snowflake.parse(raw['id']!),
       userId: userId,
-      member: maybeParse(raw['member'], (Map<String, Object?> raw) => client.guilds[guildId ?? Snowflake.zero].members.parse(raw, userId: userId)),
+      member: maybeParse(
+          raw['member'],
+          (Map<String, Object?> raw) => client
+              .guilds[guildId ?? Snowflake.zero].members
+              .parse(raw, userId: userId)),
     );
   }
 
   ThreadList parseThreadList(Map<String, Object?> raw, {Snowflake? guildId}) {
     return ThreadList(
       threads: parseMany(raw['threads'] as List, parse).cast<Thread>(),
-      members: parseMany(raw['members'] as List, (Map<String, Object?> raw) => parseThreadMember(raw, guildId: guildId)),
+      members: parseMany(
+          raw['members'] as List,
+          (Map<String, Object?> raw) =>
+              parseThreadMember(raw, guildId: guildId)),
       hasMore: raw['has_more'] as bool? ?? false,
     );
   }
@@ -439,7 +539,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       channelId: Snowflake.parse(raw['channel_id']!),
       topic: raw['topic'] as String,
       privacyLevel: PrivacyLevel(raw['privacy_level'] as int),
-      scheduledEventId: maybeParse(raw['guild_scheduled_event_id'], Snowflake.parse),
+      scheduledEventId:
+          maybeParse(raw['guild_scheduled_event_id'], Snowflake.parse),
     );
   }
 
@@ -456,7 +557,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// Update a channel using the provided [builder].
-  Future<Channel> update(Snowflake id, UpdateBuilder<Channel> builder, {String? auditLogReason}) async {
+  Future<Channel> update(Snowflake id, UpdateBuilder<Channel> builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()..channels(id: id.toString());
     final request = BasicRequest(
       route,
@@ -489,17 +591,20 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// Update a permission overwrite in a channel.
-  Future<void> updatePermissionOverwrite(Snowflake id, PermissionOverwriteBuilder builder) async {
+  Future<void> updatePermissionOverwrite(
+      Snowflake id, PermissionOverwriteBuilder builder) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..permissions(id: builder.id.toString());
-    final request = BasicRequest(route, method: 'PUT', body: jsonEncode(builder.build(includeId: false)));
+    final request = BasicRequest(route,
+        method: 'PUT', body: jsonEncode(builder.build(includeId: false)));
 
     await client.httpHandler.executeSafe(request);
   }
 
   /// Delete a permission overwrite in a channel.
-  Future<void> deletePermissionOverwrite(Snowflake id, Snowflake permissionId) async {
+  Future<void> deletePermissionOverwrite(
+      Snowflake id, Snowflake permissionId) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..permissions(id: permissionId.toString());
@@ -516,21 +621,26 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     final request = BasicRequest(route);
 
     final response = await client.httpHandler.executeSafe(request);
-    final invites = parseMany(response.jsonBody as List<Object?>, client.invites.parseWithMetadata);
+    final invites = parseMany(
+        response.jsonBody as List<Object?>, client.invites.parseWithMetadata);
 
     invites.forEach(client.updateCacheWith);
     return invites;
   }
 
   /// Create an invite in a guild channel.
-  Future<Invite> createInvite(Snowflake id, InviteBuilder builder, {String? auditLogReason}) async {
+  Future<Invite> createInvite(Snowflake id, InviteBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..invites();
 
     final HttpRequest request;
     if (builder.targetUserIds == null) {
-      request = BasicRequest(route, method: 'POST', auditLogReason: auditLogReason, body: jsonEncode(builder.build()));
+      request = BasicRequest(route,
+          method: 'POST',
+          auditLogReason: auditLogReason,
+          body: jsonEncode(builder.build()));
     } else {
       request = MultipartRequest(
         route,
@@ -549,14 +659,16 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     }
 
     final response = await client.httpHandler.executeSafe(request);
-    final invite = client.invites.parse(response.jsonBody as Map<String, Object?>);
+    final invite =
+        client.invites.parse(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(invite);
     return invite;
   }
 
   /// Add a channel to another channel's followers.
-  Future<FollowedChannel> followChannel(Snowflake id, Snowflake toFollow, {String? auditLogReason}) async {
+  Future<FollowedChannel> followChannel(Snowflake id, Snowflake toFollow,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..channels(id: toFollow.toString())
       ..followers();
@@ -583,12 +695,17 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// Create a thread from a message in a channel.
-  Future<Thread> createThreadFromMessage(Snowflake id, Snowflake messageId, ThreadFromMessageBuilder builder, {String? auditLogReason}) async {
+  Future<Thread> createThreadFromMessage(
+      Snowflake id, Snowflake messageId, ThreadFromMessageBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..messages(id: messageId.toString())
       ..threads();
-    final request = BasicRequest(route, method: 'POST', body: jsonEncode(builder.build()), auditLogReason: auditLogReason);
+    final request = BasicRequest(route,
+        method: 'POST',
+        body: jsonEncode(builder.build()),
+        auditLogReason: auditLogReason);
 
     final response = await client.httpHandler.executeSafe(request);
     final thread = parse(response.jsonBody as Map<String, Object?>) as Thread;
@@ -598,11 +715,15 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// Create a thread in a channel.
-  Future<Thread> createThread(Snowflake id, ThreadBuilder builder, {String? auditLogReason}) async {
+  Future<Thread> createThread(Snowflake id, ThreadBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..threads();
-    final request = BasicRequest(route, method: 'POST', body: jsonEncode(builder.build()), auditLogReason: auditLogReason);
+    final request = BasicRequest(route,
+        method: 'POST',
+        body: jsonEncode(builder.build()),
+        auditLogReason: auditLogReason);
 
     final response = await client.httpHandler.executeSafe(request);
     final thread = parse(response.jsonBody as Map<String, Object?>) as Thread;
@@ -612,7 +733,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// Create a thread in a forum channel.
-  Future<Thread> createForumThread(Snowflake id, ForumThreadBuilder builder, {String? auditLogReason}) async {
+  Future<Thread> createForumThread(Snowflake id, ForumThreadBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..threads();
@@ -630,7 +752,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
           filename: attachments[i].fileName,
         ));
 
-        (((payload['message'] as Map)['attachments'] as List)[i] as Map)['id'] = i.toString();
+        (((payload['message'] as Map)['attachments'] as List)[i] as Map)['id'] =
+            i.toString();
       }
 
       request = MultipartRequest(
@@ -641,7 +764,10 @@ class ChannelManager extends ReadOnlyManager<Channel> {
         auditLogReason: auditLogReason,
       );
     } else {
-      request = BasicRequest(route, method: 'POST', body: jsonEncode(builder.build()), auditLogReason: auditLogReason);
+      request = BasicRequest(route,
+          method: 'POST',
+          body: jsonEncode(builder.build()),
+          auditLogReason: auditLogReason);
     }
 
     final response = await client.httpHandler.executeSafe(request);
@@ -692,7 +818,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// Fetch information about a member in a thread.
-  Future<ThreadMember> fetchThreadMember(Snowflake id, Snowflake memberId, {bool? withMember}) async {
+  Future<ThreadMember> fetchThreadMember(Snowflake id, Snowflake memberId,
+      {bool? withMember}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..threadMembers(id: memberId.toString());
@@ -710,7 +837,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// List the members of a thread.
-  Future<List<ThreadMember>> listThreadMembers(Snowflake id, {bool? withMembers, Snowflake? after, int? limit}) async {
+  Future<List<ThreadMember>> listThreadMembers(Snowflake id,
+      {bool? withMembers, Snowflake? after, int? limit}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..threadMembers();
@@ -730,7 +858,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// List the public archived threads in a channel.
-  Future<ThreadList> listPublicArchivedThreads(Snowflake id, {DateTime? before, int? limit}) async {
+  Future<ThreadList> listPublicArchivedThreads(Snowflake id,
+      {DateTime? before, int? limit}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..threads()
@@ -746,14 +875,16 @@ class ChannelManager extends ReadOnlyManager<Channel> {
 
     final response = await client.httpHandler.executeSafe(request);
     // TODO: Can we provide the guild ID?
-    final threadList = parseThreadList(response.jsonBody as Map<String, Object?>);
+    final threadList =
+        parseThreadList(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(threadList);
     return threadList;
   }
 
   /// List the private archived threads in a channel.
-  Future<ThreadList> listPrivateArchivedThreads(Snowflake id, {DateTime? before, int? limit}) async {
+  Future<ThreadList> listPrivateArchivedThreads(Snowflake id,
+      {DateTime? before, int? limit}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..threads()
@@ -769,15 +900,17 @@ class ChannelManager extends ReadOnlyManager<Channel> {
 
     final response = await client.httpHandler.executeSafe(request);
     // TODO: Can we provide the guild ID?
-    final threadList = parseThreadList(response.jsonBody as Map<String, Object?>);
+    final threadList =
+        parseThreadList(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(threadList);
     return threadList;
   }
 
   /// List the private archived threads the current user has joined in a channel.
-  // TODO(lexedia): for nyxx v7, this needs to be updated to use `Snowflake` instead of `DateTime`.
-  Future<ThreadList> listJoinedPrivateArchivedThreads(Snowflake id, {DateTime? before, int? limit}) async {
+  // TODO(lexedia): for uhxx v7, this needs to be updated to use `Snowflake` instead of `DateTime`.
+  Future<ThreadList> listJoinedPrivateArchivedThreads(Snowflake id,
+      {DateTime? before, int? limit}) async {
     final route = HttpRoute()
       ..channels(id: id.toString())
       ..users(id: '@me')
@@ -794,24 +927,29 @@ class ChannelManager extends ReadOnlyManager<Channel> {
 
     final response = await client.httpHandler.executeSafe(request);
     // TODO: Can we provide the guild ID?
-    final threadList = parseThreadList(response.jsonBody as Map<String, Object?>);
+    final threadList =
+        parseThreadList(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(threadList);
     return threadList;
   }
 
   /// Start a stage instance in a channel.
-  Future<StageInstance> createStageInstance(Snowflake channelId, StageInstanceBuilder builder, {String? auditLogReason}) async {
+  Future<StageInstance> createStageInstance(
+      Snowflake channelId, StageInstanceBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()..stageInstances();
     final request = BasicRequest(
       route,
       method: 'POST',
-      body: jsonEncode({'channel_id': channelId.toString(), ...builder.build()}),
+      body:
+          jsonEncode({'channel_id': channelId.toString(), ...builder.build()}),
       auditLogReason: auditLogReason,
     );
 
     final response = await client.httpHandler.executeSafe(request);
-    final stageInstance = parseStageInstance(response.jsonBody as Map<String, Object?>);
+    final stageInstance =
+        parseStageInstance(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(stageInstance);
     return stageInstance;
@@ -823,14 +961,17 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     final request = BasicRequest(route);
 
     final response = await client.httpHandler.executeSafe(request);
-    final stageInstance = parseStageInstance(response.jsonBody as Map<String, Object?>);
+    final stageInstance =
+        parseStageInstance(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(stageInstance);
     return stageInstance;
   }
 
   /// Update the stage instance for a channel.
-  Future<StageInstance> updateStageInstance(Snowflake channelId, StageInstanceUpdateBuilder builder, {String? auditLogReason}) async {
+  Future<StageInstance> updateStageInstance(
+      Snowflake channelId, StageInstanceUpdateBuilder builder,
+      {String? auditLogReason}) async {
     final route = HttpRoute()..stageInstances(id: channelId.toString());
     final request = BasicRequest(
       route,
@@ -840,27 +981,32 @@ class ChannelManager extends ReadOnlyManager<Channel> {
     );
 
     final response = await client.httpHandler.executeSafe(request);
-    final stageInstance = parseStageInstance(response.jsonBody as Map<String, Object?>);
+    final stageInstance =
+        parseStageInstance(response.jsonBody as Map<String, Object?>);
 
     client.updateCacheWith(stageInstance);
     return stageInstance;
   }
 
   /// Delete the stage instance for a channel.
-  Future<void> deleteStageInstance(Snowflake channelId, {String? auditLogReason}) async {
+  Future<void> deleteStageInstance(Snowflake channelId,
+      {String? auditLogReason}) async {
     final route = HttpRoute()..stageInstances(id: channelId.toString());
-    final request = BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
+    final request =
+        BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
 
     await client.httpHandler.executeSafe(request);
 
     stageInstanceCache.remove(channelId);
   }
 
-  Future<void> addRecipient(Snowflake channelId, Snowflake userId, DmRecipientBuilder builder) async {
+  Future<void> addRecipient(
+      Snowflake channelId, Snowflake userId, DmRecipientBuilder builder) async {
     final route = HttpRoute()
       ..channels(id: channelId.toString())
       ..recipients(id: userId.toString());
-    final request = BasicRequest(route, method: 'PUT', body: jsonEncode(builder.build()));
+    final request =
+        BasicRequest(route, method: 'PUT', body: jsonEncode(builder.build()));
 
     await client.httpHandler.executeSafe(request);
   }
@@ -875,7 +1021,8 @@ class ChannelManager extends ReadOnlyManager<Channel> {
   }
 
   /// Update the status of a [VoiceChannel].
-  Future<void> updateVoiceChannelStatus(Snowflake channelId, String? status, {String? auditLogReason}) async {
+  Future<void> updateVoiceChannelStatus(Snowflake channelId, String? status,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..channels(id: channelId.toString())
       ..voiceStatus();

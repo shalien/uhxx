@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 void main() {
   final testToken = Platform.environment['TEST_TOKEN'];
-  group('close and error handling', timeout: Timeout.parse('2m'), skip: testToken != null ? false : 'No test token provided', () {
-    Future<NyxxGateway> createClient([GatewayClientOptions? options]) async {
-      return await Nyxx.connectGatewayWithOptions(
+  group('close and error handling',
+      timeout: Timeout.parse('2m'),
+      skip: testToken != null ? false : 'No test token provided', () {
+    Future<UhxxGateway> createClient([GatewayClientOptions? options]) async {
+      return await Uhxx.connectGatewayWithOptions(
         GatewayApiOptions(
           token: testToken!,
           intents: GatewayIntents.allUnprivileged,
@@ -33,7 +35,7 @@ void main() {
     test('HTTP handler close', () async {
       final client = await createClient();
 
-      expect(client.done, throwsA(isA<NyxxException>()));
+      expect(client.done, throwsA(isA<UhxxException>()));
       expect(client.httpHandler.done, completes);
       expect(client.gateway.done, completes);
       expect(client.gateway.shards[0].done, completes);
@@ -45,7 +47,7 @@ void main() {
     test('Gateway close', () async {
       final client = await createClient();
 
-      expect(client.done, throwsA(isA<NyxxException>()));
+      expect(client.done, throwsA(isA<UhxxException>()));
       expect(client.httpHandler.done, completes);
       expect(client.gateway.done, completes);
       expect(client.gateway.shards[0].done, completes);
@@ -57,9 +59,9 @@ void main() {
     test('Shard close', () async {
       final client = await createClient();
 
-      expect(client.done, throwsA(isA<NyxxException>()));
+      expect(client.done, throwsA(isA<UhxxException>()));
       expect(client.httpHandler.done, completes);
-      expect(client.gateway.done, throwsA(isA<NyxxException>()));
+      expect(client.gateway.done, throwsA(isA<UhxxException>()));
       expect(client.gateway.shards[0].done, completes);
       expect(client.gateway.shards[1].done, completes);
 
@@ -69,22 +71,23 @@ void main() {
     test('Shard isolate killed', () async {
       final client = await createClient();
 
-      expect(client.done, throwsA(isA<NyxxException>()));
+      expect(client.done, throwsA(isA<UhxxException>()));
       expect(client.httpHandler.done, completes);
-      expect(client.gateway.done, throwsA(isA<NyxxException>()));
-      expect(client.gateway.shards[0].done, throwsA(isA<NyxxException>()));
+      expect(client.gateway.done, throwsA(isA<UhxxException>()));
+      expect(client.gateway.shards[0].done, throwsA(isA<UhxxException>()));
       expect(client.gateway.shards[1].done, completes);
 
       client.gateway.shards[0].isolate.kill();
     });
 
     test('Shard disconnection error', () async {
-      final client = await createClient(GatewayClientOptions(plugins: [FakeDisconnectPlugin()]));
+      final client = await createClient(
+          GatewayClientOptions(plugins: [FakeDisconnectPlugin()]));
 
-      expect(client.done, throwsA(isA<NyxxException>()));
+      expect(client.done, throwsA(isA<UhxxException>()));
       expect(client.httpHandler.done, completes);
-      expect(client.gateway.done, throwsA(isA<NyxxException>()));
-      expect(client.gateway.shards[0].done, throwsA(isA<NyxxException>()));
+      expect(client.gateway.done, throwsA(isA<UhxxException>()));
+      expect(client.gateway.shards[0].done, throwsA(isA<UhxxException>()));
       expect(client.gateway.shards[1].done, completes);
     });
 
@@ -93,9 +96,9 @@ void main() {
 
       final client = await createClient(options);
 
-      expect(client.done, throwsA(isA<NyxxException>()));
+      expect(client.done, throwsA(isA<UhxxException>()));
       expect(client.httpHandler.done, completes);
-      expect(client.gateway.done, throwsA(isA<NyxxException>()));
+      expect(client.gateway.done, throwsA(isA<UhxxException>()));
       expect(client.gateway.shards[0].done, completes);
       expect(client.gateway.shards[1].done, completes);
 
@@ -105,9 +108,10 @@ void main() {
   });
 }
 
-class FakeDisconnectPlugin extends NyxxPlugin<NyxxGateway> {
+class FakeDisconnectPlugin extends UhxxPlugin<UhxxGateway> {
   @override
-  Stream<ShardMessage> interceptShardMessages(Shard shard, Stream<ShardMessage> messages) {
+  Stream<ShardMessage> interceptShardMessages(
+      Shard shard, Stream<ShardMessage> messages) {
     final controller = StreamController<ShardMessage>();
 
     super.interceptShardMessages(shard, messages).listen((message) {

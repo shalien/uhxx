@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path_lib;
 
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/message/attachment.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/message/attachment.dart';
 
 /// {@category builders}
 class AttachmentBuilder extends Builder<Attachment> {
@@ -13,9 +13,11 @@ class AttachmentBuilder extends Builder<Attachment> {
 
   String? description;
 
-  AttachmentBuilder({required this.data, required this.fileName, this.description});
+  AttachmentBuilder(
+      {required this.data, required this.fileName, this.description});
 
-  static Future<AttachmentBuilder> fromFile(File file, {String? description}) async {
+  static Future<AttachmentBuilder> fromFile(File file,
+      {String? description}) async {
     final data = await file.readAsBytes();
 
     return AttachmentBuilder(

@@ -1,5 +1,5 @@
-import 'package:nyxx/nyxx.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/uhxx.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// The status of processing the target users for an invite.
 ///
@@ -35,7 +35,8 @@ class InviteTargetsJobStatus with ToStringHelper {
 }
 
 /// The type of an [InviteTargetsJobStatus].
-final class InviteTargetsJobStatusType extends EnumLike<int, InviteTargetsJobStatusType> {
+final class InviteTargetsJobStatusType
+    extends EnumLike<int, InviteTargetsJobStatusType> {
   static const unspecified = InviteTargetsJobStatusType(0);
   static const processing = InviteTargetsJobStatusType(1);
   static const completed = InviteTargetsJobStatusType(2);

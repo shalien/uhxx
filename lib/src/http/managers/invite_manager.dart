@@ -1,26 +1,26 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' hide MultipartRequest;
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/invite/invite.dart';
-import 'package:nyxx/src/models/invite/invite_metadata.dart';
-import 'package:nyxx/src/models/invite/job_status.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/invite/invite.dart';
+import 'package:uhxx/src/models/invite/invite_metadata.dart';
+import 'package:uhxx/src/models/invite/job_status.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A manager for [Invite]s.
 ///
 /// {@category managers}
 class InviteManager {
   /// The client this [InviteManager] is for.
-  final NyxxRest client;
+  final UhxxRest client;
 
   /// Create a new [InviteManager].
   InviteManager(this.client);
@@ -29,7 +29,22 @@ class InviteManager {
   Invite parse(Map<String, Object?> raw) {
     final guild = maybeParse(
       raw['guild'],
-      (Map<String, Object?> raw) => PartialGuild(id: Snowflake.parse(raw['id']!), manager: client.guilds),
+      (Map<String, Object?> raw) => InviteGuild(
+        id: Snowflake.parse(raw['id']!),
+        manager: client.guilds,
+        name: raw['name']! as String,
+        splashHash: raw['splash']! as String?,
+        bannerHash: raw['banner'] as String?,
+        description: raw['description'] as String?,
+        iconHash: raw['icon'] as String?,
+        features:
+            client.guilds.parseGuildFeatures(raw['features'] as List<String>),
+        verificationLevel: VerificationLevel(raw['verification_level'] as int),
+        vanityUrlCode: raw['vanity_url_code'] as String?,
+        nsfwLevel: NsfwLevel(raw['nsfw_level'] as int),
+        premiumSubscriptionCount: raw['premium_subscription_count'] as int,
+        premiumTier: PremiumTier(raw['premium_tier'] as int),
+      ),
     );
 
     return Invite(
@@ -37,21 +52,28 @@ class InviteManager {
       type: InviteType(raw['type'] as int),
       code: raw['code'] as String,
       guild: guild,
-      channel: PartialChannel(id: Snowflake.parse((raw['channel'] as Map<String, Object?>)['id']!), manager: client.channels),
+      channel: PartialChannel(
+          id: Snowflake.parse((raw['channel'] as Map<String, Object?>)['id']!),
+          manager: client.channels),
       inviter: maybeParse(raw['inviter'], client.users.parse),
       targetType: maybeParse(raw['target_type'], TargetType.new),
       targetUser: maybeParse(raw['target_user'], client.users.parse),
       targetApplication: maybeParse(
         raw['target_application'],
-        (Map<String, Object?> raw) => PartialApplication(id: Snowflake.parse(raw['id']!), manager: client.applications),
+        (Map<String, Object?> raw) => PartialApplication(
+            id: Snowflake.parse(raw['id']!), manager: client.applications),
       ),
       approximatePresenceCount: raw['approximate_presence_count'] as int?,
       approximateMemberCount: raw['approximate_member_count'] as int?,
       expiresAt: maybeParse(raw['expires_at'], DateTime.parse),
       // Don't use a tearoff so we don't evaluate `guild!` unless guild_scheduled_event is set.
-      guildScheduledEvent: maybeParse(raw['guild_scheduled_event'], (Map<String, Object?> raw) => guild!.scheduledEvents.parse(raw)),
+      guildScheduledEvent: maybeParse(raw['guild_scheduled_event'],
+          (Map<String, Object?> raw) => guild!.scheduledEvents.parse(raw)),
       flags: maybeParse(raw['flags'], GuildInviteFlags.new),
-      roles: maybeParseMany(raw['roles'], (Map<String, Object?> raw) => guild!.roles[Snowflake.parse(raw['id']!)]),
+      roles: maybeParseMany(
+          raw['roles'],
+          (Map<String, Object?> raw) =>
+              guild!.roles[Snowflake.parse(raw['id']!)]),
     );
   }
 
@@ -94,12 +116,16 @@ class InviteManager {
     );
   }
 
-  Future<Invite> fetch(String code, {bool? withCounts, bool? withExpiration, Snowflake? scheduledEventId}) async {
+  Future<Invite> fetch(String code,
+      {bool? withCounts,
+      bool? withExpiration,
+      Snowflake? scheduledEventId}) async {
     final route = HttpRoute()..invites(id: code);
     final request = BasicRequest(route, queryParameters: {
       if (withCounts != null) 'with_counts': withCounts.toString(),
       if (withExpiration != null) 'with_expiration': withExpiration.toString(),
-      if (scheduledEventId != null) 'guild_scheduled_event_id': scheduledEventId.toString(),
+      if (scheduledEventId != null)
+        'guild_scheduled_event_id': scheduledEventId.toString(),
     });
 
     final response = await client.httpHandler.executeSafe(request);
@@ -112,7 +138,8 @@ class InviteManager {
   /// Delete an invite.
   Future<Invite> delete(String code, {String? auditLogReason}) async {
     final route = HttpRoute()..invites(id: code);
-    final request = BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
+    final request =
+        BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
 
     final response = await client.httpHandler.executeSafe(request);
     final invite = parse(response.jsonBody as Map<String, Object?>);
@@ -130,7 +157,12 @@ class InviteManager {
     final request = BasicRequest(route, method: 'GET');
 
     final response = await client.httpHandler.executeSafe(request);
-    return LineSplitter().convert(response.textBody!).skip(1).map(Snowflake.parse).map((id) => client.users[id]).toList();
+    return LineSplitter()
+        .convert(response.textBody!)
+        .skip(1)
+        .map(Snowflake.parse)
+        .map((id) => client.users[id])
+        .toList();
   }
 
   /// Update the users targeted by the specified invite.
@@ -141,7 +173,12 @@ class InviteManager {
     final request = MultipartRequest(
       route,
       method: 'PUT',
-      files: [MultipartFile.fromString('target_users_file', filename: 'target_users.csv', userIds.join('\n'))],
+      files: [
+        MultipartFile.fromString(
+            'target_users_file',
+            filename: 'target_users.csv',
+            userIds.join('\n'))
+      ],
     );
 
     await client.httpHandler.executeSafe(request);
@@ -155,6 +192,7 @@ class InviteManager {
     final request = BasicRequest(route, method: 'GET');
 
     final response = await client.httpHandler.executeSafe(request);
-    return parseInviteTargetsJobStatus(response.jsonBody as Map<String, Object?>);
+    return parseInviteTargetsJobStatus(
+        response.jsonBody as Map<String, Object?>);
   }
 }

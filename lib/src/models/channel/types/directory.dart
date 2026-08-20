@@ -1,4 +1,4 @@
-import 'package:nyxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
 
 /// {@template directory_channel}
 /// A directory channel.

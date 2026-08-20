@@ -1,7 +1,7 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/channel/types/forum.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/building_helpers.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/channel/types/forum.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/building_helpers.dart';
 
 /// {@category builders}
 class ForumTagBuilder extends CreateBuilder<ForumTag> {
@@ -17,7 +17,8 @@ class ForumTagBuilder extends CreateBuilder<ForumTag> {
   /// The unicode character of the emoji.
   String? emojiName;
 
-  ForumTagBuilder({required this.name, this.isModerated, this.emojiId, this.emojiName});
+  ForumTagBuilder(
+      {required this.name, this.isModerated, this.emojiId, this.emojiName});
 
   @override
   Map<String, Object?> build() => {

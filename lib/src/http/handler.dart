@@ -3,14 +3,14 @@ import 'dart:collection';
 
 import 'package:http/http.dart' hide MultipartRequest;
 import 'package:logging/logging.dart';
-import 'package:nyxx/src/api_options.dart';
-import 'package:nyxx/src/client.dart';
-import 'package:nyxx/src/errors.dart';
-import 'package:nyxx/src/http/bucket.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/response.dart';
-import 'package:nyxx/src/plugin/plugin.dart';
-import 'package:nyxx/src/utils/iterable_extension.dart';
+import 'package:uhxx/src/api_options.dart';
+import 'package:uhxx/src/client.dart';
+import 'package:uhxx/src/errors.dart';
+import 'package:uhxx/src/http/bucket.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/response.dart';
+import 'package:uhxx/src/plugin/plugin.dart';
+import 'package:uhxx/src/utils/iterable_extension.dart';
 
 extension on HttpRequest {
   String get loggingId => '$method $route';
@@ -23,7 +23,12 @@ extension on HttpRequest {
 /// a response with the status code 429 was received from the API.
 ///
 /// {@category http}
-typedef RateLimitInfo = ({HttpRequest request, Duration delay, bool isGlobal, bool isAnticipated});
+typedef RateLimitInfo = ({
+  HttpRequest request,
+  Duration delay,
+  bool isGlobal,
+  bool isAnticipated
+});
 
 /// A handler for making HTTP requests to the Discord API.
 ///
@@ -37,7 +42,7 @@ typedef RateLimitInfo = ({HttpRequest request, Duration delay, bool isGlobal, bo
 /// {@category core}
 class HttpHandler {
   /// The client this handler is attached to.
-  final Nyxx client;
+  final Uhxx client;
 
   /// The HTTP client used to make requests.
   final Client httpClient = Client();
@@ -56,9 +61,12 @@ class HttpHandler {
 
   Logger get logger => Logger('${client.options.loggerName}.Http');
 
-  final StreamController<HttpRequest> _onRequestController = StreamController.broadcast();
-  final StreamController<HttpResponse> _onResponseController = StreamController.broadcast();
-  final StreamController<RateLimitInfo> _onRateLimitController = StreamController.broadcast();
+  final StreamController<HttpRequest> _onRequestController =
+      StreamController.broadcast();
+  final StreamController<HttpResponse> _onResponseController =
+      StreamController.broadcast();
+  final StreamController<RateLimitInfo> _onRateLimitController =
+      StreamController.broadcast();
 
   /// A stream of requests executed by this handler.
   ///
@@ -90,7 +98,9 @@ class HttpHandler {
   /// If no requests have been completed, this getter returns [Duration.zero].
   ///
   /// To get the network latency for this [HttpHandler], see [realLatency].
-  Duration get latency => _latencies.isEmpty ? Duration.zero : (_latencies.reduce((a, b) => a + b) ~/ _latencies.length);
+  Duration get latency => _latencies.isEmpty
+      ? Duration.zero
+      : (_latencies.reduce((a, b) => a + b) ~/ _latencies.length);
 
   /// The average network and API latency of the last 10 requests.
   ///
@@ -98,7 +108,9 @@ class HttpHandler {
   /// indicator of how long each call to [execute] takes to complete.
   ///
   /// If no requests have been completed, this getter returns [Duration.zero].
-  Duration get realLatency => _realLatencies.isEmpty ? Duration.zero : (_realLatencies.reduce((a, b) => a + b) ~/ _realLatencies.length);
+  Duration get realLatency => _realLatencies.isEmpty
+      ? Duration.zero
+      : (_realLatencies.reduce((a, b) => a + b) ~/ _realLatencies.length);
 
   final Set<Completer<void>> _pendingRateLimits = {};
 
@@ -118,7 +130,10 @@ class HttpHandler {
         final totalDelay = requestStopwatch.elapsed + delay;
 
         // Prevent warnings being emitted too often. This limits warnings to once per [threshold].
-        if (totalDelay.inMicroseconds ~/ threshold.inMicroseconds <= requestStopwatch.elapsedMicroseconds ~/ threshold.inMicroseconds) return;
+        if (totalDelay.inMicroseconds ~/ threshold.inMicroseconds <=
+            requestStopwatch.elapsedMicroseconds ~/ threshold.inMicroseconds) {
+          return;
+        }
 
         if (totalDelay > threshold) {
           logger.warning(
@@ -126,9 +141,11 @@ class HttpHandler {
             ' The request will have been pending for $totalDelay.',
           );
           if (isAnticipated) {
-            logger.info('This is a predicted rate limit and was anticipated based on previous responses');
+            logger.info(
+                'This is a predicted rate limit and was anticipated based on previous responses');
           } else if (isGlobal) {
-            logger.info('This is a global rate limit and will apply to all requests for the next $delay');
+            logger.info(
+                'This is a global rate limit and will apply to all requests for the next $delay');
           } else {
             logger.info('This rate limit was returned by the API');
           }
@@ -151,11 +168,12 @@ class HttpHandler {
   ///
   /// Otherwise, this method returns a [HttpResponseError].
   ///
-  /// This method calls [NyxxPlugin.interceptRequest] on all plugins registered to the [client] which may intercept the [request].
+  /// This method calls [UhxxPlugin.interceptRequest] on all plugins registered to the [client] which may intercept the [request].
   Future<HttpResponse> execute(HttpRequest request) async {
     final executeFn = client.options.plugins.fold(
       _execute,
-      (previousValue, plugin) => (request) => plugin.interceptRequest(client, request, previousValue),
+      (previousValue, plugin) =>
+          (request) => plugin.interceptRequest(client, request, previousValue),
     );
     return await executeFn(request);
   }
@@ -169,9 +187,11 @@ class HttpHandler {
       );
 
     if (request is BasicRequest) {
-      logger.finer('Query Parameters: ${request.queryParameters}, Body: ${request.body}');
+      logger.finer(
+          'Query Parameters: ${request.queryParameters}, Body: ${request.body}');
     } else if (request is FormDataRequest) {
-      logger.finer('Query parameters: ${request.queryParameters}, Payload: ${request.formParams}, Files: ${request.files.map((e) => e.filename).join(', ')}');
+      logger.finer(
+          'Query parameters: ${request.queryParameters}, Payload: ${request.formParams}, Files: ${request.files.map((e) => e.filename).join(', ')}');
     } else {
       logger.finer('Query parameters: ${request.queryParameters}');
     }
@@ -190,7 +210,10 @@ class HttpHandler {
 
       final now = DateTime.now();
 
-      final globalWaitTime = (request.applyGlobalRateLimit ? globalReset?.difference(now) : null) ?? Duration.zero;
+      final globalWaitTime = (request.applyGlobalRateLimit
+              ? globalReset?.difference(now)
+              : null) ??
+          Duration.zero;
 
       Duration bucketWaitTime = Duration.zero;
       if (bucket != null && bucket.remaining <= 0) {
@@ -209,12 +232,18 @@ class HttpHandler {
         }
       }
 
-      final isGlobal = globalWaitTime > bucketWaitTime && request.applyGlobalRateLimit;
+      final isGlobal =
+          globalWaitTime > bucketWaitTime && request.applyGlobalRateLimit;
       waitTime = isGlobal ? globalWaitTime : bucketWaitTime;
 
       if (waitTime > Duration.zero) {
         logger.finer('Holding ${request.loggingId} for $waitTime');
-        _onRateLimitController.add((request: request, delay: waitTime, isGlobal: isGlobal, isAnticipated: true));
+        _onRateLimitController.add((
+          request: request,
+          delay: waitTime,
+          isGlobal: isGlobal,
+          isAnticipated: true
+        ));
 
         // Don't use Future.delayed so that we can exit early if close() is called.
         // If we use Future.delayed, the program will remain alive until it is complete, even if nothing is waiting on it.
@@ -280,33 +309,43 @@ class HttpHandler {
     _buckets[request.rateLimitId] = bucket;
   }
 
-  Future<HttpResponse> _handle(HttpRequest request, StreamedResponse response) async {
+  Future<HttpResponse> _handle(
+      HttpRequest request, StreamedResponse response) async {
     _updateRatelimitBucket(request, response);
 
     final HttpResponse parsedResponse;
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      parsedResponse = await HttpResponseSuccess.fromResponse(request, response);
+      parsedResponse =
+          await HttpResponseSuccess.fromResponse(request, response);
     } else {
       parsedResponse = await HttpResponseError.fromResponse(request, response);
     }
 
     logger
       ..fine('${response.statusCode} ${request.loggingId}')
-      ..finer('Headers: ${parsedResponse.headers}, Body: ${parsedResponse.textBody ?? parsedResponse.body.map((e) => e.toRadixString(16)).join(' ')}');
+      ..finer(
+          'Headers: ${parsedResponse.headers}, Body: ${parsedResponse.textBody ?? parsedResponse.body.map((e) => e.toRadixString(16)).join(' ')}');
 
     _onResponseController.add(parsedResponse);
 
     if (parsedResponse.statusCode == 429) {
       try {
         final responseBody = parsedResponse.jsonBody;
-        final retryAfter = Duration(milliseconds: ((responseBody["retry_after"] as double) * 1000).ceil());
+        final retryAfter = Duration(
+            milliseconds:
+                ((responseBody["retry_after"] as double) * 1000).ceil());
         final isGlobal = responseBody["global"] as bool;
 
         if (isGlobal) {
           _globalReset = DateTime.now().add(retryAfter);
         }
 
-        _onRateLimitController.add((request: request, delay: retryAfter, isGlobal: isGlobal, isAnticipated: false));
+        _onRateLimitController.add((
+          request: request,
+          delay: retryAfter,
+          isGlobal: isGlobal,
+          isAnticipated: false
+        ));
 
         // Don't use Future.delayed so that we can exit early if close() is called.
         // If we use Future.delayed, the program will remain alive until it is complete, even if nothing is waiting on it.
@@ -322,7 +361,8 @@ class HttpHandler {
           timer.cancel();
         }
       } on TypeError {
-        logger.shout('Invalid rate limit body for ${request.loggingId}! Your client is probably cloudflare banned!');
+        logger.shout(
+            'Invalid rate limit body for ${request.loggingId}! Your client is probably cloudflare banned!');
       }
     }
 
@@ -386,7 +426,7 @@ class Oauth2HttpHandler extends HttpHandler {
   final OAuth2ApiOptions apiOptions;
 
   /// Create a new [Oauth2HttpHandler].
-  Oauth2HttpHandler(NyxxOAuth2 super.client) : apiOptions = client.apiOptions;
+  Oauth2HttpHandler(UhxxOAuth2 super.client) : apiOptions = client.apiOptions;
 
   @override
   Future<HttpResponse> _execute(HttpRequest request) async {

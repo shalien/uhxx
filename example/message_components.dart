@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 
 void main() async {
-  final client = await Nyxx.connectGateway(
+  final client = await Uhxx.connectGateway(
     Platform.environment['TOKEN']!,
     GatewayIntents.allUnprivileged | GatewayIntents.messageContent,
     options: GatewayClientOptions(plugins: [logging, cliIntegration]),
@@ -18,12 +18,14 @@ void main() async {
         ContainerComponentBuilder(
           accentColor: DiscordColor(9225410),
           components: [
-            TextDisplayComponentBuilder(content: "Example components - also check out [discord.builders](https://discord.builders)!"),
+            TextDisplayComponentBuilder(
+                content:
+                    "Example components - also check out [discord.builders](https://discord.builders)!"),
             TextDisplayComponentBuilder(content: "\nButtons"),
             ActionRowBuilder(
               components: [
                 ButtonBuilder.link(
-                  url: Uri.parse("https://pub.dev/packages/nyxx"),
+                  url: Uri.parse("https://pub.dev/packages/uhxx"),
                   label: "Buttons that",
                 ),
                 ButtonBuilder.primary(
@@ -62,7 +64,9 @@ void main() async {
             MediaGalleryComponentBuilder(
               items: [
                 MediaGalleryItemBuilder(
-                  media: UnfurledMediaItemBuilder(url: Uri.parse("https://avatars.githubusercontent.com/u/88039362?s=256")),
+                  media: UnfurledMediaItemBuilder(
+                      url: Uri.parse(
+                          "https://avatars.githubusercontent.com/u/88039362?s=256")),
                 ),
               ],
             ),

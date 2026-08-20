@@ -1,35 +1,36 @@
-/// @docImport 'package:nyxx/nyxx.dart';
+/// @docImport 'package:uhxx/uhxx.dart';
+library;
 
 import 'dart:convert';
 
 import 'package:http/http.dart' show MultipartFile;
-import 'package:nyxx/src/builders/emoji/reaction.dart';
-import 'package:nyxx/src/builders/message/message.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/guild_channel.dart';
-import 'package:nyxx/src/models/channel/thread.dart';
-import 'package:nyxx/src/models/discord_color.dart';
-import 'package:nyxx/src/models/interaction.dart';
-import 'package:nyxx/src/models/message/activity.dart';
-import 'package:nyxx/src/models/message/attachment.dart';
-import 'package:nyxx/src/models/message/author.dart';
-import 'package:nyxx/src/models/message/channel_mention.dart';
-import 'package:nyxx/src/models/component.dart';
-import 'package:nyxx/src/models/message/embed.dart';
-import 'package:nyxx/src/models/message/message.dart';
-import 'package:nyxx/src/models/message/reaction.dart';
-import 'package:nyxx/src/models/message/reference.dart';
-import 'package:nyxx/src/models/message/role_subscription_data.dart';
-import 'package:nyxx/src/models/message/poll.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/builders/emoji/reaction.dart';
+import 'package:uhxx/src/builders/message/message.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/guild_channel.dart';
+import 'package:uhxx/src/models/channel/thread.dart';
+import 'package:uhxx/src/models/discord_color.dart';
+import 'package:uhxx/src/models/interaction.dart';
+import 'package:uhxx/src/models/message/activity.dart';
+import 'package:uhxx/src/models/message/attachment.dart';
+import 'package:uhxx/src/models/message/author.dart';
+import 'package:uhxx/src/models/message/channel_mention.dart';
+import 'package:uhxx/src/models/component.dart';
+import 'package:uhxx/src/models/message/embed.dart';
+import 'package:uhxx/src/models/message/message.dart';
+import 'package:uhxx/src/models/message/reaction.dart';
+import 'package:uhxx/src/models/message/reference.dart';
+import 'package:uhxx/src/models/message/role_subscription_data.dart';
+import 'package:uhxx/src/models/message/poll.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A manager for [Message]s in a [TextChannel].
 ///
@@ -39,14 +40,17 @@ class MessageManager extends Manager<Message> {
   final Snowflake channelId;
 
   /// Create a new [MessageManager].
-  MessageManager(super.config, super.client, {required this.channelId}) : super(identifier: '$channelId.messages');
+  MessageManager(super.config, super.client, {required this.channelId})
+      : super(identifier: '$channelId.messages');
 
   @override
-  PartialMessage operator [](Snowflake id) => PartialMessage(id: id, manager: this);
+  PartialMessage operator [](Snowflake id) =>
+      PartialMessage(id: id, manager: this);
 
   @override
   Message parse(Map<String, Object?> raw, {Snowflake? guildId}) {
-    if (client.channels.cache[channelId] case GuildChannel(guildId: final guildIdFromChannel)) {
+    if (client.channels.cache[channelId]
+        case GuildChannel(guildId: final guildIdFromChannel)) {
       guildId ??= guildIdFromChannel;
     }
 
@@ -67,11 +71,14 @@ class MessageManager extends Manager<Message> {
       roleMentionIds: snapshot.roleMentionIds,
       type: snapshot.type,
       author: (webhookId == null
-          ? client.users.parse(raw['author'] as Map<String, Object?>)
-          : client.webhooks.parseWebhookAuthor(raw['author'] as Map<String, Object?>)) as MessageAuthor,
+              ? client.users.parse(raw['author'] as Map<String, Object?>)
+              : client.webhooks
+                  .parseWebhookAuthor(raw['author'] as Map<String, Object?>))
+          as MessageAuthor,
       isTts: raw['tts'] as bool,
       mentionsEveryone: raw['mention_everyone'] as bool,
-      channelMentions: maybeParseMany(raw['mention_channels'], parseChannelMention) ?? [],
+      channelMentions:
+          maybeParseMany(raw['mention_channels'], parseChannelMention) ?? [],
       reactions: maybeParseMany(raw['reactions'], parseReaction) ?? [],
       nonce: raw['nonce'] /* as int | String */,
       isPinned: raw['pinned'] as bool,
@@ -79,18 +86,21 @@ class MessageManager extends Manager<Message> {
       activity: maybeParse(raw['activity'], parseMessageActivity),
       application: maybeParse(
         raw['application'],
-        (Map<String, Object?> raw) => PartialApplication(id: Snowflake.parse(raw['id']!), manager: client.applications),
+        (Map<String, Object?> raw) => PartialApplication(
+            id: Snowflake.parse(raw['id']!), manager: client.applications),
       ),
       applicationId: maybeParse(raw['application_id'], Snowflake.parse),
       reference: maybeParse(raw['message_reference'], parseMessageReference),
       messageSnapshots: maybeParseMany(
         raw['message_snapshots'],
-        (Map<String, Object?> raw) => parseMessageSnapshot(raw['message'] as Map<String, Object?>),
+        (Map<String, Object?> raw) =>
+            parseMessageSnapshot(raw['message'] as Map<String, Object?>),
       ),
       referencedMessage: maybeParse(raw['referenced_message'], parse),
       interaction: maybeParse(
         raw['interaction'],
-        (Map<String, Object?> raw) => parseMessageInteraction(raw, guildId: guildId),
+        (Map<String, Object?> raw) =>
+            parseMessageInteraction(raw, guildId: guildId),
       ),
       interactionMetadata: maybeParse(
         raw['interaction_metadata'],
@@ -99,9 +109,13 @@ class MessageManager extends Manager<Message> {
       thread: maybeParse(raw['thread'], client.channels.parse) as Thread?,
       components: snapshot.components,
       position: raw['position'] as int?,
-      roleSubscriptionData: maybeParse(raw['role_subscription_data'], parseRoleSubscriptionData),
+      roleSubscriptionData:
+          maybeParse(raw['role_subscription_data'], parseRoleSubscriptionData),
       stickers: snapshot.stickers,
-      resolved: maybeParse(raw['resolved'], (Map<String, Object?> raw) => client.interactions.parseResolvedData(raw, guildId: guildId, channelId: channelId)),
+      resolved: maybeParse(
+          raw['resolved'],
+          (Map<String, Object?> raw) => client.interactions
+              .parseResolvedData(raw, guildId: guildId, channelId: channelId)),
       poll: maybeParse(raw['poll'], parsePoll),
       call: maybeParse(raw['call'], parseMessageCall),
     );
@@ -130,12 +144,16 @@ class MessageManager extends Manager<Message> {
       height: raw['height'] as int?,
       width: raw['width'] as int?,
       isEphemeral: raw['ephemeral'] as bool? ?? false,
-      duration: maybeParse(raw['duration_secs'], (double value) => Duration(microseconds: (value * Duration.microsecondsPerSecond).floor())),
+      duration: maybeParse(
+          raw['duration_secs'],
+          (double value) => Duration(
+              microseconds: (value * Duration.microsecondsPerSecond).floor())),
       waveform: maybeParse(raw['waveform'], base64.decode),
       flags: maybeParse(raw['flags'], AttachmentFlags.new),
       application: maybeParse(raw['application'], client.applications.parse),
       clipCreatedAt: maybeParse(raw['clip_created_at'], DateTime.parse),
-      clipParticipants: maybeParseMany(raw['clip_participants'], client.users.parse),
+      clipParticipants:
+          maybeParseMany(raw['clip_participants'], client.users.parse),
       title: raw['title'] as String?,
       placeholder: raw['placeholder'] as String?,
       placeholderVersion: raw['placeholder_version'] as int?,
@@ -234,11 +252,14 @@ class MessageManager extends Manager<Message> {
   Reaction parseReaction(Map<String, Object?> raw) {
     return Reaction(
       count: raw['count'] as int,
-      countDetails: parseReactionCountDetails(raw['count_details'] as Map<String, Object?>),
+      countDetails: parseReactionCountDetails(
+          raw['count_details'] as Map<String, Object?>),
       me: raw['me'] as bool,
       meBurst: raw['me_burst'] as bool,
-      emoji: client.guilds[Snowflake.zero].emojis.parse(raw['emoji'] as Map<String, Object?>),
-      burstColors: parseMany(raw['burst_colors'] as List, DiscordColor.parseHexString),
+      emoji: client.guilds[Snowflake.zero].emojis
+          .parse(raw['emoji'] as Map<String, Object?>),
+      burstColors:
+          parseMany(raw['burst_colors'] as List, DiscordColor.parseHexString),
     );
   }
 
@@ -258,7 +279,8 @@ class MessageManager extends Manager<Message> {
 
   MessageReference parseMessageReference(Map<String, Object?> raw) {
     return MessageReference(
-      type: maybeParse(raw['type'], MessageReferenceType.new) ?? MessageReferenceType.defaultType,
+      type: maybeParse(raw['type'], MessageReferenceType.new) ??
+          MessageReferenceType.defaultType,
       manager: this,
       messageId: maybeParse(raw['message_id'], Snowflake.parse),
       channelId: Snowflake.parse(raw['channel_id']!),
@@ -301,7 +323,8 @@ class MessageManager extends Manager<Message> {
 
   /// @nodoc
   @Deprecated('Use parseComponent instead')
-  Component parseMessageComponent(Map<String, Object?> raw) => parseComponent(raw);
+  Component parseMessageComponent(Map<String, Object?> raw) =>
+      parseComponent(raw);
 
   FileUploadComponent parseFileUploadComponent(Map<String, Object?> raw) {
     return FileUploadComponent(
@@ -387,11 +410,13 @@ class MessageManager extends Manager<Message> {
     return SectionComponent(
       id: raw['id'] as int,
       accessory: parseComponent(raw['accessory'] as Map<String, Object?>),
-      components: parseMany(raw['components'] as List, parseTextDisplayComponent),
+      components:
+          parseMany(raw['components'] as List, parseTextDisplayComponent),
     );
   }
 
-  SelectMenuComponent parseSelectMenuComponent(Map<String, Object?> raw, ComponentType type) {
+  SelectMenuComponent parseSelectMenuComponent(
+      Map<String, Object?> raw, ComponentType type) {
     return SelectMenuComponent(
       id: raw['id'] as int,
       type: type,
@@ -399,7 +424,8 @@ class MessageManager extends Manager<Message> {
       options: maybeParseMany(raw['options'], parseSelectMenuOption),
       channelTypes: maybeParseMany(raw['channel_types'], ChannelType.new),
       placeholder: raw['placeholder'] as String?,
-      defaultValues: maybeParseMany(raw['default_values'], parseSelectMenuDefaultValue),
+      defaultValues:
+          maybeParseMany(raw['default_values'], parseSelectMenuDefaultValue),
       minValues: raw['min_values'] as int?,
       maxValues: raw['max_values'] as int?,
       isDisabled: raw['disabled'] as bool?,
@@ -434,7 +460,8 @@ class MessageManager extends Manager<Message> {
       id: raw['id'] as int,
       style: ButtonStyle(raw['style'] as int),
       label: raw['label'] as String?,
-      emoji: maybeParse(raw['emoji'], client.guilds[Snowflake.zero].emojis.parse),
+      emoji:
+          maybeParse(raw['emoji'], client.guilds[Snowflake.zero].emojis.parse),
       customId: raw['custom_id'] as String?,
       skuId: maybeParse(raw['sku_id'], Snowflake.parse),
       url: maybeParse(raw['url'], Uri.parse),
@@ -447,7 +474,8 @@ class MessageManager extends Manager<Message> {
       label: raw['label'] as String,
       value: raw['value'] as String,
       description: raw['description'] as String?,
-      emoji: maybeParse(raw['emoji'], client.guilds[Snowflake.zero].emojis.parse),
+      emoji:
+          maybeParse(raw['emoji'], client.guilds[Snowflake.zero].emojis.parse),
       isDefault: raw['default'] as bool?,
     );
   }
@@ -459,13 +487,16 @@ class MessageManager extends Manager<Message> {
     );
   }
 
-  SubmittedComponent parseSubmittedComponent(Map<String, Object?> raw, {Snowflake? guildId}) {
+  SubmittedComponent parseSubmittedComponent(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
     final type = ComponentType(raw['type'] as int);
 
     return switch (type) {
-      ComponentType.actionRow => parseSubmittedActionRowComponent(raw, guildId: guildId),
+      ComponentType.actionRow =>
+        parseSubmittedActionRowComponent(raw, guildId: guildId),
       ComponentType.textInput => parseSubmittedTextInputComponent(raw),
-      ComponentType.label => parseSubmittedLabelComponent(raw, guildId: guildId),
+      ComponentType.label =>
+        parseSubmittedLabelComponent(raw, guildId: guildId),
       ComponentType.stringSelect ||
       ComponentType.userSelect ||
       ComponentType.mentionableSelect ||
@@ -481,14 +512,20 @@ class MessageManager extends Manager<Message> {
     };
   }
 
-  SubmittedActionRowComponent parseSubmittedActionRowComponent(Map<String, Object?> raw, {Snowflake? guildId}) {
+  SubmittedActionRowComponent parseSubmittedActionRowComponent(
+      Map<String, Object?> raw,
+      {Snowflake? guildId}) {
     return SubmittedActionRowComponent(
       id: raw['id'] as int,
-      components: parseMany(raw['components'] as List, (Map<String, Object?> raw) => parseSubmittedComponent(raw, guildId: guildId)),
+      components: parseMany(
+          raw['components'] as List,
+          (Map<String, Object?> raw) =>
+              parseSubmittedComponent(raw, guildId: guildId)),
     );
   }
 
-  SubmittedTextInputComponent parseSubmittedTextInputComponent(Map<String, Object?> raw) {
+  SubmittedTextInputComponent parseSubmittedTextInputComponent(
+      Map<String, Object?> raw) {
     return SubmittedTextInputComponent(
       id: raw['id'] as int,
       customId: raw['custom_id'] as String,
@@ -496,14 +533,19 @@ class MessageManager extends Manager<Message> {
     );
   }
 
-  SubmittedLabelComponent parseSubmittedLabelComponent(Map<String, Object?> raw, {Snowflake? guildId}) {
+  SubmittedLabelComponent parseSubmittedLabelComponent(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
     return SubmittedLabelComponent(
       id: raw['id'] as int,
-      component: parseSubmittedComponent(raw['component'] as Map<String, Object?>, guildId: guildId),
+      component: parseSubmittedComponent(
+          raw['component'] as Map<String, Object?>,
+          guildId: guildId),
     );
   }
 
-  SubmittedSelectMenuComponent parseSubmittedSelectMenuComponent(Map<String, Object?> raw, {Snowflake? guildId}) {
+  SubmittedSelectMenuComponent parseSubmittedSelectMenuComponent(
+      Map<String, Object?> raw,
+      {Snowflake? guildId}) {
     return SubmittedSelectMenuComponent(
       manager: this,
       guildId: guildId,
@@ -514,11 +556,13 @@ class MessageManager extends Manager<Message> {
     );
   }
 
-  SubmittedTextDisplayComponent parseSubmittedTextDisplayComponent(Map<String, Object?> raw) {
+  SubmittedTextDisplayComponent parseSubmittedTextDisplayComponent(
+      Map<String, Object?> raw) {
     return SubmittedTextDisplayComponent(id: raw['id'] as int);
   }
 
-  SubmittedFileUploadComponent parseSubmittedFileUploadComponent(Map<String, Object?> raw) {
+  SubmittedFileUploadComponent parseSubmittedFileUploadComponent(
+      Map<String, Object?> raw) {
     return SubmittedFileUploadComponent(
       id: raw['id'] as int,
       customId: raw['custom_id'] as String,
@@ -526,7 +570,8 @@ class MessageManager extends Manager<Message> {
     );
   }
 
-  SubmittedRadioGroupComponent parseSubmittedRadioGroupComponent(Map<String, Object?> raw) {
+  SubmittedRadioGroupComponent parseSubmittedRadioGroupComponent(
+      Map<String, Object?> raw) {
     return SubmittedRadioGroupComponent(
       id: raw['id'] as int,
       customId: raw['custom_id'] as String,
@@ -534,7 +579,8 @@ class MessageManager extends Manager<Message> {
     );
   }
 
-  SubmittedCheckboxGroupComponent parseSubmittedCheckboxGroupComponent(Map<String, Object?> raw) {
+  SubmittedCheckboxGroupComponent parseSubmittedCheckboxGroupComponent(
+      Map<String, Object?> raw) {
     return SubmittedCheckboxGroupComponent(
       id: raw['id'] as int,
       customId: raw['custom_id'] as String,
@@ -542,7 +588,8 @@ class MessageManager extends Manager<Message> {
     );
   }
 
-  SubmittedCheckboxComponent parseSubmittedCheckboxComponent(Map<String, Object?> raw) {
+  SubmittedCheckboxComponent parseSubmittedCheckboxComponent(
+      Map<String, Object?> raw) {
     return SubmittedCheckboxComponent(
       id: raw['id'] as int,
       customId: raw['custom_id'] as String,
@@ -551,7 +598,8 @@ class MessageManager extends Manager<Message> {
   }
 
   // ignore: deprecated_member_use_from_same_package
-  MessageInteraction parseMessageInteraction(Map<String, Object?> raw, {Snowflake? guildId}) {
+  MessageInteraction parseMessageInteraction(Map<String, Object?> raw,
+      {Snowflake? guildId}) {
     final user = client.users.parse(raw['user'] as Map<String, Object?>);
 
     // ignore: deprecated_member_use_from_same_package
@@ -562,12 +610,14 @@ class MessageManager extends Manager<Message> {
       user: user,
       member: maybeParse(
         raw['member'],
-        (Map<String, Object?> raw) => client.guilds[guildId ?? Snowflake.zero].members[user.id],
+        (Map<String, Object?> raw) =>
+            client.guilds[guildId ?? Snowflake.zero].members[user.id],
       ),
     );
   }
 
-  MessageInteractionMetadata parseMessageInteractionMetadata(Map<String, Object?> raw) {
+  MessageInteractionMetadata parseMessageInteractionMetadata(
+      Map<String, Object?> raw) {
     final user = client.users.parse(raw['user'] as Map<String, Object?>);
 
     return MessageInteractionMetadata(
@@ -575,19 +625,26 @@ class MessageManager extends Manager<Message> {
       type: InteractionType(raw['type'] as int),
       user: user,
       authorizingIntegrationOwners: {
-        for (final MapEntry(:key, :value) in (raw['authorizing_integration_owners'] as Map<String, Object?>).entries)
+        for (final MapEntry(:key, :value)
+            in (raw['authorizing_integration_owners'] as Map<String, Object?>)
+                .entries)
           ApplicationIntegrationType(int.parse(key)): Snowflake.parse(value!),
       },
-      originalResponseMessageId: maybeParse(raw['original_response_message_id'], Snowflake.parse),
-      interactedMessageId: maybeParse(raw['interacted_message_id'], Snowflake.parse),
-      triggeringInteractionMetadata: maybeParse(raw['triggering_interaction_metadata'], parseMessageInteractionMetadata),
+      originalResponseMessageId:
+          maybeParse(raw['original_response_message_id'], Snowflake.parse),
+      interactedMessageId:
+          maybeParse(raw['interacted_message_id'], Snowflake.parse),
+      triggeringInteractionMetadata: maybeParse(
+          raw['triggering_interaction_metadata'],
+          parseMessageInteractionMetadata),
     );
   }
 
   PollMedia parsePollMedia(Map<String, Object?> raw) {
     return PollMedia(
       text: raw['text'] as String?,
-      emoji: maybeParse(raw['emoji'], client.guilds[Snowflake.zero].emojis.parse),
+      emoji:
+          maybeParse(raw['emoji'], client.guilds[Snowflake.zero].emojis.parse),
     );
   }
 
@@ -609,7 +666,8 @@ class MessageManager extends Manager<Message> {
   PollResults parsePollResults(Map<String, Object?> raw) {
     return PollResults(
       isFinalized: raw['is_finalized'] as bool,
-      answerCounts: parseMany(raw['answer_counts'] as List, parsePollAnswerCount),
+      answerCounts:
+          parseMany(raw['answer_counts'] as List, parsePollAnswerCount),
     );
   }
 
@@ -638,9 +696,11 @@ class MessageManager extends Manager<Message> {
       flags: MessageFlags(raw['flags'] as int? ?? 0),
       mentions: parseMany(raw['mentions'] as List, client.users.parse),
       // https://github.com/discord/discord-api-docs/issues/7193
-      roleMentionIds: maybeParseMany(raw['mention_roles'] as List?, Snowflake.parse) ?? [],
+      roleMentionIds:
+          maybeParseMany(raw['mention_roles'] as List?, Snowflake.parse) ?? [],
       type: MessageType(raw['type'] as int),
-      stickers: parseMany(raw['sticker_items'] as List? ?? [], client.stickers.parseStickerItem),
+      stickers: parseMany(raw['sticker_items'] as List? ?? [],
+          client.stickers.parseStickerItem),
       components: maybeParseMany(raw['components'], parseComponent),
     );
   }
@@ -654,11 +714,15 @@ class MessageManager extends Manager<Message> {
   }
 
   MessagePin parseMessagePin(Map<String, Object?> raw) {
-    return MessagePin(message: parse(raw['message'] as Map<String, Object?>), pinnedAt: DateTime.parse(raw['pinned_at'] as String));
+    return MessagePin(
+        message: parse(raw['message'] as Map<String, Object?>),
+        pinnedAt: DateTime.parse(raw['pinned_at'] as String));
   }
 
   PinList parsePinList(Map<String, Object?> raw) {
-    return PinList(items: parseMany(raw['items'] as List, parseMessagePin), hasMore: raw['has_more'] as bool);
+    return PinList(
+        items: parseMany(raw['items'] as List, parseMessagePin),
+        hasMore: raw['has_more'] as bool);
   }
 
   @override
@@ -668,7 +732,8 @@ class MessageManager extends Manager<Message> {
       ..messages();
 
     final HttpRequest request;
-    if (!identical(builder.attachments, sentinelList) && builder.attachments?.isNotEmpty == true) {
+    if (!identical(builder.attachments, sentinelList) &&
+        builder.attachments?.isNotEmpty == true) {
       final attachments = builder.attachments!;
       final payload = builder.build();
 
@@ -690,7 +755,8 @@ class MessageManager extends Manager<Message> {
         files: files,
       );
     } else {
-      request = BasicRequest(route, method: 'POST', body: jsonEncode(builder.build()));
+      request = BasicRequest(route,
+          method: 'POST', body: jsonEncode(builder.build()));
     }
 
     final response = await client.httpHandler.executeSafe(request);
@@ -721,7 +787,8 @@ class MessageManager extends Manager<Message> {
       ..messages(id: id.toString());
 
     final HttpRequest request;
-    if (!identical(builder.attachments, sentinelList) && builder.attachments?.isNotEmpty == true) {
+    if (!identical(builder.attachments, sentinelList) &&
+        builder.attachments?.isNotEmpty == true) {
       final attachments = builder.attachments!;
       final payload = builder.build();
 
@@ -743,7 +810,8 @@ class MessageManager extends Manager<Message> {
         files: files,
       );
     } else {
-      request = BasicRequest(route, method: 'PATCH', body: jsonEncode(builder.build()));
+      request = BasicRequest(route,
+          method: 'PATCH', body: jsonEncode(builder.build()));
     }
 
     final response = await client.httpHandler.executeSafe(request);
@@ -766,7 +834,11 @@ class MessageManager extends Manager<Message> {
   }
 
   /// Fetch multiple messages in this channel.
-  Future<List<Message>> fetchMany({Snowflake? around, Snowflake? before, Snowflake? after, int? limit}) async {
+  Future<List<Message>> fetchMany(
+      {Snowflake? around,
+      Snowflake? before,
+      Snowflake? after,
+      int? limit}) async {
     final route = HttpRoute()
       ..channels(id: channelId.toString())
       ..messages();
@@ -805,7 +877,8 @@ class MessageManager extends Manager<Message> {
   /// Bulk delete many messages at once
   ///
   /// This will throw an error if any of [ids] is not a valid message ID or if any of the messages are from before [Snowflake.bulkDeleteLimit].
-  Future<void> bulkDelete(Iterable<Snowflake> ids, {String? auditLogReason}) async {
+  Future<void> bulkDelete(Iterable<Snowflake> ids,
+      {String? auditLogReason}) async {
     final route = HttpRoute()
       ..channels(id: channelId.toString())
       ..messages()
@@ -841,7 +914,8 @@ class MessageManager extends Manager<Message> {
       ..channels(id: channelId.toString())
       ..messages()
       ..pins(id: id.toString());
-    final request = BasicRequest(route, method: 'PUT', auditLogReason: auditLogReason);
+    final request =
+        BasicRequest(route, method: 'PUT', auditLogReason: auditLogReason);
 
     await client.httpHandler.executeSafe(request);
   }
@@ -852,7 +926,8 @@ class MessageManager extends Manager<Message> {
       ..channels(id: channelId.toString())
       ..messages()
       ..pins(id: id.toString());
-    final request = BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
+    final request =
+        BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
 
     await client.httpHandler.executeSafe(request);
   }
@@ -920,7 +995,8 @@ class MessageManager extends Manager<Message> {
   }
 
   /// Deletes all reactions for a given emoji on a message.
-  Future<void> deleteReactionForUser(Snowflake id, Snowflake userId, ReactionBuilder emoji) async {
+  Future<void> deleteReactionForUser(
+      Snowflake id, Snowflake userId, ReactionBuilder emoji) async {
     final route = HttpRoute()
       ..channels(id: channelId.toString())
       ..messages(id: id.toString())
@@ -944,7 +1020,8 @@ class MessageManager extends Manager<Message> {
   }
 
   /// Get a list of users that reacted with a given emoji on a message.
-  Future<List<User>> fetchReactions(Snowflake id, ReactionBuilder emoji, {Snowflake? after, int? limit}) async {
+  Future<List<User>> fetchReactions(Snowflake id, ReactionBuilder emoji,
+      {Snowflake? after, int? limit}) async {
     final route = HttpRoute()
       ..channels(id: channelId.toString())
       ..messages(id: id.toString())
@@ -965,7 +1042,8 @@ class MessageManager extends Manager<Message> {
   }
 
   /// Get a list of users that voted for this specific answer.
-  Future<List<User>> fetchAnswerVoters(Snowflake id, int answerId, {Snowflake? after, int? limit}) async {
+  Future<List<User>> fetchAnswerVoters(Snowflake id, int answerId,
+      {Snowflake? after, int? limit}) async {
     final route = HttpRoute()
       ..channels(id: channelId.toString())
       ..polls(id: id.toString())
@@ -979,7 +1057,9 @@ class MessageManager extends Manager<Message> {
     );
 
     final response = await client.httpHandler.executeSafe(request);
-    final users = parseMany((response.jsonBody as Map<String, Object?>)['users'] as List, client.users.parse);
+    final users = parseMany(
+        (response.jsonBody as Map<String, Object?>)['users'] as List,
+        client.users.parse);
 
     users.forEach(client.updateCacheWith);
     return users;

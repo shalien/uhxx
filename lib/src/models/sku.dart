@@ -1,10 +1,10 @@
-import 'package:nyxx/src/http/managers/sku_manager.dart';
-import 'package:nyxx/src/http/managers/subscription_manager.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/http/managers/sku_manager.dart';
+import 'package:uhxx/src/http/managers/subscription_manager.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// A partial [Sku].
 ///
@@ -14,8 +14,9 @@ class PartialSku extends ManagedSnowflakeEntity<Sku> {
   final SkuManager manager;
 
   /// A manager for this [Sku]'s [Subscription]s.
-  SubscriptionManager get subscriptions =>
-      SubscriptionManager(manager.client.options.subscriptionConfig, manager.client, applicationId: manager.applicationId, skuId: id);
+  SubscriptionManager get subscriptions => SubscriptionManager(
+      manager.client.options.subscriptionConfig, manager.client,
+      applicationId: manager.applicationId, skuId: id);
 
   /// @nodoc
   PartialSku({required this.manager, required super.id});
@@ -56,7 +57,8 @@ class Sku extends PartialSku {
   });
 
   /// The application this SKU belongs to.
-  PartialApplication get application => PartialApplication(id: applicationId, manager: manager.client.applications);
+  PartialApplication get application => PartialApplication(
+      id: applicationId, manager: manager.client.applications);
 }
 
 /// The type of an [Sku].
@@ -76,7 +78,8 @@ final class SkuType extends EnumLike<int, SkuType> {
   /// @nodoc
   const SkuType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   SkuType.parse(int value) : this(value);
 }
 

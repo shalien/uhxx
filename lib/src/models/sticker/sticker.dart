@@ -1,6 +1,6 @@
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
 
 final class StickerType extends EnumLike<int, StickerType> {
   static const standard = StickerType(1);
@@ -21,7 +21,8 @@ final class StickerFormatType extends EnumLike<int, StickerFormatType> {
   /// @nodoc
   const StickerFormatType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   StickerFormatType.parse(int value) : this(value);
 }
 
@@ -72,7 +73,8 @@ class StickerItem extends SnowflakeEntity<StickerItem> {
 
   /// {@macro sticker_item}
   /// @nodoc
-  StickerItem({required super.id, required this.name, required this.formatType});
+  StickerItem(
+      {required super.id, required this.name, required this.formatType});
 
   @override
   Future<StickerItem> fetch() => get();

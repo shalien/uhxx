@@ -1,8 +1,8 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/webhook.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/webhook.dart';
 
 /// {@category builders}
 class WebhookBuilder extends CreateBuilder<Webhook> {
@@ -39,7 +39,8 @@ class WebhookUpdateBuilder extends UpdateBuilder<Webhook> {
   @override
   Map<String, Object?> build() => {
         if (name != null) 'name': name,
-        if (!identical(avatar, sentinelImageBuilder)) 'avatar': avatar?.buildDataString(),
+        if (!identical(avatar, sentinelImageBuilder))
+          'avatar': avatar?.buildDataString(),
         if (channelId != null) 'channel_id': channelId.toString(),
       };
 }

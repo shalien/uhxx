@@ -1,9 +1,9 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/guild/scheduled_event.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/guild/scheduled_event.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@category builders}
 class ScheduledEventBuilder extends CreateBuilder<ScheduledEvent> {
@@ -77,11 +77,13 @@ class ScheduledEventBuilder extends CreateBuilder<ScheduledEvent> {
   @override
   Map<String, Object?> build() => {
         if (channelId != null) 'channel_id': channelId.toString(),
-        if (metadata != null) 'entity_metadata': {'location': metadata!.location},
+        if (metadata != null)
+          'entity_metadata': {'location': metadata!.location},
         'name': name,
         'privacy_level': privacyLevel.value,
         'scheduled_start_time': scheduledStartTime.toIso8601String(),
-        if (scheduledEndTime != null) 'scheduled_end_time': scheduledEndTime!.toIso8601String(),
+        if (scheduledEndTime != null)
+          'scheduled_end_time': scheduledEndTime!.toIso8601String(),
         if (description != null) 'description': description,
         'entity_type': type.value,
         if (image != null) 'image': image!.buildDataString(),
@@ -129,17 +131,23 @@ class ScheduledEventUpdateBuilder extends UpdateBuilder<ScheduledEvent> {
 
   @override
   Map<String, Object?> build() => {
-        if (!identical(channelId, sentinelSnowflake)) 'channel_id': channelId?.toString(),
-        if (!identical(metadata, sentinelEntityMetadata)) 'metadata': metadata == null ? null : {'location': metadata!.location},
+        if (!identical(channelId, sentinelSnowflake))
+          'channel_id': channelId?.toString(),
+        if (!identical(metadata, sentinelEntityMetadata))
+          'metadata':
+              metadata == null ? null : {'location': metadata!.location},
         if (name != null) 'name': name,
         if (privacyLevel != null) 'privacy_level': privacyLevel!.value,
-        if (scheduledStartTime != null) 'scheduled_start_time': scheduledStartTime!.toIso8601String(),
-        if (!identical(scheduledEndTime, sentinelDateTime)) 'scheduled_end_time': scheduledEndTime?.toIso8601String(),
+        if (scheduledStartTime != null)
+          'scheduled_start_time': scheduledStartTime!.toIso8601String(),
+        if (!identical(scheduledEndTime, sentinelDateTime))
+          'scheduled_end_time': scheduledEndTime?.toIso8601String(),
         if (!identical(description, sentinelString)) 'description': description,
         if (type != null) 'entity_type': type!.value,
         if (status != null) 'status': status!.value,
         if (image != null) 'image': image!.buildDataString(),
-        if (!identical(recurrenceRule, sentinelRecurrenceRuleBuilder)) 'recurrence_rule': recurrenceRule?.build(),
+        if (!identical(recurrenceRule, sentinelRecurrenceRuleBuilder))
+          'recurrence_rule': recurrenceRule?.build(),
       };
 }
 
@@ -181,7 +189,8 @@ class RecurrenceRuleBuilder extends CreateBuilder<RecurrenceRule> {
         interval = 1,
         byNWeekday = day == null ? null : [day];
 
-  RecurrenceRuleBuilder.yearly({required this.start, (RecurrenceRuleMonth, int)? day})
+  RecurrenceRuleBuilder.yearly(
+      {required this.start, (RecurrenceRuleMonth, int)? day})
       : frequency = RecurrenceRuleFrequency.yearly,
         interval = 1,
         byMonth = day == null ? null : [day.$1],
@@ -193,7 +202,9 @@ class RecurrenceRuleBuilder extends CreateBuilder<RecurrenceRule> {
         'frequency': frequency.value,
         'interval': interval,
         'by_weekday': byWeekday?.map((weekday) => weekday.value).toList(),
-        'by_n_weekday': byNWeekday?.map((nWeekday) => {'n': nWeekday.n, 'day': nWeekday.day.value}).toList(),
+        'by_n_weekday': byNWeekday
+            ?.map((nWeekday) => {'n': nWeekday.n, 'day': nWeekday.day.value})
+            .toList(),
         'by_month': byMonth?.map((month) => month.value).toList(),
         'by_month_day': byMonthDay,
       };

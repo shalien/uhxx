@@ -1,10 +1,10 @@
-import 'package:nyxx/src/http/managers/voice_manager.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/managers/voice_manager.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// {@template voice_state}
 /// A user's voice connection state.
@@ -82,15 +82,17 @@ class VoiceState with ToStringHelper {
   /// Whether this user is muted.
   bool get isMuted => isServerMuted || isSelfMuted;
 
-  /// The key this voice state will have in the [NyxxRest.voice] cache.
+  /// The key this voice state will have in the [UhxxRest.voice] cache.
   @Deprecated('Use PartialGuild.voiceStates instead')
   Snowflake get cacheKey => Snowflake(Object.hash(guildId, userId));
 
   /// The guild this voice state is in.
-  PartialGuild? get guild => guildId == null ? null : manager.client.guilds[guildId!];
+  PartialGuild? get guild =>
+      guildId == null ? null : manager.client.guilds[guildId!];
 
   /// The channel this voice state is in.
-  PartialChannel? get channel => channelId == null ? null : manager.client.channels[channelId!];
+  PartialChannel? get channel =>
+      channelId == null ? null : manager.client.channels[channelId!];
 
   /// The user this voice state is for.
   PartialUser get user => manager.client.users[userId];

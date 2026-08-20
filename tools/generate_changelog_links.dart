@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:string_similarity/string_similarity.dart';
 
-const org = 'nyxx-discord';
-const repo = 'nyxx';
+const org = 'uhxx-discord';
+const repo = 'uhxx';
 const url = 'https://github.com/$org/$repo';
 const ua = '$repo +$url';
 
@@ -14,9 +14,10 @@ final tokenAuthHeader = 'token $token';
 
 final headers = {'Authorization': tokenAuthHeader, 'User-Agent': ua};
 
-final linkRegexPattern = RegExp('${RegExp.escape(url)}\\/(?:pull|commit)\\/(?:[a-f0-9]{6,40}|\\d+)');
-final mdRegexPattern =
-    RegExp('\\(\\[`(?:[a-f0-9]{6,40}|#\\d+)`\\]\\(${linkRegexPattern.pattern}\\)\\)(?: - \\[`(?:[a-f0-9]{6,40}|#\\d+)`\\]\\(${linkRegexPattern.pattern}\\))?');
+final linkRegexPattern =
+    RegExp('${RegExp.escape(url)}\\/(?:pull|commit)\\/(?:[a-f0-9]{6,40}|\\d+)');
+final mdRegexPattern = RegExp(
+    '\\(\\[`(?:[a-f0-9]{6,40}|#\\d+)`\\]\\(${linkRegexPattern.pattern}\\)\\)(?: - \\[`(?:[a-f0-9]{6,40}|#\\d+)`\\]\\(${linkRegexPattern.pattern}\\))?');
 
 Future<void> main() async {
   final changelog = File('CHANGELOG.md');
@@ -26,12 +27,17 @@ Future<void> main() async {
   for (var line in lines) {
     if (line.startsWith('- ') && !mdRegexPattern.hasMatch(line)) {
       final (prNumber, commitHash) = await getPrNumber(line);
-      final prLink = prNumber != null ? '([`#$prNumber`]($url/pull/$prNumber))' : '';
-      final commitLink = commitHash != null ? '([`${commitHash.substring(0, 7)}`]($url/commit/$commitHash))' : '';
+      final prLink =
+          prNumber != null ? '([`#$prNumber`]($url/pull/$prNumber))' : '';
+      final commitLink = commitHash != null
+          ? '([`${commitHash.substring(0, 7)}`]($url/commit/$commitHash))'
+          : '';
       if (prLink.isEmpty || commitLink.isEmpty) {
-        print('Couldn\'t find any pull request or commit matching entry: ${line.substring(line.indexOf(':') + 2)}');
+        print(
+            'Couldn\'t find any pull request or commit matching entry: ${line.substring(line.indexOf(':') + 2)}');
       }
-      stringBuffer.writeln('$line${prLink.isNotEmpty ? ' $prLink - $commitLink' : commitLink.isNotEmpty ? ' $commitLink' : ''}');
+      stringBuffer.writeln(
+          '$line${prLink.isNotEmpty ? ' $prLink - $commitLink' : commitLink.isNotEmpty ? ' $commitLink' : ''}');
     } else {
       stringBuffer.writeln(line);
     }
@@ -39,11 +45,13 @@ Future<void> main() async {
 
   await changelog.writeAsString(stringBuffer.toString());
 
-  print('CHANGELOG.md has been updated with the linked PRs and commits, make sure to double-check the links though.');
+  print(
+      'CHANGELOG.md has been updated with the linked PRs and commits, make sure to double-check the links though.');
 }
 
 List<dynamic>? _cachedPulls;
-String? nextPageUrl = 'https://api.github.com/repos/$org/$repo/pulls?state=closed&per_page=100';
+String? nextPageUrl =
+    'https://api.github.com/repos/$org/$repo/pulls?state=closed&per_page=100';
 
 Future<(String?, String?)> getPrNumber(String line) async {
   while (nextPageUrl != null) {
@@ -88,7 +96,8 @@ String? _extractNextPageUrl(String? linkHeader) {
 }
 
 (String?, String?) parsePrNumber(dynamic data, String line) {
-  if (data['title'] case final String title? when title.similarityTo(line) >= .6) {
+  if (data['title'] case final String title?
+      when title.similarityTo(line) >= .6) {
     return (data['number'].toString(), data['merge_commit_sha'] as String);
   }
 
@@ -127,7 +136,8 @@ Future<String?> getCommitHash(String line) async {
 }
 
 String? parseCommitHash(dynamic data, String line) {
-  if (data['commit']['message'] case final String message? when message.contains(line)) {
+  if (data['commit']['message'] case final String message?
+      when message.contains(line)) {
     return data['sha'] as String;
   }
 

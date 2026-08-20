@@ -1,13 +1,13 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/channel/guild_channel.dart';
-import 'package:nyxx/src/builders/image.dart';
-import 'package:nyxx/src/builders/role.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/http/managers/guild_manager.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/locale.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/channel/guild_channel.dart';
+import 'package:uhxx/src/builders/image.dart';
+import 'package:uhxx/src/builders/role.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/http/managers/guild_manager.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/locale.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/flags.dart';
 
 /// {@category builders}
 class GuildBuilder extends CreateBuilder<Guild> {
@@ -82,15 +82,22 @@ class GuildBuilder extends CreateBuilder<Guild> {
   Map<String, Object?> build() => {
         'name': name,
         if (icon != null) 'icon': icon!.buildDataString(),
-        if (verificationLevel != null) 'verification_level': verificationLevel!.value,
-        if (defaultMessageNotificationLevel != null) 'default_message_notifications': defaultMessageNotificationLevel!.value,
-        if (explicitContentFilterLevel != null) 'explicit_content_filter': explicitContentFilterLevel!.value,
+        if (verificationLevel != null)
+          'verification_level': verificationLevel!.value,
+        if (defaultMessageNotificationLevel != null)
+          'default_message_notifications':
+              defaultMessageNotificationLevel!.value,
+        if (explicitContentFilterLevel != null)
+          'explicit_content_filter': explicitContentFilterLevel!.value,
         if (roles != null) 'roles': roles!.map((b) => b.build()).toList(),
-        if (channels != null) 'channels': channels!.map((b) => b.build()).toList(),
+        if (channels != null)
+          'channels': channels!.map((b) => b.build()).toList(),
         if (afkChannelId != null) 'afk_channel_id': afkChannelId!.toString(),
         if (afkTimeout != null) 'afk_timeout': afkTimeout!.inSeconds,
-        if (systemChannelId != null) 'system_channel_id': systemChannelId!.toString(),
-        if (systemChannelFlags != null) 'system_channel_flags': systemChannelFlags!.value,
+        if (systemChannelId != null)
+          'system_channel_id': systemChannelId!.toString(),
+        if (systemChannelFlags != null)
+          'system_channel_flags': systemChannelFlags!.value,
       };
 }
 
@@ -181,25 +188,42 @@ class GuildUpdateBuilder extends UpdateBuilder<Guild> {
   @override
   Map<String, Object?> build() => {
         if (name != null) 'name': name,
-        if (verificationLevel != null) 'verification_level': verificationLevel!.value,
-        if (defaultMessageNotificationLevel != null) 'default_message_notifications': defaultMessageNotificationLevel!.value,
-        if (explicitContentFilterLevel != null) 'explicit_content_filter': explicitContentFilterLevel!.value,
-        if (!identical(afkChannelId, sentinelSnowflake)) 'afk_channel_id': afkChannelId?.toString(),
+        if (verificationLevel != null)
+          'verification_level': verificationLevel!.value,
+        if (defaultMessageNotificationLevel != null)
+          'default_message_notifications':
+              defaultMessageNotificationLevel!.value,
+        if (explicitContentFilterLevel != null)
+          'explicit_content_filter': explicitContentFilterLevel!.value,
+        if (!identical(afkChannelId, sentinelSnowflake))
+          'afk_channel_id': afkChannelId?.toString(),
         if (afkTimeout != null) 'afk_timeout': afkTimeout!.inSeconds,
-        if (!identical(icon, sentinelImageBuilder)) 'icon': icon?.buildDataString(),
+        if (!identical(icon, sentinelImageBuilder))
+          'icon': icon?.buildDataString(),
         if (newOwnerId != null) 'owner_id': newOwnerId!.toString(),
-        if (!identical(splash, sentinelImageBuilder)) 'splash': splash?.buildDataString(),
-        if (!identical(discoverySplash, sentinelImageBuilder)) 'discovery_splash': discoverySplash?.buildDataString(),
-        if (!identical(banner, sentinelImageBuilder)) 'banner': banner?.buildDataString(),
-        if (!identical(systemChannelId, sentinelSnowflake)) 'system_channel_id': systemChannelId?.toString(),
-        if (systemChannelFlags != null) 'system_channel_flags': systemChannelFlags!.value,
-        if (!identical(rulesChannelId, sentinelSnowflake)) 'rules_channel_id': rulesChannelId?.toString(),
-        if (!identical(publicUpdatesChannelId, sentinelSnowflake)) 'public_updates_channel_id': publicUpdatesChannelId?.toString(),
-        if (preferredLocale != null) 'preferred_locale': preferredLocale!.identifier,
-        if (features != null) 'features': GuildManager.serializeGuildFeatures(features!),
+        if (!identical(splash, sentinelImageBuilder))
+          'splash': splash?.buildDataString(),
+        if (!identical(discoverySplash, sentinelImageBuilder))
+          'discovery_splash': discoverySplash?.buildDataString(),
+        if (!identical(banner, sentinelImageBuilder))
+          'banner': banner?.buildDataString(),
+        if (!identical(systemChannelId, sentinelSnowflake))
+          'system_channel_id': systemChannelId?.toString(),
+        if (systemChannelFlags != null)
+          'system_channel_flags': systemChannelFlags!.value,
+        if (!identical(rulesChannelId, sentinelSnowflake))
+          'rules_channel_id': rulesChannelId?.toString(),
+        if (!identical(publicUpdatesChannelId, sentinelSnowflake))
+          'public_updates_channel_id': publicUpdatesChannelId?.toString(),
+        if (preferredLocale != null)
+          'preferred_locale': preferredLocale!.identifier,
+        if (features != null)
+          'features': GuildManager.serializeGuildFeatures(features!),
         if (!identical(description, sentinelString)) 'description': description,
-        if (premiumProgressBarEnabled != null) 'premium_progress_bar_enabled': premiumProgressBarEnabled,
-        if (!identical(safetyAlertsChannelId, sentinelSnowflake)) 'safety_alerts_channel_id': safetyAlertsChannelId?.toString(),
+        if (premiumProgressBarEnabled != null)
+          'premium_progress_bar_enabled': premiumProgressBarEnabled,
+        if (!identical(safetyAlertsChannelId, sentinelSnowflake))
+          'safety_alerts_channel_id': safetyAlertsChannelId?.toString(),
       };
 }
 
@@ -218,7 +242,9 @@ class GuildIncidentsUpdateBuilder extends UpdateBuilder<IncidentsData> {
 
   @override
   Map<String, Object?> build() => {
-        if (!identical(invitesDisabledUntil, sentinelDateTime)) 'invites_disabled_until': invitesDisabledUntil?.toIso8601String(),
-        if (!identical(dmsDisabledUntil, sentinelDateTime)) 'dms_disabled_until': dmsDisabledUntil?.toIso8601String(),
+        if (!identical(invitesDisabledUntil, sentinelDateTime))
+          'invites_disabled_until': invitesDisabledUntil?.toIso8601String(),
+        if (!identical(dmsDisabledUntil, sentinelDateTime))
+          'dms_disabled_until': dmsDisabledUntil?.toIso8601String(),
       };
 }

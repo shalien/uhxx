@@ -1,34 +1,39 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:nyxx/src/builders/presence.dart';
-import 'package:nyxx/src/builders/voice.dart';
-import 'package:nyxx/src/cache/cache.dart';
-import 'package:nyxx/src/client_options.dart';
-import 'package:nyxx/src/errors.dart';
-import 'package:nyxx/src/event_mixin.dart';
-import 'package:nyxx/src/gateway/gateway.dart';
-import 'package:nyxx/src/http/handler.dart';
-import 'package:nyxx/src/http/managers/gateway_manager.dart';
-import 'package:nyxx/src/intents.dart';
-import 'package:nyxx/src/manager_mixin.dart';
-import 'package:nyxx/src/api_options.dart';
-import 'package:nyxx/src/models/application.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/plugin/plugin.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/presence.dart';
+import 'package:uhxx/src/builders/voice.dart';
+import 'package:uhxx/src/cache/cache.dart';
+import 'package:uhxx/src/client_options.dart';
+import 'package:uhxx/src/errors.dart';
+import 'package:uhxx/src/event_mixin.dart';
+import 'package:uhxx/src/gateway/gateway.dart';
+import 'package:uhxx/src/http/handler.dart';
+import 'package:uhxx/src/http/managers/gateway_manager.dart';
+import 'package:uhxx/src/intents.dart';
+import 'package:uhxx/src/manager_mixin.dart';
+import 'package:uhxx/src/api_options.dart';
+import 'package:uhxx/src/models/application.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/plugin/plugin.dart';
+import 'package:uhxx/src/utils/flags.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:runtime_type/runtime_type.dart';
 
 /// A helper function to nest and execute calls to plugin connect methods.
-Future<T> _pluginConnect<T extends Nyxx>(ApiOptions apiOptions, ClientOptions clientOptions, Future<T> Function() connect, List<NyxxPlugin> plugins) {
+Future<T> _pluginConnect<T extends Uhxx>(
+    ApiOptions apiOptions,
+    ClientOptions clientOptions,
+    Future<T> Function() connect,
+    List<UhxxPlugin> plugins) {
   final actualClientType = RuntimeType<T>();
 
   for (final plugin in plugins) {
     if (!actualClientType.isSubtypeOf(plugin.clientType)) {
-      throw PluginError('Unsupported client type: plugin needs ${plugin.clientType.internalType}, client was ${actualClientType.internalType}');
+      throw PluginError(
+          'Unsupported client type: plugin needs ${plugin.clientType.internalType}, client was ${actualClientType.internalType}');
     }
   }
 
@@ -36,14 +41,16 @@ Future<T> _pluginConnect<T extends Nyxx>(ApiOptions apiOptions, ClientOptions cl
 
   connect = plugins.fold(
     originalConnect,
-    (previousConnect, plugin) => () async => actualClientType.castInstance(await plugin.doConnect(apiOptions, clientOptions, previousConnect)),
+    (previousConnect, plugin) => () async => actualClientType.castInstance(
+        await plugin.doConnect(apiOptions, clientOptions, previousConnect)),
   );
 
   return connect();
 }
 
 /// A helper function to nest and execute calls to plugin close methods.
-Future<void> _pluginClose(Nyxx client, Future<void> Function() close, List<NyxxPlugin> plugins) {
+Future<void> _pluginClose(
+    Uhxx client, Future<void> Function() close, List<UhxxPlugin> plugins) {
   close = plugins.fold(
     close,
     (previousClose, plugin) => () => plugin.doClose(client, previousClose),
@@ -54,7 +61,7 @@ Future<void> _pluginClose(Nyxx client, Future<void> Function() close, List<NyxxP
 /// The base class for clients interacting with the Discord API.
 ///
 /// {@category core}
-abstract class Nyxx {
+abstract class Uhxx {
   /// The options this client will use when connecting to the API.
   ApiOptions get apiOptions;
 
@@ -73,20 +80,24 @@ abstract class Nyxx {
   final Completer<void> _doneCompleter = Completer();
   bool _isClosed = false;
 
-  /// Create an instance of [NyxxRest] that can perform requests to the HTTP API and is
+  /// Create an instance of [UhxxRest] that can perform requests to the HTTP API and is
   /// authenticated with a bot token.
-  static Future<NyxxRest> connectRest(String token, {RestClientOptions options = const RestClientOptions()}) =>
+  static Future<UhxxRest> connectRest(String token,
+          {RestClientOptions options = const RestClientOptions()}) =>
       connectRestWithOptions(RestApiOptions(token: token), options);
 
-  /// Create an instance of [NyxxRest] using the provided options.
-  static Future<NyxxRest> connectRestWithOptions(RestApiOptions apiOptions, [RestClientOptions clientOptions = const RestClientOptions()]) async {
+  /// Create an instance of [UhxxRest] using the provided options.
+  static Future<UhxxRest> connectRestWithOptions(RestApiOptions apiOptions,
+      [RestClientOptions clientOptions = const RestClientOptions()]) async {
     return _pluginConnect(apiOptions, clientOptions, () async {
       clientOptions.logger
         ..info('Connecting to the REST API')
-        ..fine('Token: ${apiOptions.token}, Authorization: ${apiOptions.authorizationHeader}, User-Agent: ${apiOptions.userAgent}')
-        ..fine('Plugins: ${clientOptions.plugins.map((plugin) => plugin.name).join(', ')}');
+        ..fine(
+            'Token: ${apiOptions.token}, Authorization: ${apiOptions.authorizationHeader}, User-Agent: ${apiOptions.userAgent}')
+        ..fine(
+            'Plugins: ${clientOptions.plugins.map((plugin) => plugin.name).join(', ')}');
 
-      final client = NyxxRest._(apiOptions, clientOptions);
+      final client = UhxxRest._(apiOptions, clientOptions);
 
       client
         .._application = await client.applications.fetchCurrentApplication()
@@ -95,7 +106,8 @@ abstract class Nyxx {
       client.httpHandler.done.then((_) {
         if (client._doneCompleter.isCompleted) return;
 
-        client._doneCompleter.completeError(NyxxException('HTTP handler was closed'), StackTrace.current);
+        client._doneCompleter.completeError(
+            UhxxException('HTTP handler was closed'), StackTrace.current);
         client.close();
       }, onError: (e, s) {
         if (client._doneCompleter.isCompleted) return;
@@ -108,34 +120,42 @@ abstract class Nyxx {
     }, clientOptions.plugins);
   }
 
-  /// Create an instance of [NyxxOAuth2] that can perform requests to the HTTP API and is
+  /// Create an instance of [UhxxOAuth2] that can perform requests to the HTTP API and is
   /// authenticated with OAuth2 [Credentials].
   ///
   /// Note that `client.user.id` will contain [Snowflake.zero] if there no `identify` scope.
-  static Future<NyxxOAuth2> connectOAuth2(Credentials credentials, {RestClientOptions options = const RestClientOptions()}) =>
-      connectOAuth2WithOptions(OAuth2ApiOptions(credentials: credentials), options);
+  static Future<UhxxOAuth2> connectOAuth2(Credentials credentials,
+          {RestClientOptions options = const RestClientOptions()}) =>
+      connectOAuth2WithOptions(
+          OAuth2ApiOptions(credentials: credentials), options);
 
-  /// Create an instance of [NyxxOAuth2] using the provided options.
+  /// Create an instance of [UhxxOAuth2] using the provided options.
   ///
   /// Note that `client.user.id` will contain [Snowflake.zero] if there no `identify` scope.
-  static Future<NyxxOAuth2> connectOAuth2WithOptions(OAuth2ApiOptions apiOptions, [RestClientOptions clientOptions = const RestClientOptions()]) async {
+  static Future<UhxxOAuth2> connectOAuth2WithOptions(
+      OAuth2ApiOptions apiOptions,
+      [RestClientOptions clientOptions = const RestClientOptions()]) async {
     return _pluginConnect(apiOptions, clientOptions, () async {
       clientOptions.logger
         ..info('Connecting to the REST API via OAuth2')
-        ..fine('Token: ${apiOptions.token}, Authorization: ${apiOptions.authorizationHeader}, User-Agent: ${apiOptions.userAgent}')
-        ..fine('Plugins: ${clientOptions.plugins.map((plugin) => plugin.name).join(', ')}');
+        ..fine(
+            'Token: ${apiOptions.token}, Authorization: ${apiOptions.authorizationHeader}, User-Agent: ${apiOptions.userAgent}')
+        ..fine(
+            'Plugins: ${clientOptions.plugins.map((plugin) => plugin.name).join(', ')}');
 
-      final client = NyxxOAuth2._(apiOptions, clientOptions);
+      final client = UhxxOAuth2._(apiOptions, clientOptions);
       final information = await client.users.fetchCurrentOAuth2Information();
 
       client
         .._application = information.application
-        .._user = information.user ?? PartialUser(id: Snowflake.zero, manager: client.users);
+        .._user = information.user ??
+            PartialUser(id: Snowflake.zero, manager: client.users);
 
       client.httpHandler.done.then((_) {
         if (client._doneCompleter.isCompleted) return;
 
-        client._doneCompleter.completeError(NyxxException('HTTP handler was closed'), StackTrace.current);
+        client._doneCompleter.completeError(
+            UhxxException('HTTP handler was closed'), StackTrace.current);
         client.close();
       }, onError: (e, s) {
         if (client._doneCompleter.isCompleted) return;
@@ -148,13 +168,16 @@ abstract class Nyxx {
     }, clientOptions.plugins);
   }
 
-  /// Create an instance of [NyxxGateway] that can perform requests to the HTTP API, connects
+  /// Create an instance of [UhxxGateway] that can perform requests to the HTTP API, connects
   /// to the gateway and is authenticated with a bot token.
-  static Future<NyxxGateway> connectGateway(String token, Flags<GatewayIntents> intents, {GatewayClientOptions options = const GatewayClientOptions()}) =>
-      connectGatewayWithOptions(GatewayApiOptions(token: token, intents: intents), options);
+  static Future<UhxxGateway> connectGateway(
+          String token, Flags<GatewayIntents> intents,
+          {GatewayClientOptions options = const GatewayClientOptions()}) =>
+      connectGatewayWithOptions(
+          GatewayApiOptions(token: token, intents: intents), options);
 
-  /// Create an instance of [NyxxGateway] using the provided options.
-  static Future<NyxxGateway> connectGatewayWithOptions(
+  /// Create an instance of [UhxxGateway] using the provided options.
+  static Future<UhxxGateway> connectGatewayWithOptions(
     GatewayApiOptions apiOptions, [
     GatewayClientOptions clientOptions = const GatewayClientOptions(),
   ]) async {
@@ -166,9 +189,10 @@ abstract class Nyxx {
           ' Intents: ${apiOptions.intents.value}, Payloads: ${apiOptions.payloadFormat.value}, Compression: ${apiOptions.compression.name},'
           ' Shards: ${apiOptions.shards?.join(', ')}, Total shards: ${apiOptions.totalShards}, Large threshold: ${apiOptions.largeThreshold}',
         )
-        ..fine('Plugins: ${clientOptions.plugins.map((plugin) => plugin.name).join(', ')}');
+        ..fine(
+            'Plugins: ${clientOptions.plugins.map((plugin) => plugin.name).join(', ')}');
 
-      final client = NyxxGateway._(apiOptions, clientOptions);
+      final client = UhxxGateway._(apiOptions, clientOptions);
 
       client
         .._application = await client.applications.fetchCurrentApplication()
@@ -183,7 +207,8 @@ abstract class Nyxx {
       client.httpHandler.done.then((_) {
         if (client._doneCompleter.isCompleted) return;
 
-        client._doneCompleter.completeError(NyxxException('HTTP handler was closed'), StackTrace.current);
+        client._doneCompleter.completeError(
+            UhxxException('HTTP handler was closed'), StackTrace.current);
         client.close();
       }, onError: (e, s) {
         if (client._doneCompleter.isCompleted) return;
@@ -195,7 +220,8 @@ abstract class Nyxx {
       client.gateway.done.then((_) {
         if (client._doneCompleter.isCompleted) return;
 
-        client._doneCompleter.completeError(NyxxException('Gateway was closed'), StackTrace.current);
+        client._doneCompleter.completeError(
+            UhxxException('Gateway was closed'), StackTrace.current);
         client.close();
       }, onError: (e, s) {
         if (client._doneCompleter.isCompleted) return;
@@ -242,7 +268,7 @@ abstract class Nyxx {
 /// A client that can make requests to the HTTP API and is authenticated with a bot token.
 ///
 /// {@category core}
-class NyxxRest extends Nyxx with ManagerMixin {
+class UhxxRest extends Uhxx with ManagerMixin {
   @override
   final RestApiOptions apiOptions;
 
@@ -260,7 +286,7 @@ class NyxxRest extends Nyxx with ManagerMixin {
   PartialUser get user => _user;
   late final PartialUser _user;
 
-  NyxxRest._(this.apiOptions, this.options);
+  UhxxRest._(this.apiOptions, this.options);
 
   /// Add the current user to the thread with the ID [id].
   ///
@@ -277,7 +303,8 @@ class NyxxRest extends Nyxx with ManagerMixin {
   Future<void> leaveThread(Snowflake id) => channels.leaveThread(id);
 
   /// List the guilds the current user is a member of.
-  Future<List<UserGuild>> listGuilds({Snowflake? before, Snowflake? after, int? limit}) =>
+  Future<List<UserGuild>> listGuilds(
+          {Snowflake? before, Snowflake? after, int? limit}) =>
       users.listCurrentUserGuilds(before: before, after: after, limit: limit);
 
   @override
@@ -285,7 +312,7 @@ class NyxxRest extends Nyxx with ManagerMixin {
 }
 
 /// {@category core}
-class NyxxOAuth2 extends Nyxx with ManagerMixin implements NyxxRest {
+class UhxxOAuth2 extends Uhxx with ManagerMixin implements UhxxRest {
   @override
   final OAuth2ApiOptions apiOptions;
 
@@ -307,7 +334,7 @@ class NyxxOAuth2 extends Nyxx with ManagerMixin implements NyxxRest {
   @override
   late final PartialUser _user;
 
-  NyxxOAuth2._(this.apiOptions, this.options);
+  UhxxOAuth2._(this.apiOptions, this.options);
 
   @override
   Future<void> joinThread(Snowflake id) => channels.joinThread(id);
@@ -316,7 +343,8 @@ class NyxxOAuth2 extends Nyxx with ManagerMixin implements NyxxRest {
   Future<void> leaveThread(Snowflake id) => channels.leaveThread(id);
 
   @override
-  Future<List<UserGuild>> listGuilds({Snowflake? before, Snowflake? after, int? limit}) =>
+  Future<List<UserGuild>> listGuilds(
+          {Snowflake? before, Snowflake? after, int? limit}) =>
       users.listCurrentUserGuilds(before: before, after: after, limit: limit);
 
   @override
@@ -326,7 +354,9 @@ class NyxxOAuth2 extends Nyxx with ManagerMixin implements NyxxRest {
 /// A client that can make requests to the HTTP API, connects to the Gateway and is authenticated with a bot token.
 ///
 /// {@category core}
-class NyxxGateway extends Nyxx with ManagerMixin, EventMixin implements NyxxRest {
+class UhxxGateway extends Uhxx
+    with ManagerMixin, EventMixin
+    implements UhxxRest {
   @override
   final GatewayApiOptions apiOptions;
 
@@ -353,7 +383,7 @@ class NyxxGateway extends Nyxx with ManagerMixin, EventMixin implements NyxxRest
   @override
   late final Gateway gateway;
 
-  NyxxGateway._(this.apiOptions, this.options);
+  UhxxGateway._(this.apiOptions, this.options);
 
   @override
   Future<void> joinThread(Snowflake id) => channels.joinThread(id);
@@ -362,14 +392,17 @@ class NyxxGateway extends Nyxx with ManagerMixin, EventMixin implements NyxxRest
   Future<void> leaveThread(Snowflake id) => channels.leaveThread(id);
 
   @override
-  Future<List<UserGuild>> listGuilds({Snowflake? before, Snowflake? after, int? limit}) =>
+  Future<List<UserGuild>> listGuilds(
+          {Snowflake? before, Snowflake? after, int? limit}) =>
       users.listCurrentUserGuilds(before: before, after: after, limit: limit);
 
   /// Update the client's voice state in the guild with the ID [guildId].
-  void updateVoiceState(Snowflake guildId, GatewayVoiceStateBuilder builder) => gateway.updateVoiceState(guildId, builder);
+  void updateVoiceState(Snowflake guildId, GatewayVoiceStateBuilder builder) =>
+      gateway.updateVoiceState(guildId, builder);
 
   /// Update the client's presence on all shards.
-  void updatePresence(PresenceBuilder builder) => gateway.updatePresence(builder);
+  void updatePresence(PresenceBuilder builder) =>
+      gateway.updatePresence(builder);
 
   @override
   Future<void> _doClose() async {

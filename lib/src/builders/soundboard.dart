@@ -1,9 +1,9 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/builders/sound.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/soundboard/soundboard.dart';
-import 'package:nyxx/src/utils/building_helpers.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/builders/sound.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/soundboard/soundboard.dart';
+import 'package:uhxx/src/utils/building_helpers.dart';
 
 /// {@category builders}
 class SoundboardSoundBuilder extends CreateBuilder<SoundboardSound> {
@@ -17,7 +17,12 @@ class SoundboardSoundBuilder extends CreateBuilder<SoundboardSound> {
 
   Snowflake? emojiId;
 
-  SoundboardSoundBuilder({required this.name, required this.sound, this.volume, this.emojiName, this.emojiId});
+  SoundboardSoundBuilder(
+      {required this.name,
+      required this.sound,
+      this.volume,
+      this.emojiName,
+      this.emojiId});
 
   @override
   Map<String, Object?> build() => {
@@ -38,12 +43,18 @@ class SoundboardSoundUpdateBuilder extends UpdateBuilder<SoundboardSound> {
 
   Snowflake? emojiId;
 
-  SoundboardSoundUpdateBuilder({required this.name, this.volume = sentinelDouble, this.emojiName = sentinelString, this.emojiId = sentinelSnowflake});
+  SoundboardSoundUpdateBuilder(
+      {required this.name,
+      this.volume = sentinelDouble,
+      this.emojiName = sentinelString,
+      this.emojiId = sentinelSnowflake});
 
   @override
   Map<String, Object?> build() => {
         'name': name,
         if (volume != sentinelDouble) 'volume': volume,
-        if (!(identical(emojiName, sentinelString) || identical(emojiId, sentinelSnowflake))) ...makeEmojiMap(emojiId: emojiId, emojiName: emojiName),
+        if (!(identical(emojiName, sentinelString) ||
+            identical(emojiId, sentinelSnowflake)))
+          ...makeEmojiMap(emojiId: emojiId, emojiName: emojiName),
       };
 }

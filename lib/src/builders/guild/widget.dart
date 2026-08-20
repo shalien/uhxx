@@ -1,7 +1,7 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/builders/sentinels.dart';
-import 'package:nyxx/src/models/guild/guild_widget.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/builders/sentinels.dart';
+import 'package:uhxx/src/models/guild/guild_widget.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@category builders}
 class WidgetSettingsUpdateBuilder extends UpdateBuilder<WidgetSettings> {
@@ -9,11 +9,13 @@ class WidgetSettingsUpdateBuilder extends UpdateBuilder<WidgetSettings> {
 
   Snowflake? channelId;
 
-  WidgetSettingsUpdateBuilder({this.isEnabled, this.channelId = sentinelSnowflake});
+  WidgetSettingsUpdateBuilder(
+      {this.isEnabled, this.channelId = sentinelSnowflake});
 
   @override
   Map<String, Object?> build() => {
         if (isEnabled != null) 'enabled': isEnabled,
-        if (!identical(channelId, sentinelSnowflake)) 'channel_id': channelId?.toString(),
+        if (!identical(channelId, sentinelSnowflake))
+          'channel_id': channelId?.toString(),
       };
 }

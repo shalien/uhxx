@@ -1,7 +1,7 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/message/poll.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/message/poll.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@macro poll_media}
 ///
@@ -36,7 +36,8 @@ class PollAnswerBuilder extends CreateBuilder<PollAnswer> {
 
   PollAnswerBuilder({required this.pollMedia});
 
-  PollAnswerBuilder.text(String text, [Emoji? emoji]) : pollMedia = PollMediaBuilder(text: text, emoji: emoji);
+  PollAnswerBuilder.text(String text, [Emoji? emoji])
+      : pollMedia = PollMediaBuilder(text: text, emoji: emoji);
 
   @override
   Map<String, Object?> build() => {'poll_media': pollMedia.build()};

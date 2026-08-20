@@ -1,7 +1,7 @@
-import 'package:nyxx/src/models/gateway/event.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/soundboard/soundboard.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/soundboard/soundboard.dart';
 
 /// {@template soundboard_sound_create_event}
 /// Emitted when a guild soundboard sound is created.
@@ -31,7 +31,8 @@ class SoundboardSoundUpdateEvent extends DispatchEvent {
 
   /// {@macro soundboard_sound_update_event}
   /// @nodoc
-  SoundboardSoundUpdateEvent({required super.gateway, required this.sound, required this.oldSound});
+  SoundboardSoundUpdateEvent(
+      {required super.gateway, required this.sound, required this.oldSound});
 }
 
 /// {@template soundboard_sound_delete_event}
@@ -51,7 +52,11 @@ class SoundboardSoundDeleteEvent extends DispatchEvent {
 
   /// {@macro soundboard_sound_delete_event}
   /// @nodoc
-  SoundboardSoundDeleteEvent({required super.gateway, required this.sound, required this.guildId, required this.soundId});
+  SoundboardSoundDeleteEvent(
+      {required super.gateway,
+      required this.sound,
+      required this.guildId,
+      required this.soundId});
 
   PartialGuild get guild => gateway.client.guilds[guildId];
 }
@@ -73,7 +78,11 @@ class SoundboardSoundsUpdateEvent extends DispatchEvent {
 
   /// {@macro soundboard_sounds_update_event}
   /// @nodoc
-  SoundboardSoundsUpdateEvent({required super.gateway, required this.guildId, required this.sounds, required this.oldSounds});
+  SoundboardSoundsUpdateEvent(
+      {required super.gateway,
+      required this.guildId,
+      required this.sounds,
+      required this.oldSounds});
 
   /// The guild the sounds are for.
   PartialGuild get guild => gateway.client.guilds[guildId];
@@ -90,7 +99,8 @@ class SoundboardSoundsEvent extends DispatchEvent {
   final List<SoundboardSound> sounds;
 
   /// @nodoc
-  SoundboardSoundsEvent({required super.gateway, required this.guildId, required this.sounds});
+  SoundboardSoundsEvent(
+      {required super.gateway, required this.guildId, required this.sounds});
 
   /// The guild the sounds are for.
   PartialGuild get guild => gateway.client.guilds[guildId];

@@ -1,28 +1,29 @@
-import 'package:nyxx/src/gateway/shard.dart';
-import 'package:nyxx/src/models/gateway/gateway.dart';
-import 'package:nyxx/src/models/interaction.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/gateway/shard.dart';
+import 'package:uhxx/src/models/gateway/gateway.dart';
+import 'package:uhxx/src/models/interaction.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
-/// The base class for all exceptions thrown by nyxx.
-class NyxxException implements Exception {
+/// The base class for all exceptions thrown by uhxx.
+class UhxxException implements Exception {
   /// The message for this exception.
   final String message;
 
-  /// Create a new [NyxxException] with the provided [message].
-  NyxxException(this.message);
+  /// Create a new [UhxxException] with the provided [message].
+  UhxxException(this.message);
 
   @override
   String toString() => message;
 }
 
 /// An exception thrown when an unexpected event is received on the Gateway.
-class InvalidEventException extends NyxxException {
+class InvalidEventException extends UhxxException {
   /// Create a new [InvalidEventException] with the provided [message].
-  InvalidEventException(String message) : super('Invalid gateway event: $message');
+  InvalidEventException(String message)
+      : super('Invalid gateway event: $message');
 }
 
 /// An exception thrown when a member already exists in a guild.
-class MemberAlreadyExistsException extends NyxxException {
+class MemberAlreadyExistsException extends UhxxException {
   /// The ID of the guild.
   final Snowflake guildId;
 
@@ -30,12 +31,13 @@ class MemberAlreadyExistsException extends NyxxException {
   final Snowflake memberId;
 
   /// Create a new [MemberAlreadyExistsException].
-  MemberAlreadyExistsException(this.guildId, this.memberId) : super('Member $memberId already exists in guild $guildId');
+  MemberAlreadyExistsException(this.guildId, this.memberId)
+      : super('Member $memberId already exists in guild $guildId');
 }
 
 /// An exception thrown when a role is not found in a guild.
 @Deprecated('RoleManager.fetch now throws a HttpResponseError')
-class RoleNotFoundException extends NyxxException {
+class RoleNotFoundException extends UhxxException {
   /// The ID of the guild.
   final Snowflake guildId;
 
@@ -43,11 +45,12 @@ class RoleNotFoundException extends NyxxException {
   final Snowflake roleId;
 
   /// Create a new [RoleNotFoundException].
-  RoleNotFoundException(this.guildId, this.roleId) : super('Role $roleId not found in guild $guildId');
+  RoleNotFoundException(this.guildId, this.roleId)
+      : super('Role $roleId not found in guild $guildId');
 }
 
 /// An exception thrown when a integration is not found in a guild.
-class IntegrationNotFoundException extends NyxxException {
+class IntegrationNotFoundException extends UhxxException {
   /// The ID of the guild.
   final Snowflake guildId;
 
@@ -55,11 +58,12 @@ class IntegrationNotFoundException extends NyxxException {
   final Snowflake integrationId;
 
   /// Create a new [IntegrationNotFoundException].
-  IntegrationNotFoundException(this.guildId, this.integrationId) : super('Integration $integrationId not found in guild $guildId');
+  IntegrationNotFoundException(this.guildId, this.integrationId)
+      : super('Integration $integrationId not found in guild $guildId');
 }
 
 /// An exception thrown when an audit log entry is not found in a guild.
-class AuditLogEntryNotFoundException extends NyxxException {
+class AuditLogEntryNotFoundException extends UhxxException {
   /// The ID of the guild.
   final Snowflake guildId;
 
@@ -67,11 +71,12 @@ class AuditLogEntryNotFoundException extends NyxxException {
   final Snowflake auditLogEntryId;
 
   /// Create a new [AuditLogEntryNotFoundException].
-  AuditLogEntryNotFoundException(this.guildId, this.auditLogEntryId) : super('Audit log entry $auditLogEntryId not found in guild $guildId');
+  AuditLogEntryNotFoundException(this.guildId, this.auditLogEntryId)
+      : super('Audit log entry $auditLogEntryId not found in guild $guildId');
 }
 
 /// An exception thrown when an entitlement is not found for an application.
-class EntitlementNotFoundException extends NyxxException {
+class EntitlementNotFoundException extends UhxxException {
   /// The ID of the application.
   final Snowflake applicationId;
 
@@ -79,11 +84,13 @@ class EntitlementNotFoundException extends NyxxException {
   final Snowflake entitlementId;
 
   /// Create a new [EntitlementNotFoundException].
-  EntitlementNotFoundException(this.applicationId, this.entitlementId) : super('Entitlement $entitlementId not found for application $applicationId');
+  EntitlementNotFoundException(this.applicationId, this.entitlementId)
+      : super(
+            'Entitlement $entitlementId not found for application $applicationId');
 }
 
 /// An exception thrown when an SKU is not found for an application.
-class SkuNotFoundException extends NyxxException {
+class SkuNotFoundException extends UhxxException {
   /// The ID of the application.
   final Snowflake applicationId;
 
@@ -91,13 +98,14 @@ class SkuNotFoundException extends NyxxException {
   final Snowflake skuId;
 
   /// Create a new [SkuNotFoundException].
-  SkuNotFoundException(this.applicationId, this.skuId) : super('SKU $skuId not found for application $applicationId');
+  SkuNotFoundException(this.applicationId, this.skuId)
+      : super('SKU $skuId not found for application $applicationId');
 }
 
 /// An error thrown when a shard disconnects unexpectedly.
 ///
 /// {@category gateway}
-class ShardDisconnectedError extends Error implements NyxxException {
+class ShardDisconnectedError extends Error implements UhxxException {
   /// The shard that was disconnected.
   final Shard shard;
 
@@ -116,12 +124,13 @@ class ShardDisconnectedError extends Error implements NyxxException {
 /// The threshold for this can be configured in [GatewayClientOptions.minimumSessionStarts].
 ///
 /// {@category core}
-class OutOfRemainingSessionsError extends Error implements NyxxException {
+class OutOfRemainingSessionsError extends Error implements UhxxException {
   /// The [GatewayBot] containing the information that triggered the error.
   final GatewayBot gatewayBot;
 
   @override
-  String get message => 'Out of remaining session starts (${gatewayBot.sessionStartLimit.remaining} left)';
+  String get message =>
+      'Out of remaining session starts (${gatewayBot.sessionStartLimit.remaining} left)';
 
   /// Create a new [OutOfRemainingSessionsError].
   OutOfRemainingSessionsError(this.gatewayBot);
@@ -171,9 +180,10 @@ class ClientClosedError extends Error {
   String toString() => 'Client is closed';
 }
 
-class SoundboardSoundNotFoundException extends NyxxException {
+class SoundboardSoundNotFoundException extends UhxxException {
   /// The ID of the sound.
   final Snowflake soundId;
 
-  SoundboardSoundNotFoundException(this.soundId) : super('Soundboard sound $soundId not found');
+  SoundboardSoundNotFoundException(this.soundId)
+      : super('Soundboard sound $soundId not found');
 }

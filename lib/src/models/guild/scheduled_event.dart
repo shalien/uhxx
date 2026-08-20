@@ -1,15 +1,15 @@
-import 'package:nyxx/src/http/cdn/cdn_asset.dart';
-import 'package:nyxx/src/http/managers/scheduled_event_manager.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/guild/member.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/snowflake_entity/snowflake_entity.dart';
-import 'package:nyxx/src/models/user/user.dart';
-import 'package:nyxx/src/utils/enum_like.dart';
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/http/cdn/cdn_asset.dart';
+import 'package:uhxx/src/http/managers/scheduled_event_manager.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/guild/member.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/snowflake_entity/snowflake_entity.dart';
+import 'package:uhxx/src/models/user/user.dart';
+import 'package:uhxx/src/utils/enum_like.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A partial [ScheduledEvent].
 ///
@@ -23,8 +23,13 @@ class PartialScheduledEvent extends WritableSnowflakeEntity<ScheduledEvent> {
   PartialScheduledEvent({required super.id, required this.manager});
 
   /// List the users that have followed this event.
-  Future<List<ScheduledEventUser>> listUsers({int? limit, bool? withMembers, Snowflake? before, Snowflake? after}) =>
-      manager.listEventUsers(id, withMembers: withMembers, after: after, before: before, limit: limit);
+  Future<List<ScheduledEventUser>> listUsers(
+          {int? limit,
+          bool? withMembers,
+          Snowflake? before,
+          Snowflake? after}) =>
+      manager.listEventUsers(id,
+          withMembers: withMembers, after: after, before: before, limit: limit);
 }
 
 /// {@template scheduled_event}
@@ -111,10 +116,12 @@ class ScheduledEvent extends PartialScheduledEvent {
   PartialGuild get guild => manager.client.guilds[guildId];
 
   /// The channel this event will be hosted in.
-  PartialChannel? get channel => channelId == null ? null : manager.client.channels[channelId!];
+  PartialChannel? get channel =>
+      channelId == null ? null : manager.client.channels[channelId!];
 
   /// The member for the user that created this event.
-  PartialMember? get creatorMember => creatorId == null ? null : guild.members[creatorId!];
+  PartialMember? get creatorMember =>
+      creatorId == null ? null : guild.members[creatorId!];
 
   /// This scheduled event's cover image.
   CdnAsset? get coverImage => coverImageHash == null
@@ -136,7 +143,8 @@ final class EventStatus extends EnumLike<int, EventStatus> {
   /// @nodoc
   const EventStatus(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   EventStatus.parse(int value) : this(value);
 }
 
@@ -149,7 +157,8 @@ final class ScheduledEntityType extends EnumLike<int, ScheduledEntityType> {
   /// @nodoc
   const ScheduledEntityType(super.value);
 
-  @Deprecated('The .parse() constructor is deprecated. Use the unnamed constructor instead.')
+  @Deprecated(
+      'The .parse() constructor is deprecated. Use the unnamed constructor instead.')
   ScheduledEntityType.parse(int value) : this(value);
 }
 
@@ -250,7 +259,8 @@ class RecurrenceRule with ToStringHelper {
 }
 
 /// The frequency with which a [ScheduledEvent] can recur.
-final class RecurrenceRuleFrequency extends EnumLike<int, RecurrenceRuleFrequency> {
+final class RecurrenceRuleFrequency
+    extends EnumLike<int, RecurrenceRuleFrequency> {
   /// The event recurs at an interval in years.
   static const yearly = RecurrenceRuleFrequency(0);
 

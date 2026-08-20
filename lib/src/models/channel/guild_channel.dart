@@ -1,12 +1,12 @@
-import 'package:nyxx/src/builders/invite.dart';
-import 'package:nyxx/src/builders/permission_overwrite.dart';
-import 'package:nyxx/src/models/channel/channel.dart';
-import 'package:nyxx/src/models/guild/guild.dart';
-import 'package:nyxx/src/models/invite/invite.dart';
-import 'package:nyxx/src/models/invite/invite_metadata.dart';
-import 'package:nyxx/src/models/permission_overwrite.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/models/webhook.dart';
+import 'package:uhxx/src/builders/invite.dart';
+import 'package:uhxx/src/builders/permission_overwrite.dart';
+import 'package:uhxx/src/models/channel/channel.dart';
+import 'package:uhxx/src/models/guild/guild.dart';
+import 'package:uhxx/src/models/invite/invite.dart';
+import 'package:uhxx/src/models/invite/invite_metadata.dart';
+import 'package:uhxx/src/models/permission_overwrite.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/webhook.dart';
 
 /// A channel in a [Guild].
 ///

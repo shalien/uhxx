@@ -1,23 +1,24 @@
 import 'dart:ffi';
 import 'dart:io';
 
-import 'package:nyxx/src/builders/presence.dart';
-import 'package:nyxx/src/intents.dart';
-import 'package:nyxx/src/utils/flags.dart';
+import 'package:uhxx/src/builders/presence.dart';
+import 'package:uhxx/src/intents.dart';
+import 'package:uhxx/src/utils/flags.dart';
 import 'package:oauth2/oauth2.dart';
 
 /// Options for connecting to the Discord API.
 ///
 /// {@category core}
 abstract class ApiOptions {
-  /// The version of nyxx used in [defaultUserAgent].
-  static const nyxxVersion = '6.9.1';
+  /// The version of uhxx used in [defaultUserAgent].
+  static const uhxxVersion = '6.9.1';
 
-  /// The URL to the nyxx repository used in [defaultUserAgent].
-  static const nyxxRepositoryUrl = 'https://github.com/nyxx-discord/nyxx';
+  /// The URL to the uhxx repository used in [defaultUserAgent].
+  static const uhxxRepositoryUrl = 'https://github.com/uhxx-discord/uhxx';
 
-  /// The default value for the `User-Agent` header for bots made with nyxx.
-  static const defaultUserAgent = 'DiscordBot ($nyxxRepositoryUrl, $nyxxVersion)';
+  /// The default value for the `User-Agent` header for bots made with uhxx.
+  static const defaultUserAgent =
+      'DiscordBot ($uhxxRepositoryUrl, $uhxxVersion)';
 
   /// The host at which the API can be found.
   ///
@@ -99,7 +100,8 @@ class GatewayApiOptions extends RestApiOptions {
   }
 
   /// The default [GatewayCompression] used if none is specified.
-  static final GatewayCompression defaultCompression = _selectDefaultCompression();
+  static final GatewayCompression defaultCompression =
+      _selectDefaultCompression();
 
   /// The intents to use.
   final Flags<GatewayIntents> intents;
@@ -130,8 +132,10 @@ class GatewayApiOptions extends RestApiOptions {
   Map<String, String> get gatewayConnectionOptions => {
         'v': apiVersion.toString(),
         'encoding': payloadFormat.value,
-        if (compression == GatewayCompression.transportZLib) 'compress': 'zlib-stream',
-        if (compression == GatewayCompression.transportZStd) 'compress': 'zstd-stream',
+        if (compression == GatewayCompression.transportZLib)
+          'compress': 'zlib-stream',
+        if (compression == GatewayCompression.transportZStd)
+          'compress': 'zstd-stream',
       };
 
   /// Create a new [GatewayApiOptions].
@@ -181,6 +185,7 @@ enum GatewayCompression {
   /// Cannot be used if [GatewayPayloadFormat.etf] is used.
   payload;
 
-  @Deprecated('Use GatewayCompression.transportZLib for ZLib transport compression.')
+  @Deprecated(
+      'Use GatewayCompression.transportZLib for ZLib transport compression.')
   static const transport = GatewayCompression.transportZLib;
 }

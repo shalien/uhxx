@@ -1,4 +1,4 @@
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 
 /// {@category models}
 /// {@category entities}
@@ -35,5 +35,6 @@ abstract class ThreadsOnlyChannel implements HasThreadsChannel {
   /// External references:
   /// * [ChannelManager.createForumThread]
   /// * Discord API Reference: https://discord.com/developers/docs/resources/channel#start-thread-in-forum-channel
-  Future<Thread> createForumThread(ForumThreadBuilder builder, {String? auditLogReason});
+  Future<Thread> createForumThread(ForumThreadBuilder builder,
+      {String? auditLogReason});
 }

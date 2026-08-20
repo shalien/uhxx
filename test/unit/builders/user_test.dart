@@ -1,10 +1,11 @@
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('UserUpdateBuilder', () {
     test('build', () {
-      final builder = UserUpdateBuilder(username: 'foo', avatar: ImageBuilder.png([]));
+      final builder =
+          UserUpdateBuilder(username: 'foo', avatar: ImageBuilder.png([]));
       expect(
         builder.build(),
         equals({

@@ -1,4 +1,4 @@
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 import '../../../test_manager.dart';
@@ -8,7 +8,11 @@ final sampleRole = {
   "id": "1",
   "name": "WE DEM BOYZZ!!!!!!",
   "color": 3447003,
-  "colors": {"primary_color": 3447003, "secondary_color": null, "tertiary_color": null},
+  "colors": {
+    "primary_color": 3447003,
+    "secondary_color": null,
+    "tertiary_color": null
+  },
   "hoist": true,
   "icon": "cf3ced8600b777c9486c6d8d84fb4327",
   "unicode_emoji": null,
@@ -34,7 +38,11 @@ void checkRole(Role role) {
   expect(role.colors.primary, equals(DiscordColor(3447003)));
 }
 
-final sampleRoleCounts = {"613425648685547541": 1337, "1409696176629878905": 2, "697138785317814292": 67};
+final sampleRoleCounts = {
+  "613425648685547541": 1337,
+  "1409696176629878905": 2,
+  "697138785317814292": 67
+};
 
 void checkRoleCounts(Map<PartialRole, int> counts) {
   expect(counts.length, equals(sampleRoleCounts.length));

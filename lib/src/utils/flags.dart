@@ -1,9 +1,10 @@
 import 'dart:collection';
 
-import 'package:nyxx/src/utils/to_string_helper/to_string_helper.dart';
+import 'package:uhxx/src/utils/to_string_helper/to_string_helper.dart';
 
 /// A set of flags that can be either enabled or disabled.
-class Flags<T extends Flags<T>> extends IterableBase<Flag<T>> with ToStringHelper {
+class Flags<T extends Flags<T>> extends IterableBase<Flag<T>>
+    with ToStringHelper {
   /// The integer value encoding the flags as a bitfield.
   final int value;
 
@@ -29,7 +30,8 @@ class Flags<T extends Flags<T>> extends IterableBase<Flag<T>> with ToStringHelpe
   Flags<T> operator ~() => Flags(~value);
 
   @override
-  bool operator ==(Object other) => identical(this, other) || (other is Flags<T> && other.value == value);
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is Flags<T> && other.value == value);
 
   @override
   int get hashCode => value.hashCode;

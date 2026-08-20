@@ -1,6 +1,6 @@
 import 'package:http/http.dart';
-import 'package:nyxx/src/http/handler.dart';
-import 'package:nyxx/src/http/request.dart';
+import 'package:uhxx/src/http/handler.dart';
+import 'package:uhxx/src/http/request.dart';
 
 /// A rate limit bucket tracking requests.
 ///
@@ -91,11 +91,15 @@ class HttpBucket {
     final resetAfter = response.headers[xRateLimitResetAfter];
     final id = response.headers[xRateLimitBucket];
 
-    if (limit == null || remaining == null || resetAfter == null || id == null) {
+    if (limit == null ||
+        remaining == null ||
+        resetAfter == null ||
+        id == null) {
       return null;
     }
 
-    final resetAfterDuration = Duration(milliseconds: (double.parse(resetAfter) * 1000).ceil());
+    final resetAfterDuration =
+        Duration(milliseconds: (double.parse(resetAfter) * 1000).ceil());
     final resetAtTime = DateTime.now().add(resetAfterDuration);
 
     return HttpBucket(
@@ -120,13 +124,15 @@ class HttpBucket {
     }
 
     if (resetAfter != null) {
-      final resetAfterDuration = Duration(milliseconds: (double.parse(resetAfter) * 1000).ceil());
+      final resetAfterDuration =
+          Duration(milliseconds: (double.parse(resetAfter) * 1000).ceil());
       _resetAt = DateTime.now().add(resetAfterDuration);
     }
   }
 
   /// Return whether the [response]'s [xRateLimitBucket] header matches this bucket's.
-  bool contains(BaseResponse response) => id == response.headers[xRateLimitBucket];
+  bool contains(BaseResponse response) =>
+      id == response.headers[xRateLimitBucket];
 
   /// Add [request] to this bucket's in-flight requests.
   ///
@@ -135,10 +141,12 @@ class HttpBucket {
   /// response from the API. These requests count towards the [remaining] count to avoid sending too
   /// many requests at once.
   /// {@endtemplate}
-  void addInflightRequest(HttpRequest request) => _inflightRequests.add(request);
+  void addInflightRequest(HttpRequest request) =>
+      _inflightRequests.add(request);
 
   /// Remove [request] from this bucket's in-flight requests.
   ///
   /// {@macro in_flight_requests}
-  void removeInflightRequest(HttpRequest request) => _inflightRequests.remove(request);
+  void removeInflightRequest(HttpRequest request) =>
+      _inflightRequests.remove(request);
 }

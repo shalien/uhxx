@@ -1,11 +1,11 @@
-import 'package:nyxx/src/errors.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/guild/integration.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/errors.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/guild/integration.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
 
 /// A [Manager] for [Integration]s.
 ///
@@ -15,10 +15,12 @@ class IntegrationManager extends ReadOnlyManager<Integration> {
   final Snowflake guildId;
 
   /// Create a new [IntegrationManager].
-  IntegrationManager(super.config, super.client, {required this.guildId}) : super(identifier: '$guildId.integrations');
+  IntegrationManager(super.config, super.client, {required this.guildId})
+      : super(identifier: '$guildId.integrations');
 
   @override
-  PartialIntegration operator [](Snowflake id) => PartialIntegration(id: id, manager: this);
+  PartialIntegration operator [](Snowflake id) =>
+      PartialIntegration(id: id, manager: this);
 
   @override
   Integration parse(Map<String, Object?> raw) {
@@ -31,8 +33,10 @@ class IntegrationManager extends ReadOnlyManager<Integration> {
       isSyncing: raw['syncing'] as bool?,
       roleId: maybeParse(raw['role_id'], Snowflake.parse),
       enableEmoticons: raw['enable_emoticons'] as bool?,
-      expireBehavior: maybeParse(raw['expire_behavior'], IntegrationExpireBehavior.new),
-      expireGracePeriod: maybeParse(raw['expire_grace_period'], (int value) => Duration(days: value)),
+      expireBehavior:
+          maybeParse(raw['expire_behavior'], IntegrationExpireBehavior.new),
+      expireGracePeriod: maybeParse(
+          raw['expire_grace_period'], (int value) => Duration(days: value)),
       user: maybeParse(raw['user'], client.users.parse),
       account: parseIntegrationAccount(raw['account'] as Map<String, Object?>),
       syncedAt: maybeParse(raw['synced_at'], DateTime.parse),
@@ -91,7 +95,8 @@ class IntegrationManager extends ReadOnlyManager<Integration> {
     final route = HttpRoute()
       ..guilds(id: guildId.toString())
       ..integrations(id: id.toString());
-    final request = BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
+    final request =
+        BasicRequest(route, method: 'DELETE', auditLogReason: auditLogReason);
 
     await client.httpHandler.executeSafe(request);
 

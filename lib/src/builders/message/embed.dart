@@ -1,6 +1,6 @@
-import 'package:nyxx/src/builders/builder.dart';
-import 'package:nyxx/src/models/discord_color.dart';
-import 'package:nyxx/src/models/message/embed.dart';
+import 'package:uhxx/src/builders/builder.dart';
+import 'package:uhxx/src/models/discord_color.dart';
+import 'package:uhxx/src/models/message/embed.dart';
 
 /// {@category builders}
 class EmbedBuilder extends CreateBuilder<Embed> {

@@ -22,7 +22,7 @@ If applicable, add screenshots to help explain your problem.
 **Desktop (please complete the following information):**
  - OS: [e.g. Windows, Linux]
  - Dart version [e.g. 2.9.0]
- - Nyxx version [e.g. 1.0.0]
+ - Uhxx version [e.g. 1.0.0]
 
 **Additional context**
 Add any other context about the problem here.

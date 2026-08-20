@@ -1,5 +1,5 @@
-import 'package:nyxx/src/models/channel/stage_instance.dart';
-import 'package:nyxx/src/models/gateway/event.dart';
+import 'package:uhxx/src/models/channel/stage_instance.dart';
+import 'package:uhxx/src/models/gateway/event.dart';
 
 /// {@template stage_instance_create_event}
 /// Emitted when a stage instance is created.
@@ -29,7 +29,10 @@ class StageInstanceUpdateEvent extends DispatchEvent {
 
   /// {@macro stage_instance_update_event}
   /// @nodoc
-  StageInstanceUpdateEvent({required super.gateway, required this.oldInstance, required this.instance});
+  StageInstanceUpdateEvent(
+      {required super.gateway,
+      required this.oldInstance,
+      required this.instance});
 }
 
 /// {@template stage_instance_delete_event}

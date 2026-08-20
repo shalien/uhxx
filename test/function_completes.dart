@@ -18,5 +18,6 @@ class _FunctionCompletes extends AsyncMatcher {
   }
 
   @override
-  Description describe(Description description) => test.completes.describe(description);
+  Description describe(Description description) =>
+      test.completes.describe(description);
 }

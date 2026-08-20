@@ -1,4 +1,4 @@
-import 'package:nyxx/nyxx.dart';
+import 'package:uhxx/uhxx.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -41,7 +41,8 @@ void main() {
     });
 
     test('operator |', () {
-      final a = AllowedMentions.users([Snowflake(1), Snowflake(2), Snowflake(3)]);
+      final a =
+          AllowedMentions.users([Snowflake(1), Snowflake(2), Snowflake(3)]);
       final b = AllowedMentions(
         repliedUser: true,
         users: [Snowflake(1)],
@@ -58,7 +59,8 @@ void main() {
     });
 
     test('operator &', () {
-      final a = AllowedMentions.users([Snowflake(1), Snowflake(2), Snowflake(3)]);
+      final a =
+          AllowedMentions.users([Snowflake(1), Snowflake(2), Snowflake(3)]);
       final b = AllowedMentions(
         repliedUser: true,
         users: [Snowflake(1)],

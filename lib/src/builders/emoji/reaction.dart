@@ -1,5 +1,5 @@
-import 'package:nyxx/src/models/emoji.dart';
-import 'package:nyxx/src/models/snowflake.dart';
+import 'package:uhxx/src/models/emoji.dart';
+import 'package:uhxx/src/models/snowflake.dart';
 
 /// {@category builders}
 class ReactionBuilder {

@@ -1,17 +1,18 @@
-import 'package:nyxx/src/errors.dart';
-import 'package:nyxx/src/http/managers/manager.dart';
-import 'package:nyxx/src/http/request.dart';
-import 'package:nyxx/src/http/route.dart';
-import 'package:nyxx/src/models/sku.dart';
-import 'package:nyxx/src/models/snowflake.dart';
-import 'package:nyxx/src/utils/parsing_helpers.dart';
-import 'package:nyxx/src/utils/cache_helpers.dart';
+import 'package:uhxx/src/errors.dart';
+import 'package:uhxx/src/http/managers/manager.dart';
+import 'package:uhxx/src/http/request.dart';
+import 'package:uhxx/src/http/route.dart';
+import 'package:uhxx/src/models/sku.dart';
+import 'package:uhxx/src/models/snowflake.dart';
+import 'package:uhxx/src/utils/parsing_helpers.dart';
+import 'package:uhxx/src/utils/cache_helpers.dart';
 
 /// {@category managers}
 class SkuManager extends ReadOnlyManager<Sku> {
   final Snowflake applicationId;
 
-  SkuManager(super.config, super.client, {required this.applicationId}) : super(identifier: '$applicationId.skus');
+  SkuManager(super.config, super.client, {required this.applicationId})
+      : super(identifier: '$applicationId.skus');
 
   @override
   PartialSku operator [](Snowflake id) => PartialSku(manager: this, id: id);
