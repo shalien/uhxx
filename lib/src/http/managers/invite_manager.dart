@@ -33,7 +33,7 @@ class InviteManager {
         id: Snowflake.parse(raw['id']!),
         manager: client.guilds,
         name: raw['name']! as String,
-        splashHash: raw['splash']! as String?,
+        splashHash: raw['splash'] as String?,
         bannerHash: raw['banner'] as String?,
         description: raw['description'] as String?,
         iconHash: raw['icon'] as String?,
