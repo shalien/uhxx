@@ -387,6 +387,14 @@ class InviteGuild extends PartialGuild {
           hash: iconHash!,
         );
 
+  CdnAsset? get splash => splashHash == null
+      ? null
+      : CdnAsset(
+          client: manager.client,
+          base: HttpRoute()..splashes(id: id.toString()),
+          hash: splashHash!,
+        );
+
   /// This guild's banner.
   CdnAsset? get banner => bannerHash == null
       ? null

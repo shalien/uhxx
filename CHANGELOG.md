@@ -9,3 +9,7 @@
 ## 0.1.3
 
 - Show InviteGuild
+
+## 0.1.4
+
+- Added splash
