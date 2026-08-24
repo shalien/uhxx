@@ -38,7 +38,7 @@ class InviteManager {
         description: raw['description'] as String?,
         iconHash: raw['icon'] as String?,
         features:
-            client.guilds.parseGuildFeatures(raw['features'] as List<String>),
+            client.guilds.parseGuildFeatures(raw['features'] as List<dynamic>),
         verificationLevel: VerificationLevel(raw['verification_level'] as int),
         vanityUrlCode: raw['vanity_url_code'] as String?,
         nsfwLevel: NsfwLevel(raw['nsfw_level'] as int),

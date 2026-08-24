@@ -392,7 +392,7 @@ export 'src/models/guild/guild.dart'
         PremiumTier,
         VerificationLevel,
         UserGuild,
-        IncidentsData;
+        IncidentsData, InviteGuild;
 export 'src/models/guild/integration.dart'
     show
         PartialIntegration,
