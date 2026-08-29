@@ -281,12 +281,13 @@ class InteractionManager {
 
           final webhookId = maybeParse(raw['webhook_id'], Snowflake.parse);
 
-          final snapshot = manager.parseMessageSnapshot(raw);
+          final snapshot =
+              manager.parseMessageSnapshot(value as Map<String, Object?>);
 
           return MapEntry(
             Snowflake.parse(key),
             Message(
-              id: Snowflake.parse((value as Map<String, Object?>)['id']!),
+              id: Snowflake.parse((value)['id']!),
               manager: manager,
               content: snapshot.content,
               timestamp: snapshot.timestamp,
@@ -298,60 +299,62 @@ class InteractionManager {
               roleMentionIds: snapshot.roleMentionIds,
               type: snapshot.type,
               author: (webhookId == null
-                  ? client.users.parse(raw['author'] as Map<String, Object?>)
-                  : client.webhooks.parseWebhookAuthor(
-                      raw['author'] as Map<String, Object?>)) as MessageAuthor,
-              isTts: raw['tts'] as bool,
-              mentionsEveryone: raw['mention_everyone'] as bool,
+                  ? client.users.parse(value['author'] as Map<String, Object?>)
+                  : client.webhooks.parseWebhookAuthor(value['author']
+                      as Map<String, Object?>)) as MessageAuthor,
+              isTts: value['tts'] as bool,
+              mentionsEveryone: value['mention_everyone'] as bool,
               channelMentions: maybeParseMany(
-                      raw['mention_channels'], manager.parseChannelMention) ??
+                      value['mention_channels'], manager.parseChannelMention) ??
                   [],
               reactions:
-                  maybeParseMany(raw['reactions'], manager.parseReaction) ?? [],
-              nonce: raw['nonce'] /* as int | String */,
-              isPinned: raw['pinned'] as bool,
+                  maybeParseMany(value['reactions'], manager.parseReaction) ??
+                      [],
+              nonce: value['nonce'] /* as int | String */,
+              isPinned: value['pinned'] as bool,
               webhookId: webhookId,
               activity:
-                  maybeParse(raw['activity'], manager.parseMessageActivity),
+                  maybeParse(value['activity'], manager.parseMessageActivity),
               application: maybeParse(
-                raw['application'],
+                value['application'],
                 (Map<String, Object?> raw) => PartialApplication(
                     id: Snowflake.parse(raw['id']!),
                     manager: client.applications),
               ),
-              applicationId: maybeParse(raw['application_id'], Snowflake.parse),
+              applicationId:
+                  maybeParse(value['application_id'], Snowflake.parse),
               reference: maybeParse(
-                  raw['message_reference'], manager.parseMessageReference),
+                  value['message_reference'], manager.parseMessageReference),
               messageSnapshots: maybeParseMany(
-                raw['message_snapshots'],
+                value['message_snapshots'],
                 (Map<String, Object?> raw) => manager.parseMessageSnapshot(
                     raw['message'] as Map<String, Object?>),
               ),
               referencedMessage:
-                  maybeParse(raw['referenced_message'], manager.parse),
+                  maybeParse(value['referenced_message'], manager.parse),
               interaction: maybeParse(
-                raw['interaction'],
+                value['interaction'],
                 (Map<String, Object?> raw) =>
                     manager.parseMessageInteraction(raw, guildId: guildId),
               ),
               interactionMetadata: maybeParse(
-                raw['interaction_metadata'],
+                value['interaction_metadata'],
                 manager.parseMessageInteractionMetadata,
               ),
               thread:
-                  maybeParse(raw['thread'], client.channels.parse) as Thread?,
+                  maybeParse(value['thread'], client.channels.parse) as Thread?,
               components: snapshot.components,
-              position: raw['position'] as int?,
-              roleSubscriptionData: maybeParse(raw['role_subscription_data'],
+              position: value['position'] as int?,
+              roleSubscriptionData: maybeParse(value['role_subscription_data'],
                   manager.parseRoleSubscriptionData),
               stickers: snapshot.stickers,
               resolved: maybeParse(
-                  raw['resolved'],
+                  value['resolved'],
                   (Map<String, Object?> raw) => client.interactions
                       .parseResolvedData(raw,
                           guildId: guildId, channelId: channelId)),
-              poll: maybeParse(raw['poll'], manager.parsePoll),
-              call: maybeParse(raw['call'], manager.parseMessageCall),
+              poll: maybeParse(value['poll'], manager.parsePoll),
+              call: maybeParse(value['call'], manager.parseMessageCall),
             ),
           );
         }),

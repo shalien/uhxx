@@ -17,3 +17,7 @@
 ## 0.1.5
 
 - Test for data resolved messages
+
+## 0.1.6
+
+- Corrected raw inside interaction message parsing
