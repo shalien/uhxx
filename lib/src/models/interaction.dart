@@ -584,10 +584,10 @@ class ResolvedData with ToStringHelper {
   final Map<Snowflake, Role>? roles;
 
   /// A mapping of channel ID to [PartialChannel].
-  final Map<Snowflake, PartialChannel>? channels;
+  final Map<Snowflake, PartialChannel?>? channels;
 
-  /// A mapping of message ID to [PartialMessage].
-  final Map<Snowflake, PartialMessage>? messages;
+  /// A mapping of message ID to [Message].
+  final Map<Snowflake, Message?>? messages;
 
   /// A mapping of attachment ID to [Attachment].
   final Map<Snowflake, Attachment>? attachments;

@@ -1,25 +1,11 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' hide MultipartRequest;
-import 'package:uhxx/src/builders/interaction_response.dart';
-import 'package:uhxx/src/builders/message/message.dart';
 import 'package:uhxx/src/builders/sentinels.dart';
-import 'package:uhxx/src/client.dart';
-import 'package:uhxx/src/http/request.dart';
 import 'package:uhxx/src/http/route.dart';
-import 'package:uhxx/src/models/application.dart';
-import 'package:uhxx/src/models/channel/channel.dart';
-import 'package:uhxx/src/models/channel/text_channel.dart';
-import 'package:uhxx/src/models/commands/application_command.dart';
-import 'package:uhxx/src/models/commands/application_command_option.dart';
-import 'package:uhxx/src/models/interaction.dart';
-import 'package:uhxx/src/models/locale.dart';
-import 'package:uhxx/src/models/component.dart';
-import 'package:uhxx/src/models/message/message.dart';
-import 'package:uhxx/src/models/permissions.dart';
-import 'package:uhxx/src/models/snowflake.dart';
 import 'package:uhxx/src/utils/cache_helpers.dart';
 import 'package:uhxx/src/utils/parsing_helpers.dart';
+
+import '../../../uhxx.dart';
 
 /// A [Manager] for [Interaction]s.
 ///
@@ -280,23 +266,95 @@ class InteractionManager {
           (key, value) => MapEntry(
             Snowflake.parse(key),
             PartialChannel(
-                id: Snowflake.parse((value as Map<String, Object?>)['id']!),
-                manager: client.channels),
+              id: Snowflake.parse((value as Map<String, Object?>)['id']!),
+              manager: client.channels,
+            ),
           ),
         ),
       ),
       messages: maybeParse(
         raw['messages'],
-        (Map<String, Object?> raw) => raw.map(
-          (key, value) => MapEntry(
+        (Map<String, Object?> raw) => raw.map((key, value) {
+          MessageManager manager = (client.channels[channelId ?? Snowflake.zero]
+                  as PartialTextChannel)
+              .messages;
+
+          final webhookId = maybeParse(raw['webhook_id'], Snowflake.parse);
+
+          final snapshot = manager.parseMessageSnapshot(raw);
+
+          return MapEntry(
             Snowflake.parse(key),
-            PartialMessage(
-                id: Snowflake.parse((value as Map<String, Object?>)['id']!),
-                manager: (client.channels[channelId ?? Snowflake.zero]
-                        as PartialTextChannel)
-                    .messages),
-          ),
-        ),
+            Message(
+              id: Snowflake.parse((value as Map<String, Object?>)['id']!),
+              manager: manager,
+              content: snapshot.content,
+              timestamp: snapshot.timestamp,
+              editedTimestamp: snapshot.editedTimestamp,
+              attachments: snapshot.attachments,
+              embeds: snapshot.embeds,
+              flags: snapshot.flags,
+              mentions: snapshot.mentions,
+              roleMentionIds: snapshot.roleMentionIds,
+              type: snapshot.type,
+              author: (webhookId == null
+                  ? client.users.parse(raw['author'] as Map<String, Object?>)
+                  : client.webhooks.parseWebhookAuthor(
+                      raw['author'] as Map<String, Object?>)) as MessageAuthor,
+              isTts: raw['tts'] as bool,
+              mentionsEveryone: raw['mention_everyone'] as bool,
+              channelMentions: maybeParseMany(
+                      raw['mention_channels'], manager.parseChannelMention) ??
+                  [],
+              reactions:
+                  maybeParseMany(raw['reactions'], manager.parseReaction) ?? [],
+              nonce: raw['nonce'] /* as int | String */,
+              isPinned: raw['pinned'] as bool,
+              webhookId: webhookId,
+              activity:
+                  maybeParse(raw['activity'], manager.parseMessageActivity),
+              application: maybeParse(
+                raw['application'],
+                (Map<String, Object?> raw) => PartialApplication(
+                    id: Snowflake.parse(raw['id']!),
+                    manager: client.applications),
+              ),
+              applicationId: maybeParse(raw['application_id'], Snowflake.parse),
+              reference: maybeParse(
+                  raw['message_reference'], manager.parseMessageReference),
+              messageSnapshots: maybeParseMany(
+                raw['message_snapshots'],
+                (Map<String, Object?> raw) => manager.parseMessageSnapshot(
+                    raw['message'] as Map<String, Object?>),
+              ),
+              referencedMessage:
+                  maybeParse(raw['referenced_message'], manager.parse),
+              interaction: maybeParse(
+                raw['interaction'],
+                (Map<String, Object?> raw) =>
+                    manager.parseMessageInteraction(raw, guildId: guildId),
+              ),
+              interactionMetadata: maybeParse(
+                raw['interaction_metadata'],
+                manager.parseMessageInteractionMetadata,
+              ),
+              thread:
+                  maybeParse(raw['thread'], client.channels.parse) as Thread?,
+              components: snapshot.components,
+              position: raw['position'] as int?,
+              roleSubscriptionData: maybeParse(raw['role_subscription_data'],
+                  manager.parseRoleSubscriptionData),
+              stickers: snapshot.stickers,
+              resolved: maybeParse(
+                  raw['resolved'],
+                  (Map<String, Object?> raw) => client.interactions
+                      .parseResolvedData(raw,
+                          guildId: guildId, channelId: channelId)),
+              poll: maybeParse(raw['poll'], manager.parsePoll),
+              call: maybeParse(raw['call'], manager.parseMessageCall),
+            ),
+          );
+        }),
       ),
       attachments: maybeParse(
         raw['attachments'],

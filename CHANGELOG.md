@@ -13,3 +13,7 @@
 ## 0.1.4
 
 - Added splash
+
+## 0.1.5
+
+- Test for data resolved messages

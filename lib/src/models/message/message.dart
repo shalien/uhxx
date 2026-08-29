@@ -99,6 +99,75 @@ class PartialMessage extends WritableSnowflakeEntity<Message> {
   Future<Message> endPoll() => manager.endPoll(id);
 }
 
+/*
+class ResolvedMessage extends PartialMessage implements MessageSnapshot {
+  @override
+  final List<Attachment> attachments;
+
+  final MessageAuthor author;
+
+  @override
+  final Snowflake channelId;
+
+  @override
+  List<Component>? components;
+
+  @override
+  String content;
+
+  @override
+  DateTime? editedTimestamp;
+
+  @override
+  List<Embed> embeds;
+
+  @override
+  MessageFlags flags;
+
+  final bool mentionEveryone;
+
+  @override
+  List<User> mentions;
+
+  @override
+  List<Snowflake> roleMentionIds;
+
+  final bool isPinned;
+
+  @override
+  List<StickerItem> stickers;
+
+  @override
+  DateTime timestamp;
+
+  final bool isTts;
+
+  @override
+  MessageType type;
+
+  ResolvedMessage({
+    required super.id,
+    required super.manager,
+    required this.attachments,
+    required this.author,
+    required this.channelId,
+    required this.components,
+    required this.content,
+    required this.editedTimestamp,
+    required this.embeds,
+    required this.flags,
+    required this.mentionEveryone,
+    required this.roleMentionIds,
+    required this.mentions,
+    required this.isPinned,
+    required this.stickers,
+    required this.timestamp
+
+});
+
+}
+*/
+
 /// {@template message}
 /// Represents a message sent in a [TextChannel].
 ///
