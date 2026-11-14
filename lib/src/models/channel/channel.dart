@@ -65,7 +65,8 @@ class UnknownChannel extends Channel {
   final ChannelType type;
 
   /// @nodoc
-  UnknownChannel({required super.id, required super.manager, required this.type});
+  UnknownChannel(
+      {required super.id, required super.manager, required this.type});
 }
 
 /// The type of a channel.
