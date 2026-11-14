@@ -251,9 +251,9 @@ export 'src/models/user/avatar_decoration_data.dart' show AvatarDecorationData;
 export 'src/models/soundboard/soundboard.dart'
     show SoundboardSound, PartialSoundboardSound;
 export 'src/models/channel/channel.dart'
-    show Channel, ChannelFlags, PartialChannel, ChannelType;
+    show Channel, ChannelFlags, PartialChannel, ChannelType, UnknownChannel;
 export 'src/models/channel/followed_channel.dart' show FollowedChannel;
-export 'src/models/channel/guild_channel.dart' show GuildChannel;
+export 'src/models/channel/guild_channel.dart' show GuildChannel, UnknownGuildChannel;
 export 'src/models/channel/has_threads_channel.dart' show HasThreadsChannel;
 export 'src/models/channel/thread_aggregate.dart' show ThreadsOnlyChannel;
 export 'src/models/channel/text_channel.dart'

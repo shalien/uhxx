@@ -13,6 +13,7 @@ import 'package:uhxx/src/http/request.dart';
 import 'package:uhxx/src/http/route.dart';
 import 'package:uhxx/src/models/channel/channel.dart';
 import 'package:uhxx/src/models/channel/followed_channel.dart';
+import 'package:nyxx/src/models/channel/guild_channel.dart';
 import 'package:uhxx/src/models/channel/stage_instance.dart';
 import 'package:uhxx/src/models/channel/text_channel.dart';
 import 'package:uhxx/src/models/channel/thread.dart';
@@ -87,7 +88,21 @@ class ChannelManager extends ReadOnlyManager<Channel> {
       ChannelType.guildMedia: parseGuildMediaChannel,
     };
 
-    return parsers[type]!(raw, guildId: guildId);
+    return parsers[type]?.call(raw, guildId: guildId) ??
+        switch (guildId ?? maybeParse(raw['guild_id'], Snowflake.parse)) {
+          final guildId? => UnknownGuildChannel(
+              id: Snowflake.parse(raw['id']!),
+              manager: this,
+              type: type,
+              guildId: guildId,
+              isNsfw: raw['nsfw'] as bool? ?? false,
+              name: raw['name'] as String,
+              parentId: maybeParse(raw['parent_id'], Snowflake.parse),
+              permissionOverwrites: maybeParseMany(raw['permission_overwrites'], parsePermissionOverwrite) ?? [],
+              position: raw['position'] as int,
+            ),
+          null => UnknownChannel(id: Snowflake.parse(raw['id']!), manager: this, type: type),
+        };
   }
 
   GuildTextChannel parseGuildTextChannel(Map<String, Object?> raw,
